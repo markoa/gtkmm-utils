@@ -1,0 +1,12 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @GLIBMM_UTILS_NAME@
+Description: @GLIBMM_UTILS_SUMMARY@
+Version: @GTKMM_UTILS_VERSION@
+Requires:  gthread-2.0 glibmm-2.4
+Libs: -L${libdir} -l@GLIBMM_UTILS_NAME@
+Cflags: -I${includedir}/@GLIBMM_UTILS_NAME@-@GTKMM_UTILS_API_VERSION@
+
