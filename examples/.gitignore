@@ -1,0 +1,7 @@
+*~
+*.o
+logging
+.deps
+.libs
+Makefile
+Makefile.in
