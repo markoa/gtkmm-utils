@@ -10,9 +10,87 @@
  *   $ application_log_domains="main.cc (other files...)" ./logging
  */
 
-#include <glibmm-utils/glibmm-utils.hh>
+#include "glibmm-utils/glibmm-utils.hh"
 #include <gtkmm.h>
+
+#include <sstream>
+#include <stdexcept>
+#include <string>
+
 #include "logging.hh"
+
+enum Operation
+{
+    OPERATION_ADDITION,
+    OPERATION_SUBTRACTION
+};
+
+class BadConversion : public std::runtime_error
+{
+public:
+    BadConversion(const std::string& s) : std::runtime_error(s) {}
+};
+
+static double
+string_to_double(const std::string& str)
+{
+    std::istringstream is(str);
+    double res;
+
+    if (! (is >> res))
+    {
+        LOG_ERROR("Cannot convert " << str << " to double");
+        throw BadConversion("string_to_double(\"" + str + "\")");
+    }
+
+    return res;
+}
+
+static std::string
+double_to_string(double num)
+{
+    std::ostringstream os;
+
+    if (! (os << num))
+    {
+        LOG_ERROR("Cannot convert " << num << " to string");
+        throw BadConversion("double_to_string() error");
+    }
+
+    return os.str();
+}
+
+class Calculator
+{
+public:
+    explicit Calculator() : _last_result(0) {}
+    ~Calculator() {}
+
+    double update(double a, double b, Operation op);
+    double get_last_result() const { return _last_result; }
+
+private:
+    double _last_result;
+};
+
+double
+Calculator::update(double a, double b, Operation op)
+{
+    switch (op)
+    {
+    case OPERATION_ADDITION:
+        _last_result = a + b;
+        break;
+    case OPERATION_SUBTRACTION:
+        _last_result = a - b;
+        break;
+    default:
+        break;
+    }
+
+    return _last_result;
+}
+
 
 ExampleWindow::ExampleWindow()
     :
@@ -22,6 +100,8 @@ ExampleWindow::ExampleWindow()
     button_subtract("Subtract"),
     label_result("Result")
 {
+    calculator.reset(new Calculator());
+
     set_title("gtkmm-utils logging example");
     set_border_width(6);
 
@@ -84,7 +164,21 @@ ExampleWindow::on_button_add_clicked()
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
-    LOG_DD("adding");
+    LOG_DD("Performing addition");
+
+    try
+    {
+        double a = string_to_double(entry_operand_a.get_text());
+        double b = string_to_double(entry_operand_b.get_text());
+        calculator->update(a, b, OPERATION_ADDITION);
+        std::string res = double_to_string(calculator->get_last_result());
+
+        entry_result.set_text(res);
+    }
+    catch (BadConversion& ex)
+    {
+        entry_result.set_text("0");
+    }
 }
 
 void
@@ -92,7 +186,21 @@ ExampleWindow::on_button_subtract_clicked()
 {
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
-    LOG_DD("subtracting");
+    LOG_DD("Performing subtraction");
+
+    try
+    {
+        double a = string_to_double(entry_operand_a.get_text());
+        double b = string_to_double(entry_operand_b.get_text());
+        calculator->update(a, b, OPERATION_SUBTRACTION);
+        std::string res = double_to_string(calculator->get_last_result());
+
+        entry_result.set_text(res);
+    }
+    catch (BadConversion& ex)
+    {
+        entry_result.set_text("0");
+    }
 }
 
 int

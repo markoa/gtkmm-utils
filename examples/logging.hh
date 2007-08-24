@@ -1,5 +1,9 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
+#include <tr1/memory>
+
+class Calculator;
+
 class ExampleWindow : public Gtk::Window
 {
 public:
@@ -31,4 +35,6 @@ protected:
     Gtk::HBox hbox_buttons;
     Gtk::Button button_add;
     Gtk::Button button_subtract;
+
+    std::tr1::shared_ptr<Calculator> calculator;
 };
