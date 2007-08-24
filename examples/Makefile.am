@@ -1,7 +1,7 @@
 noinst_PROGRAMS= \
 	logging
 
-logging_SOURCES=logging.cc
+logging_SOURCES=logging.cc logging.hh
 logging_LDFLAGS=@GTKMM_UTILS_LIBS@
 
 INCLUDES= \
