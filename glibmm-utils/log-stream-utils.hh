@@ -154,14 +154,4 @@ Glib::Util::ScopeLogger scope_logger \
 #define LOG_FUNCTION_SCOPE_NORMAL_DD LOG_FUNCTION_SCOPE_NORMAL_D(GLIBMM_DEFAULT_DOMAIN)
 #endif
 
-#ifndef LOG_REF_COUNT
-#define LOG_REF_COUNT(a_object_ptr, a_name) \
-LOG_D ("object '" \
-       << a_name \
-       << "' refcount: " \
-       << (int) a_object_ptr->get_refcount (), \
-       "refcount-domain") ;
-#endif //LOG_REF_COUNT
-
 #endif // __GLIBMM_UTILS_LOG_STREAM_UTILS_H__
-
