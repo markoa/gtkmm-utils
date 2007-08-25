@@ -7,7 +7,7 @@
  * Run the program with:
  *   $ application_log_domains="all" ./logging
  * or:
- *   $ application_log_domains="main.cc (other files...)" ./logging
+ *   $ application_log_domains="logging.cc (other files...)" ./logging
  */
 
 #include "glibmm-utils/glibmm-utils.hh"
@@ -177,6 +177,7 @@ ExampleWindow::on_button_add_clicked()
     }
     catch (BadConversion& ex)
     {
+        LOG_EXCEPTION_DD("Number conversion failed");
         entry_result.set_text("0");
     }
 }
@@ -199,6 +200,7 @@ ExampleWindow::on_button_subtract_clicked()
     }
     catch (BadConversion& ex)
     {
+        LOG_EXCEPTION_DD("Number conversion failed");
         entry_result.set_text("0");
     }
 }
