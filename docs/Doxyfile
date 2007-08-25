@@ -82,7 +82,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = ../src 
+INPUT                  = ../glibmm-utils ../gtkmm-utils
 FILE_PATTERNS          = *.hh
 RECURSIVE              = NO
 EXCLUDE                = 
