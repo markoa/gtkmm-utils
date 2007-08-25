@@ -240,7 +240,8 @@ cat <<EOT
     Source code location            : ${srcdir}
     C Compiler                      : ${CC}
     C++ Compiler                    : ${CXX}
-    GTKMM_UTILS_DEVEL env var       : ${GTKMM_UTILS_DEVEL}
+    Build documentation             : ${enable_documentation}
+    GTKMM_UTILS_DEVEL env variable  : ${GTKMM_UTILS_DEVEL}
     Enable symbols visibility ctrl  : ${ENABLE_GCC_SYMBOLS_VISIBILITY}
     CFLAGS                          : ${CFLAGS}
     CXXFLAGS                        : ${CXXFLAGS}
