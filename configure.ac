@@ -190,7 +190,7 @@ fi
 
 # CFLAGS, CXXFLAGS
 # Set the $GTKMM_UTILS_DEVEL environment variable
-# to enable additional compiler flags
+# to enable additional (debug) compiler flags
 CFLAGS="$CFLAGS -Wall -pedantic -std=c99"
 
 if test  "x$GTKMM_UTILS_DEVEL" = "xon" ; then
@@ -198,6 +198,16 @@ if test  "x$GTKMM_UTILS_DEVEL" = "xon" ; then
 else
     CXXFLAGS="$CXXFLAGS -fuse-cxa-atexit $REQUIRED_FLAGS"
 fi
+
+AC_ARG_ENABLE([documentation],
+    [AS_HELP_STRING([--enable-documentation], [Whether to build the Doxygen documentation])],
+    [enable_documentation="$enableval"],
+    [enable_documentation="no"]
+)
+if test "$enable_documentation" = "yes"; then
+    AC_PATH_PROG([DOXYGEN], [doxygen], AC_MSG_ERROR[Documentation build requested but doxygen not found!]) 
+fi
+AM_CONDITIONAL([GTKMM_UTILS_BUILD_DOCUMENTATION], [test "$enable_documentation" = "yes"])
 
 GTKMM_UTILS_INSTALL_PREFIX=$prefix
 
@@ -209,13 +219,11 @@ AC_SUBST(GTKMM_UTILS_INSTALL_PREFIX)
 
 AC_CONFIG_FILES([
     Makefile
-
     glibmm-utils/Makefile
     glibmm-utils/glibmm-utils.pc
-
     gtkmm-utils/Makefile
     gtkmm-utils/gtkmm-utils.pc
-
+    docs/Makefile
     examples/Makefile
 ])
 

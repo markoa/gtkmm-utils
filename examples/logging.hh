@@ -28,13 +28,13 @@ protected:
     Gtk::Label label_operand_b;
     Gtk::Entry entry_operand_b;
 
-    Gtk::HBox hbox_result;
-    Gtk::Label label_result;
-    Gtk::Entry entry_result;
-
     Gtk::HBox hbox_buttons;
     Gtk::Button button_add;
     Gtk::Button button_subtract;
+
+    Gtk::HBox hbox_result;
+    Gtk::Label label_result;
+    Gtk::Entry entry_result;
 
     std::tr1::shared_ptr<Calculator> calculator;
 };

@@ -146,7 +146,7 @@ ExampleWindow::connect_signals()
 }
 
 bool
-ExampleWindow::on_delete_event(GdkEventAny* event)
+ExampleWindow::on_delete_event(GdkEventAny* /* event */)
 {
     // Setting LOG_FUNCTION_SCOPE_NORMAL_DD will result in more verbose
     // logging output: your messages will be surrounded by braces,
