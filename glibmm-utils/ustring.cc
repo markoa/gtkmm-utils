@@ -26,6 +26,8 @@ namespace Glib {
 
 namespace Util {
 
+namespace String {
+
 std::vector<Glib::ustring>
 split(const Glib::ustring& str, const Glib::ustring& delim)
 {
@@ -53,6 +55,8 @@ split(const Glib::ustring& str, const Glib::ustring& delim)
 
     return result;
 }
+
+} // namespace String
 
 } // namespace Util
 

@@ -22,15 +22,80 @@
 #ifndef __GLIBMM_USTRING_UTILS_H__
 #define __GLIBMM_USTRING_UTILS_H__
 
+#include <sstream>
+#include <typeinfo>
 #include <vector>
 #include <glibmm/ustring.h>
+#include "exception.hh"
 
 namespace Glib {
 
 namespace Util {
 
+namespace String
+{
+
+/// \brief Conversion exception.
+class BadConversion : public Exception
+{
+public:
+    BadConversion(const Glib::ustring& msg) : Exception(msg) {}
+};
+
+/// \brief Splits a string into tokens.
 std::vector<Glib::ustring> split(const Glib::ustring& str,
                                  const Glib::ustring& delim);
+
+template<typename T>
+inline Glib::ustring stringify(const T& x)
+{
+    std::ostringstream os;
+
+    if (! (os << x))
+        throw BadConversion(
+            "Cannot convert " + Glib::ustring(typeid(x).name()) + " to string");
+
+    return os.str();
+}
+
+/// \brief Converts a string to an arbitrary type that supports iostream.
+/// Inspired by the C++ FAQ.
+/// \param str  the string to convert
+/// \param x  the object to hold converted value
+/// \param fail_if_leftover_chars  if set to true, the function will
+/// throw a BadConversion exception if any characters are remaining after
+/// the conversion
+template<typename T>
+inline void convert_to(const Glib::ustring& str,
+                       T& x,
+                       bool fail_if_leftover_chars = true)
+{
+    std::istringstream is(str.raw());
+    char c;
+
+    if ((! (is >> x)) || (fail_if_leftover_chars && is.get(c)))
+        throw BadConversion(str);
+}
+
+/// \brief Converts a string to an arbitrary type that supports iostream
+/// by returning by value.
+/// This is a convenience function which is handy for conversions to
+/// primitive types.
+/// \param str  the string to convert
+/// \param fail_if_leftover_chars  if set to true, the function will
+/// throw a BadConversion exception if any characters are remaining after
+/// the conversion
+/// \return  the object with converted value
+template<typename T>
+inline T convert_to(const Glib::ustring& str,
+                    bool fail_if_leftover_chars = true)
+{
+    T x;
+    convert_to(str, x, fail_if_leftover_chars);
+    return x;
+}
+
+} // namespace String
 
 } // namespace Util
 

@@ -278,7 +278,7 @@ struct LogStream::Priv
         }
         if (!str.size()) {return;}
         Glib::ustring domains_str = Glib::locale_to_utf8 (str.c_str()) ;
-        enabled_domains_from_env = Glib::Util::split (domains_str, " ") ;
+        enabled_domains_from_env = Glib::Util::String::split (domains_str, " ");
     }
 }
 ;//end LogStream::Priv
@@ -371,7 +371,6 @@ LogStream::LogStream (enum LogLevel a_level,
 
 LogStream::~LogStream ()
 {
-    LOG_D ("delete", "destructor-domain") ;
     if (!m_priv) throw runtime_error ("double free in LogStrea::~LogStream") ;
     m_priv.reset () ;
 }

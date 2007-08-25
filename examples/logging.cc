@@ -25,40 +25,6 @@ enum Operation
     OPERATION_SUBTRACTION
 };
 
-class BadConversion : public std::runtime_error
-{
-public:
-    BadConversion(const std::string& s) : std::runtime_error(s) {}
-};
-
-static double
-string_to_double(const std::string& str)
-{
-    std::istringstream is(str);
-    double res;
-
-    if (! (is >> res))
-    {
-        LOG_ERROR("Cannot convert " << str << " to double");
-        throw BadConversion("string_to_double(\"" + str + "\")");
-    }
-
-    return res;
-}
-
-static std::string
-double_to_string(double num)
-{
-    std::ostringstream os;
-
-    if (! (os << num))
-    {
-        LOG_ERROR("Cannot convert " << num << " to string");
-        throw BadConversion("double_to_string() error");
-    }
-
-    return os.str();
-}
 
 class Calculator
 {
@@ -148,30 +114,33 @@ ExampleWindow::connect_signals()
 bool
 ExampleWindow::on_delete_event(GdkEventAny* /* event */)
 {
-    // Setting LOG_FUNCTION_SCOPE_NORMAL_DD will result in more verbose
-    // logging output: your messages will be surrounded by braces,
-    // the opening one referencing the function of origin and the closing
-    // will print elapsed time of execution.
-
-    LOG_FUNCTION_SCOPE_NORMAL_DD;
-
-    LOG_DD("Closing the application window");
+    LOG_D("Closing the application window", "destructor-domain");
     return false;
 }
 
 void
 ExampleWindow::on_button_add_clicked()
 {
+    using namespace Glib::Util::String;
+
+    // Setting LOG_FUNCTION_SCOPE_NORMAL_DD will result in more verbose
+    // logging output: your messages will be surrounded by braces,
+    // the opening one referencing the function of origin and by the closing
+    // the elapsed time of execution will be printed.
+
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
     LOG_DD("Performing addition");
 
     try
     {
-        double a = string_to_double(entry_operand_a.get_text());
-        double b = string_to_double(entry_operand_b.get_text());
+        double a = convert_to<double>(entry_operand_a.get_text());
+        double b = convert_to<double>(entry_operand_b.get_text());
+
+        LOG_DD("Operands: " << a << ", " << b);
+
         calculator->update(a, b, OPERATION_ADDITION);
-        std::string res = double_to_string(calculator->get_last_result());
+        std::string res = stringify(calculator->get_last_result());
 
         entry_result.set_text(res);
     }
@@ -185,16 +154,21 @@ ExampleWindow::on_button_add_clicked()
 void
 ExampleWindow::on_button_subtract_clicked()
 {
+    using namespace Glib::Util::String;
+
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
     LOG_DD("Performing subtraction");
 
     try
     {
-        double a = string_to_double(entry_operand_a.get_text());
-        double b = string_to_double(entry_operand_b.get_text());
+        double a = convert_to<double>(entry_operand_a.get_text());
+        double b = convert_to<double>(entry_operand_b.get_text());
+
+        LOG_DD("Operands: " << a << ", " << b);
+
         calculator->update(a, b, OPERATION_SUBTRACTION);
-        std::string res = double_to_string(calculator->get_last_result());
+        std::string res = stringify(calculator->get_last_result());
 
         entry_result.set_text(res);
     }
@@ -210,6 +184,7 @@ main(int argc, char** argv)
 {
     Gtk::Main kit(argc, argv);
 
+    // Initializations necessary for gtkmm-utils.
     Glib::Util::Initializer::do_init();
 
     ExampleWindow window;
