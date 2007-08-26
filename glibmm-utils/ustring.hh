@@ -32,9 +32,6 @@ namespace Glib {
 
 namespace Util {
 
-namespace String
-{
-
 /// \brief Conversion exception.
 class BadConversion : public Exception
 {
@@ -94,8 +91,6 @@ inline T convert_to(const Glib::ustring& str,
     convert_to(str, x, fail_if_leftover_chars);
     return x;
 }
-
-} // namespace String
 
 } // namespace Util
 

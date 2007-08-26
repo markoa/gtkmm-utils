@@ -25,7 +25,6 @@ enum Operation
     OPERATION_SUBTRACTION
 };
 
-
 class Calculator
 {
 public:
@@ -121,8 +120,6 @@ ExampleWindow::on_delete_event(GdkEventAny* /* event */)
 void
 ExampleWindow::on_button_add_clicked()
 {
-    using namespace Glib::Util::String;
-
     // Setting LOG_FUNCTION_SCOPE_NORMAL_DD will result in more verbose
     // logging output: your messages will be surrounded by braces,
     // the opening one referencing the function of origin and by the closing
@@ -134,17 +131,17 @@ ExampleWindow::on_button_add_clicked()
 
     try
     {
-        double a = convert_to<double>(entry_operand_a.get_text());
-        double b = convert_to<double>(entry_operand_b.get_text());
+        double a = Glib::Util::convert_to<double>(entry_operand_a.get_text());
+        double b = Glib::Util::convert_to<double>(entry_operand_b.get_text());
 
         LOG_DD("Operands: " << a << ", " << b);
 
         calculator->update(a, b, OPERATION_ADDITION);
-        std::string res = stringify(calculator->get_last_result());
+        std::string res = Glib::Util::stringify(calculator->get_last_result());
 
         entry_result.set_text(res);
     }
-    catch (BadConversion& ex)
+    catch (Glib::Util::BadConversion& ex)
     {
         LOG_EXCEPTION_DD("Number conversion failed");
         entry_result.set_text("0");
@@ -154,25 +151,23 @@ ExampleWindow::on_button_add_clicked()
 void
 ExampleWindow::on_button_subtract_clicked()
 {
-    using namespace Glib::Util::String;
-
     LOG_FUNCTION_SCOPE_NORMAL_DD;
 
     LOG_DD("Performing subtraction");
 
     try
     {
-        double a = convert_to<double>(entry_operand_a.get_text());
-        double b = convert_to<double>(entry_operand_b.get_text());
+        double a = Glib::Util::convert_to<double>(entry_operand_a.get_text());
+        double b = Glib::Util::convert_to<double>(entry_operand_b.get_text());
 
         LOG_DD("Operands: " << a << ", " << b);
 
         calculator->update(a, b, OPERATION_SUBTRACTION);
-        std::string res = stringify(calculator->get_last_result());
+        std::string res = Glib::Util::stringify(calculator->get_last_result());
 
         entry_result.set_text(res);
     }
-    catch (BadConversion& ex)
+    catch (Glib::Util::BadConversion& ex)
     {
         LOG_EXCEPTION_DD("Number conversion failed");
         entry_result.set_text("0");

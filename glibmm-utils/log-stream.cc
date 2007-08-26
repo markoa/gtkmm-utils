@@ -278,7 +278,7 @@ struct LogStream::Priv
         }
         if (!str.size()) {return;}
         Glib::ustring domains_str = Glib::locale_to_utf8 (str.c_str()) ;
-        enabled_domains_from_env = Glib::Util::String::split (domains_str, " ");
+        enabled_domains_from_env = Glib::Util::split (domains_str, " ");
     }
 }
 ;//end LogStream::Priv

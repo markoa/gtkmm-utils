@@ -1,4 +1,6 @@
-                                 gtkmm-utils
-                                 ===========
 
-    A set of utility functions and classes built on top of gtkmm and glibmm
+gtkmm-utils
+===========
+
+Utility functions, classes and widgets written on top of gtkmm and glibmm.
+
