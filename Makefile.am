@@ -9,3 +9,4 @@ endif
 
 EXTRA_DIST = AUTHORS COPYING INSTALL NEWS README autogen.sh configure.ac
 
+DIST_SUBDIRS = $(SUBDIRS)

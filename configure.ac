@@ -205,7 +205,11 @@ AC_ARG_ENABLE([documentation],
     [enable_documentation="no"]
 )
 if test "$enable_documentation" = "yes"; then
-    AC_PATH_PROG([DOXYGEN], [doxygen], AC_MSG_ERROR[Documentation build requested but doxygen not found!]) 
+    AC_PATH_PROG([DOXYGEN], [doxygen], AC_MSG_ERROR[Documentation build requested but doxygen not found!])
+
+AC_CONFIG_FILES(
+        docs/Makefile
+)
 fi
 AM_CONDITIONAL([GTKMM_UTILS_BUILD_DOCUMENTATION], [test "$enable_documentation" = "yes"])
 
@@ -223,7 +227,6 @@ AC_CONFIG_FILES([
     glibmm-utils/glibmm-utils.pc
     gtkmm-utils/Makefile
     gtkmm-utils/gtkmm-utils.pc
-    docs/Makefile
     examples/Makefile
 ])
 
