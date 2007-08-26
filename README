@@ -4,3 +4,29 @@ gtkmm-utils
 
 Utility functions, classes and widgets written on top of gtkmm and glibmm.
 
+That is the plan; currently, there is really just one reason why you'd
+want to use and depend on this library: the extensive and very simple
+to use logging framework. There are plans for further work, even existing
+code to merge, but this will happen one step at a time; the project is
+at its' beginning.
+
+gtkmm is the official C++ API for GTK+, with bindings for other GNOME
+libraries too.
+
+Large portions of the code in gtkmm-utils have been originally written
+by Dodji Seketeli, and published under GPLv2 as part of Nemiver.
+We have both agreed to relicence it in this library under LGPLv2 and thus
+make it available to a larger audience of developers.
+
+Project web site: http://savannah.nongnu.org/projects/gtkmm-utils
+Wiki:             http://live.gnome.org/gtkmm_utils
+
+Code is maintained in a git repository. To do an anonymous checkout, do:
+
+git clone git://git.savannah.nongnu.org/gtkmm-utils.git
+
+If you have any questions or ideas, please email me directly. Once I see
+that there are a few people interested in the project, I'll set up a
+mailing list.
+
+--Marko Anastasov
