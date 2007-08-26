@@ -30,12 +30,26 @@ namespace Glib {
 
 namespace Util {
 
+/// \brief Returns current time formatted in representation
+/// for the current locale.
+/// \param time_str a string to hold the return value.
 void get_current_date(Glib::ustring& date);
 
+/// \brief Returns current date formatted in representation
+/// for the current locale.
+/// \param time_str a string to hold the return value.
 void get_current_time(Glib::ustring& time);
 
+/// \brief Returns current date and time formatted in representation
+/// for the current locale.
+/// \param time_str a string to hold the return value.
 void get_current_datetime(Glib::ustring& datetime);
 
+/// \brief Returns a modification date in GTK+ style.
+/// That will be: Today, Yesterday, X ago (if within a week) and,
+/// if older, a date formatted according to the current locale.
+/// \param timet time information
+/// \param date_str Return value: 
 void get_modification_date(time_t timet,
                            Glib::ustring& date_str);
 

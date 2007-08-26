@@ -25,20 +25,22 @@
 namespace Glib {
 namespace Util {
 
+/// \brief Initialization worker.
 class Initializer {
-    Initializer () ;
-    //non copyable
-    Initializer (const Initializer &) ;
-    ~Initializer () ;
-    Initializer& operator= (const Initializer &) ;
-
 public:
+    /// \brief Compulsory initialization function for gtkmm-utils.
+    static void do_init() ;
 
-    static void do_init () ;
+private:
+    //non copyable
+    Initializer();
+    Initializer(const Initializer &);
+    ~Initializer();
+    Initializer& operator=(const Initializer &);
 
-};//end class Initializer
-}//end namespace Util
-}//end namespace Glib
+};
+
+} // namespace Util
+} // namespace Glib
 
 #endif //__GLIBMM_UTILS_INITIALIZER_H__
-

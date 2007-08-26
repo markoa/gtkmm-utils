@@ -29,6 +29,7 @@
 namespace Glib {
 namespace Util {
 
+/// \brief Base exception class.
 class Exception: public std::runtime_error
 {
 public:

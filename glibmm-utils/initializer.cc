@@ -27,20 +27,20 @@
 namespace Glib {
 namespace Util {
 
-Initializer::Initializer ()
+Initializer::Initializer()
 {
-    setlocale (LC_ALL, "") ;
-    Glib::thread_init () ;
+    setlocale(LC_ALL, "");
+    Glib::thread_init();
 }
 
-Initializer::~Initializer ()
+Initializer::~Initializer()
 {
 }
 
 void
-Initializer::do_init ()
+Initializer::do_init()
 {
-    static Initializer s_init ;
+    static Initializer s_init;
 }
 
 } // namespace Util

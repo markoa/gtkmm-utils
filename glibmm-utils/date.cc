@@ -59,10 +59,6 @@ get_current_daytime_generic(Glib::ustring& time_str, const char* format)
 
 } // anonymous namespace
 
-/**
- * @param time_str Return value, current time formatted in representation
- * for the current locale.
- */
 void
 get_current_time(Glib::ustring& time)
 {
@@ -81,13 +77,6 @@ get_current_datetime(Glib::ustring& datetime)
     get_current_daytime_generic(datetime, "%c");
 }
 
-/**
- * @param timet Time information
- *
- * @param date_str Return value: modification date in GTK+ style:
- * Today, Yesterday, X days from last week and if older, a date
- * formatted according to the current locale.
- */
 void
 get_modification_date(time_t timet, Glib::ustring& date_str)
 {
