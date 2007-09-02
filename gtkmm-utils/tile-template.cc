@@ -22,6 +22,7 @@
  */
 
 #include <gtkmm/alignment.h>
+#include <gtkmm/label.h>
 #include "tile-template.hh"
 
 namespace Gtk
@@ -55,6 +56,39 @@ TileTemplate::init_widgets()
 
     Gtk::HBox* root_hbox = this->get_root_hbox();
     root_hbox->pack_start(*alignment_, true, true, 0);
+
+    content_vbox_ = Gtk::manage(new Gtk::VBox());
+    alignment_->add(*content_vbox_);
+
+    content_vbox_->set_border_width(2);
+    content_vbox_->show();
+
+    // Labels. In case of lack of space, we ellipsize the end of the text.
+    title_label_ = Gtk::manage(new Gtk::Label());
+    title_label_->set_markup("<span weight=\"bold\">" +
+                             Glib::strescape(title_) +
+                             "</span>");
+    title_label_->show();
+    title_label_->set_ellipsize(Pango::ELLIPSIZE_END);
+    title_label_->set_max_width_chars(30);
+    title_label_->modify_fg(Gtk::STATE_NORMAL,
+                            style_->get_fg(Gtk::STATE_INSENSITIVE));
+
+    content_vbox_->pack_start(*title_label_, false, false, 0);
+
+    summary_label_ = Gtk::manage(new Gtk::Label());
+    summary_label_->set_markup("<small>" +
+                             Glib::strescape(summary_) +
+                             "</small>");
+    summary_label_->show();
+    summary_label_->set_ellipsize(Pango::ELLIPSIZE_END);
+    summary_label_->set_max_width_chars(30);
+    summary_label_->modify_fg(Gtk::STATE_NORMAL,
+                            style_->get_fg(Gtk::STATE_INSENSITIVE));
+
+    content_vbox_->pack_start(*summary_label_, false, false, 0);
+
+    alignment_->show_all();
 }
 
 Gtk::VBox*
@@ -90,6 +124,7 @@ TileTemplate::get_summary() const
 void
 TileTemplate::on_realize()
 {
+    TileSurface::on_realize();
 }
 
 } // namespace Util
