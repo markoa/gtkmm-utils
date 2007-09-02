@@ -27,11 +27,9 @@
 #include <gtkmm/box.h>
 #include "tile-surface.hh"
 
-namespace Gtk
-{
+namespace Gtk {
 
-namespace Util
-{
+namespace Util {
 
 class TileTemplate : public TileSurface
 {
@@ -51,6 +49,9 @@ public:
 
 protected:
     void init_widgets();
+
+    virtual void update_title();
+    virtual void update_summary();
 
     // Gtk::Widget overrides
     virtual void on_realize();

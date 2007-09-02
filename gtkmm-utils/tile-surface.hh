@@ -28,11 +28,9 @@
 #include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
 
-namespace Gtk
-{
+namespace Gtk {
 
-namespace Util
-{
+namespace Util {
 
 class TileSurface : public Gtk::EventBox
 {

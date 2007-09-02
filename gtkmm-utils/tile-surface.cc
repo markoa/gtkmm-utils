@@ -26,11 +26,9 @@
 #include <gtkmm/object.h>
 #include "tile-surface.hh"
 
-namespace Gtk
-{
+namespace Gtk {
 
-namespace Util
-{
+namespace Util {
 
 TileSurface::TileSurface()
     :
