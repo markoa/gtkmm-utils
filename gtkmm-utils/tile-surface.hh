@@ -55,7 +55,6 @@ protected:
 
     Gtk::HBox* hbox_;
     Gtk::Image* image_;
-    Glib::RefPtr<Gtk::Style> style_;
 
 private:
     // TODO: make copyable?

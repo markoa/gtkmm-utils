@@ -71,7 +71,7 @@ TileTemplate::init_widgets()
     title_label_->set_ellipsize(Pango::ELLIPSIZE_END);
     title_label_->set_max_width_chars(30);
     title_label_->modify_fg(Gtk::STATE_NORMAL,
-                            style_->get_fg(Gtk::STATE_INSENSITIVE));
+                            this->get_style()->get_fg(Gtk::STATE_INSENSITIVE));
 
     content_vbox_->pack_start(*title_label_, false, false, 0);
 
@@ -80,12 +80,13 @@ TileTemplate::init_widgets()
     summary_label_->set_selectable();
     summary_label_->set_line_wrap();
     summary_label_->set_markup("<small>" +
-                             Glib::strescape(summary_) +
-                             "</small>");
+                               Glib::strescape(summary_) +
+                               "</small>");
     summary_label_->set_ellipsize(Pango::ELLIPSIZE_END);
     summary_label_->set_max_width_chars(30);
     summary_label_->modify_fg(Gtk::STATE_NORMAL,
-                            style_->get_fg(Gtk::STATE_INSENSITIVE));
+                              this->get_style()->get_fg(
+                                  Gtk::STATE_INSENSITIVE));
 
     content_vbox_->pack_start(*summary_label_, false, false, 0);
 

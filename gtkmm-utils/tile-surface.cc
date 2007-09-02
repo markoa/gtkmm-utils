@@ -55,8 +55,6 @@ TileSurface::TileSurface()
     hbox_->pack_start(*image_, false, false, 0);
 
     add(*hbox_);
-
-    style_ = get_style();
 }
 
 TileSurface::~TileSurface()
@@ -78,8 +76,10 @@ TileSurface::on_size_request(Gtk::Requisition* requisition)
 
     pad = focus_line_width + focus_padding + 1;
 
-    requisition->width = req_width + 2 * (pad + style_->get_xthickness());
-    requisition->height = req_height + 2 * (pad + style_->get_ythickness());
+    Glib::RefPtr<Gtk::Style> style = get_style();
+
+    requisition->width = req_width + 2 * (pad + style->get_xthickness());
+    requisition->height = req_height + 2 * (pad + style->get_ythickness());
 }
 
 void
@@ -100,10 +100,12 @@ TileSurface::on_size_allocate(Gtk::Allocation& allocation)
     alloc_width = allocation.get_width();
     alloc_height = allocation.get_height();
 
-    allocation.set_x(alloc_x + pad + style_->get_xthickness());
-    allocation.set_y(alloc_y + pad + style_->get_ythickness());
-    allocation.set_width(alloc_width - (pad + style_->get_xthickness()));
-    allocation.set_height(alloc_height - (pad + style_->get_ythickness()));
+    Glib::RefPtr<Gtk::Style> style = get_style();
+
+    allocation.set_x(alloc_x + pad + style->get_xthickness());
+    allocation.set_y(alloc_y + pad + style->get_ythickness());
+    allocation.set_width(alloc_width - (pad + style->get_xthickness()));
+    allocation.set_height(alloc_height - (pad + style->get_ythickness()));
 
     Gtk::EventBox::on_size_allocate(allocation);
 }
@@ -112,7 +114,7 @@ bool
 TileSurface::on_expose_event(GdkEventExpose* event)
 {
     Glib::RefPtr<Gdk::Window> window = this->get_window();
-    Glib::RefPtr<Gdk::GC> gc = style_->get_base_gc(this->get_state());
+    Glib::RefPtr<Gdk::GC> gc = get_style()->get_base_gc(this->get_state());
 
     window->draw_rectangle(gc,
                            true /* fill */,
@@ -129,22 +131,24 @@ TileSurface::on_expose_event(GdkEventExpose* event)
 
         this->get_style_property<int>("focus_padding", focus_pad);
 
-        x = focus_pad + style_->get_xthickness();
-        y = focus_pad + style_->get_ythickness();
+        Glib::RefPtr<Gtk::Style> style = get_style();
+
+        x = focus_pad + style->get_xthickness();
+        y = focus_pad + style->get_ythickness();
 
         width =
-            alloc.get_width() - 2 * (focus_pad + style_->get_xthickness());
+            alloc.get_width() - 2 * (focus_pad + style->get_xthickness());
 
         height =
-            alloc.get_height() - 2 * (focus_pad + style_->get_ythickness());
+            alloc.get_height() - 2 * (focus_pad + style->get_ythickness());
 
-        style_->paint_focus(window,
-                            this->get_state(),
-                            Gdk::Rectangle(&(event->area)),
-                            *this,
-                            "TileSurface",
-                            x, y,
-                            width, height);
+        style->paint_focus(window,
+                           this->get_state(),
+                           Gdk::Rectangle(&(event->area)),
+                           *this,
+                           "TileSurface",
+                           x, y,
+                           width, height);
     }
 
     return false;
