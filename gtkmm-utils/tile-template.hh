@@ -24,6 +24,7 @@
 #ifndef __GTKMM_UTILS_TILE_TEMPLATE_H__
 #define __GTKMM_UTILS_TILE_TEMPLATE_H__
 
+#include <gtkmm/alignment.h>
 #include <gtkmm/box.h>
 #include "tile-surface.hh"
 

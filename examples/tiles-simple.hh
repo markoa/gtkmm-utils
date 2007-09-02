@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils example - logging.hh
+ *  gtkmm-utils example - tile-simple.hh
  *
  *  Copyright (C) 2007 Marko Anastasov
  *
@@ -21,13 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef __GTKMM_UTILS_LOGGING_EXAMPLE_H__
-#define __GTKMM_UTILS_LOGGING_EXAMPLE_H__
-
-#include <tr1/memory>
 #include <gtkmm.h>
-
-class Calculator;
 
 class ExampleWindow : public Gtk::Window
 {
@@ -36,32 +30,5 @@ public:
     virtual ~ExampleWindow();
 
 protected:
-    virtual bool on_delete_event(GdkEventAny* event);
-
-    virtual void on_button_add_clicked();
-    virtual void on_button_subtract_clicked();
-
-    void connect_signals();
-
     Gtk::VBox vbox;
-
-    Gtk::HBox hbox_operand_a;
-    Gtk::Label label_operand_a;
-    Gtk::Entry entry_operand_a;
-
-    Gtk::HBox hbox_operand_b;
-    Gtk::Label label_operand_b;
-    Gtk::Entry entry_operand_b;
-
-    Gtk::HBox hbox_buttons;
-    Gtk::Button button_add;
-    Gtk::Button button_subtract;
-
-    Gtk::HBox hbox_result;
-    Gtk::Label label_result;
-    Gtk::Entry entry_result;
-
-    std::tr1::shared_ptr<Calculator> calculator;
 };
-
-#endif // __GTKMM_UTILS_LOGGING_EXAMPLE_H__

@@ -3,7 +3,7 @@
 ## Process this file with autoconf to produce a configure script.
 
 pushdef([GTKMM_UTILS_MAJOR_VERSION], [0])
-pushdef([GTKMM_UTILS_MINOR_VERSION], [1])
+pushdef([GTKMM_UTILS_MINOR_VERSION], [2])
 pushdef([GTKMM_UTILS_MICRO_VERSION], [0])
 pushdef([GTKMM_UTILS_VERSION], GTKMM_UTILS_MAJOR_VERSION.GTKMM_UTILS_MINOR_VERSION.GTKMM_UTILS_MICRO_VERSION)
 
