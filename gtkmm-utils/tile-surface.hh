@@ -24,7 +24,9 @@
 #ifndef __GTKMM_UTILS_TILE_SURFACE_H__
 #define __GTKMM_UTILS_TILE_SURFACE_H__
 
+#include <gtkmm/box.h>
 #include <gtkmm/eventbox.h>
+#include <gtkmm/image.h>
 
 namespace Gtk
 {
@@ -38,40 +40,45 @@ public:
     explicit TileSurface();
     virtual ~TileSurface();
 
-    Gtk::HBox& get_root_hbox();
-    Gtk::Image& get_image();
+    Gtk::HBox* get_root_hbox();
+    Gtk::Image* get_image();
 
     typedef sigc::signal<void> SignalTileSelected;
 
     SignalTileSelected& get_signal_tile_selected();
 
+protected:
+    // Gtk::Widget overrides
     virtual void on_size_request(Gtk::Requisition* requisition);
     virtual void on_size_allocate(Gtk::Allocation& allocation);
     virtual bool on_expose_event(GdkEventExpose* event);
     virtual bool on_button_press_event(GdkEventButton* event);
     virtual bool on_focus_in_event(GdkEventFocus* event);
 
-protected:
     Gtk::HBox* hbox_;
     Gtk::Image* image_;
     Glib::RefPtr<Gtk::Style> style_;
 
 private:
+    // TODO: make copyable?
+    TileSurface(const TileSurface& other);
+    TileSurface& operator=(const TileSurface&);
+
     SignalTileSelected signal_tile_selected_;
 };
 
 //
 
-inline Gtk::HBox&
+inline Gtk::HBox*
 TileSurface::get_root_hbox()
 {
-    return *hbox_;
+    return hbox_;
 }
 
-inline Gtk::Image&
+inline Gtk::Image*
 TileSurface::get_image()
 {
-    return *image_;
+    return image_;
 }
 
 inline TileSurface::SignalTileSelected&
