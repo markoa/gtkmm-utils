@@ -38,8 +38,8 @@ public:
     explicit TileSurface();
     virtual ~TileSurface();
 
-    Gtk::HBox* get_root_hbox();
-    Gtk::Image* get_image();
+    Gtk::HBox& get_root_hbox();
+    Gtk::Image& get_image();
 
     typedef sigc::signal<void> SignalTileSelected;
 
@@ -53,8 +53,8 @@ protected:
     virtual bool on_button_press_event(GdkEventButton* event);
     virtual bool on_focus_in_event(GdkEventFocus* event);
 
-    Gtk::HBox* hbox_;
-    Gtk::Image* image_;
+    Gtk::HBox hbox_;
+    Gtk::Image image_;
 
 private:
     // TODO: make copyable?
@@ -66,13 +66,13 @@ private:
 
 //
 
-inline Gtk::HBox*
+inline Gtk::HBox&
 TileSurface::get_root_hbox()
 {
     return hbox_;
 }
 
-inline Gtk::Image*
+inline Gtk::Image&
 TileSurface::get_image()
 {
     return image_;

@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils example - tile-simple.cc
+ *  gtkmm-utils - white-box.hh
  *
  *  Copyright (C) 2007 Marko Anastasov
  *
@@ -21,39 +21,37 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "gtkmm-utils/tile-template.hh"
-#include "tiles-simple.hh"
+#ifndef __GTKMM_UTILS_WHITE_BOX_H__
+#define __GTKMM_UTILS_WHITE_BOX_H__
 
-ExampleWindow::ExampleWindow()
+#include <gtkmm/box.h>
+#include <gtkmm/eventbox.h>
+
+namespace Gtk {
+
+namespace Util {
+
+class WhiteBox : public Gtk::EventBox
 {
-    set_border_width(10);
-    set_default_size(300, 200);
+public:
+    explicit WhiteBox();
+    virtual ~WhiteBox();
 
-    Gtk::Util::TileTemplate* tile1 =
-        Gtk::manage(new Gtk::Util::TileTemplate(
-                        "Tile One",
-                        "A very useful widget for everyone"));
-    Gtk::Image& image = tile1->get_image();
-    image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
-    vbox.pack_start(*tile1);
+    Gtk::VBox& get_root_vbox();
 
-    add(vbox);
+protected:
+    virtual bool on_expose_event(GdkEventExpose* event);
 
-    show_all_children();
-}
+    Gtk::VBox root_vbox_;
 
-ExampleWindow::~ExampleWindow()
-{
-}
+private:
+    // Non-copyable.
+    WhiteBox(const WhiteBox&);
+    WhiteBox& operator=(const WhiteBox&);
+};
 
-int
-main(int argc, char** argv)
-{
-    Gtk::Main kit(argc, argv);
+} // namespace Util
 
-    ExampleWindow window;
+} // namespace Gtk
 
-    Gtk::Main::run(window);
-
-    return 0;
-}
+#endif // __GTKMM_UTILS_WHITE_BOX_H__

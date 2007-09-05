@@ -1,6 +1,15 @@
 
-hh_sources = gtkmm-utils.hh dialog.hh tile-surface.hh tile-template.hh
-cc_sources = dialog.cc tile-surface.cc tile-template.cc
+hh_sources = \
+	gtkmm-utils.hh \
+	dialog.hh \
+	tile-surface.hh \
+	tile-template.hh \
+	white-box.hh
+
+cc_sources = dialog.cc \
+	tile-surface.cc \
+	tile-template.cc \
+	white-box.cc
 
 pkgconfigdir = @pkgconfigdir@
 pkgconfig_DATA = gtkmm-utils.pc

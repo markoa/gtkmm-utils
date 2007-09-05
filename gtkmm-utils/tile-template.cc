@@ -30,6 +30,11 @@ namespace Gtk {
 namespace Util {
 
 TileTemplate::TileTemplate()
+    :
+    alignment_(0.0, 0.5, 1.0, 0.0),
+    content_vbox_(),
+    title_label_(),
+    summary_label_()
 {
     init_widgets();
 }
@@ -37,6 +42,10 @@ TileTemplate::TileTemplate()
 TileTemplate::TileTemplate(const Glib::ustring& title,
                            const Glib::ustring& summary)
     :
+    alignment_(0.0, 0.5, 1.0, 0.0),
+    content_vbox_(),
+    title_label_(),
+    summary_label_(),
     title_(title),
     summary_(summary)
 {
@@ -50,50 +59,49 @@ TileTemplate::~TileTemplate()
 void
 TileTemplate::init_widgets()
 {
-    alignment_ = Gtk::manage(new Gtk::Alignment(0.0, 0.5, 1.0, 0.0));
+    g_debug("TT::init_widgets");
 
-    Gtk::HBox* root_hbox = this->get_root_hbox();
-    root_hbox->pack_start(*alignment_, true, true, 0);
+    hbox_.pack_start(alignment_, true, true, 0);
 
-    content_vbox_ = Gtk::manage(new Gtk::VBox());
-    alignment_->add(*content_vbox_);
+    alignment_.add(content_vbox_);
 
-    content_vbox_->set_border_width(2);
-    content_vbox_->show();
+    content_vbox_.set_border_width(2);
+    content_vbox_.show();
 
     // Labels. In case of lack of space, we ellipsize the end of the text.
-    title_label_ = Gtk::manage(new Gtk::Label());
-    title_label_->set_alignment(0, 0.5);
-    title_label_->set_selectable();
-    title_label_->set_markup("<span weight=\"bold\">" +
-                             Glib::strescape(title_) +
-                             "</span>");
-    title_label_->set_ellipsize(Pango::ELLIPSIZE_END);
-    title_label_->set_max_width_chars(30);
-    title_label_->modify_fg(Gtk::STATE_NORMAL,
-                            this->get_style()->get_fg(Gtk::STATE_INSENSITIVE));
+    title_label_.set_alignment(0, 0.5);
+    title_label_.set_selectable();
+    title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
+    title_label_.set_max_width_chars(30);
 
-    content_vbox_->pack_start(*title_label_, false, false, 0);
+    title_label_.set_use_markup();
+    update_title();
 
-    summary_label_ = Gtk::manage(new Gtk::Label());
-    summary_label_->set_alignment(0, 0.5);
-    summary_label_->set_selectable();
-    summary_label_->set_line_wrap();
-    summary_label_->set_markup("<small>" +
-                               Glib::strescape(summary_) +
-                               "</small>");
-    summary_label_->set_ellipsize(Pango::ELLIPSIZE_END);
-    summary_label_->set_max_width_chars(30);
-    summary_label_->modify_fg(Gtk::STATE_NORMAL,
-                              this->get_style()->get_fg(
-                                  Gtk::STATE_INSENSITIVE));
+    title_label_.modify_fg(Gtk::STATE_NORMAL,
+                           this->get_style()->get_fg(Gtk::STATE_INSENSITIVE));
 
-    content_vbox_->pack_start(*summary_label_, false, false, 0);
+    content_vbox_.pack_start(title_label_, false, false, 0);
 
-    alignment_->show_all();
+    // summary label
+    summary_label_.set_alignment(0, 0.5);
+    summary_label_.set_selectable();
+    summary_label_.set_line_wrap();
+    summary_label_.set_ellipsize(Pango::ELLIPSIZE_END);
+    summary_label_.set_max_width_chars(30);
+
+    summary_label_.set_use_markup();
+    update_summary();
+
+    summary_label_.modify_fg(Gtk::STATE_NORMAL,
+                             this->get_style()->get_fg(
+                                 Gtk::STATE_INSENSITIVE));
+
+    content_vbox_.pack_start(summary_label_, false, false, 0);
+
+    alignment_.show_all_children();
 }
 
-Gtk::VBox*
+Gtk::VBox&
 TileTemplate::get_content_vbox()
 {
     return content_vbox_;
@@ -131,12 +139,11 @@ TileTemplate::update_title()
     if (! title_.size())
         return;
 
-    title_label_->set_markup("<span weight=\"bold\">" +
-                             Glib::strescape(title_) +
-                             "</span>");
-    title_label_->show();
+    title_label_.set_markup("<span weight=\"bold\">" +
+                            Glib::strescape(title_) +
+                            "</span>");
+    title_label_.show();
 }
-
 
 void
 TileTemplate::update_summary()
@@ -144,10 +151,10 @@ TileTemplate::update_summary()
     if (! summary_.size())
         return;
 
-    summary_label_->set_markup("<small>" +
-                               Glib::strescape(summary_) +
-                               "</small>");
-    summary_label_->show();
+    summary_label_.set_markup("<small>" +
+                              Glib::strescape(summary_) +
+                              "</small>");
+    summary_label_.show();
 }
 
 void

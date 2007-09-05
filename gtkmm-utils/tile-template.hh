@@ -26,6 +26,7 @@
 
 #include <gtkmm/alignment.h>
 #include <gtkmm/box.h>
+#include <gtkmm/label.h>
 #include "tile-surface.hh"
 
 namespace Gtk {
@@ -40,7 +41,7 @@ public:
                           const Glib::ustring& summary);
     virtual ~TileTemplate();
 
-    virtual Gtk::VBox* get_content_vbox();
+    virtual Gtk::VBox& get_content_vbox();
 
     virtual void set_title(const Glib::ustring& title);
     virtual Glib::ustring get_title() const;
@@ -51,16 +52,16 @@ public:
 protected:
     void init_widgets();
 
-    virtual void update_title();
-    virtual void update_summary();
+    void update_title();
+    void update_summary();
 
     // Gtk::Widget overrides
     virtual void on_realize();
 
-    Gtk::Alignment* alignment_;
-    Gtk::VBox* content_vbox_;
-    Gtk::Label* title_label_;
-    Gtk::Label* summary_label_;
+    Gtk::Alignment alignment_;
+    Gtk::VBox content_vbox_;
+    Gtk::Label title_label_;
+    Gtk::Label summary_label_;
 
     Glib::ustring title_;
     Glib::ustring summary_;

@@ -32,8 +32,8 @@ namespace Util {
 
 TileSurface::TileSurface()
     :
-    hbox_(0),
-    image_(0)
+    hbox_(false, 5),
+    image_()
 {
     // Event-trapping window of the eventbox is above
     // the window of the child widget:
@@ -45,16 +45,14 @@ TileSurface::TileSurface()
     // We need to be able to handle key_press events:
     set_flags(Gtk::CAN_FOCUS);
 
-    // Construct child widgets:
-    hbox_ = Gtk::manage(new Gtk::HBox());
-    hbox_->set_border_width(2);
-    hbox_->show();
+    // Child widgets:
+    hbox_.set_border_width(2);
+    hbox_.show();
 
-    image_ = Gtk::manage(new Gtk::Image());
-    image_->show();
-    hbox_->pack_start(*image_, false, false, 0);
+    image_.show();
+    hbox_.pack_start(image_, false, false, 0);
 
-    add(*hbox_);
+    add(hbox_);
 }
 
 TileSurface::~TileSurface()
@@ -65,11 +63,11 @@ void
 TileSurface::on_size_request(Gtk::Requisition* requisition)
 {
     int req_width, req_height;
-    int pad = 0;
     int focus_line_width, focus_padding;
+    int pad;
 
     // Ask our child for its desired size:
-    hbox_->get_size_request(req_width, req_height);
+    hbox_.get_size_request(req_width, req_height);
 
     this->get_style_property<int>("focus-line-width", focus_line_width);
     this->get_style_property<int>("focus-padding", focus_padding);
@@ -117,7 +115,7 @@ TileSurface::on_expose_event(GdkEventExpose* event)
     Glib::RefPtr<Gdk::GC> gc = get_style()->get_base_gc(this->get_state());
 
     window->draw_rectangle(gc,
-                           true /* fill */,
+                           true, // fill
                            event->area.x, event->area.y,
                            event->area.width, event->area.height);
 
