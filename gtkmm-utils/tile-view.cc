@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils - tile-view.hh
+ *  gtkmm-utils - tile-view.cc
  *
  *  Copyright (C) 2007 Marko Anastasov
  *

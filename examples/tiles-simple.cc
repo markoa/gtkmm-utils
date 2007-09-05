@@ -22,6 +22,7 @@
  */
 
 #include "gtkmm-utils/tile-template.hh"
+#include "gtkmm-utils/tile-view.hh"
 #include "tiles-simple.hh"
 
 ExampleWindow::ExampleWindow()
@@ -29,6 +30,7 @@ ExampleWindow::ExampleWindow()
     set_border_width(10);
     set_default_size(300, 200);
 
+/*
     Gtk::Util::TileTemplate* tile1 =
         Gtk::manage(new Gtk::Util::TileTemplate(
                         "Tile One",
@@ -36,6 +38,10 @@ ExampleWindow::ExampleWindow()
     Gtk::Image& image = tile1->get_image();
     image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
     vbox.pack_start(*tile1);
+*/
+
+    Gtk::Util::TileView* tv = Gtk::manage(new Gtk::Util::TileView());
+    vbox.pack_start(*tv);
 
     add(vbox);
 
