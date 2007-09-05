@@ -4,11 +4,13 @@ hh_sources = \
 	dialog.hh \
 	tile-surface.hh \
 	tile-template.hh \
+	tile-view.hh \
 	white-box.hh
 
 cc_sources = dialog.cc \
 	tile-surface.cc \
 	tile-template.cc \
+	tile-view.cc \
 	white-box.cc
 
 pkgconfigdir = @pkgconfigdir@
