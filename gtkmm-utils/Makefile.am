@@ -2,12 +2,14 @@
 hh_sources = \
 	gtkmm-utils.hh \
 	dialog.hh \
+	tile.hh \
 	tile-surface.hh \
 	tile-template.hh \
 	tile-view.hh \
 	white-box.hh
 
 cc_sources = dialog.cc \
+	tile.cc \
 	tile-surface.cc \
 	tile-template.cc \
 	tile-view.cc \
