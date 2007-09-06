@@ -119,6 +119,8 @@ Tile::on_expose_event(GdkEventExpose* event)
     if (paint_white_ &&
         (gdk_window_get_window_type(event_window) == GDK_WINDOW_CHILD))
     {
+        // Paint white background on the widget.
+
         Glib::RefPtr<Gdk::Window> window = this->get_window();
         Glib::RefPtr<Gdk::GC> gc =
             this->get_style()->get_base_gc(this->get_state());
@@ -149,17 +151,29 @@ Tile::on_expose_event(GdkEventExpose* event)
         height =
             alloc.get_height() - 2 * (focus_pad + style->get_ythickness());
 
-        style->paint_box(content_vbox_.get_window(),
+        // Paint a backround box, the usual selection indicator
+        // which is usually blue. It is important to paint on the
+        // container box's window, otherwise if we'd, for instance,
+        // paint on the widget itself, the box would completely cover it.
+
+        style->paint_box(root_hbox_.get_window(),
                          Gtk::STATE_SELECTED,
                          Gtk::SHADOW_NONE,
                          Gdk::Rectangle(&(event->area)),
-                         content_vbox_,
+                         root_hbox_,
                          "TileSelectionBox",
                          0, 0,
                          width, height);
 
+        // Change the label state to selected, so that the theme
+        // engine changes the font color appropriately to contrast
+        // the colour of the box.
+
         title_label_.set_state(Gtk::STATE_SELECTED);
         summary_label_.set_state(Gtk::STATE_SELECTED);
+
+        // Also paint the the little line border around the widget,
+        // another usual focus indicator.
         
         style->paint_focus(window,
                            this->get_state(),
@@ -175,7 +189,7 @@ Tile::on_expose_event(GdkEventExpose* event)
         summary_label_.set_state(Gtk::STATE_NORMAL);
     }
 
-    Gtk::Widget* child_widget = this->get_child(); // Gtk::Bin
+    Gtk::Widget* child_widget = this->get_child(); // Gtk::Bin method
     if (child_widget)
         propagate_expose(*child_widget, event);
 
