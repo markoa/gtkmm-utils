@@ -28,6 +28,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/viewport.h>
+#include "tile.hh"
 #include "white-box.hh"
 
 namespace Gtk {
@@ -39,6 +40,8 @@ class TileView : public Gtk::VBox
 public:
     explicit TileView();
     virtual ~TileView();
+
+    virtual void add_tile(Tile& tile);
 
 protected:
     Gtk::ScrolledWindow scrolled_window_;

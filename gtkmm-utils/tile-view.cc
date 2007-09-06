@@ -51,6 +51,14 @@ TileView::~TileView()
 {
 }
 
+void
+TileView::add_tile(Tile& tile)
+{
+    tile.show();
+    Gtk::Box& wb_box = whitebox_.get_root_vbox();
+    wb_box.pack_start(tile, false, false, 0);
+}
+
 } // namespace Util
 
 } // namespace Gtk

@@ -31,6 +31,9 @@ WhiteBox::WhiteBox()
     :
     root_vbox_()
 {
+    root_vbox_.set_border_width(5);
+    root_vbox_.show_all();
+    add(root_vbox_);
 }
 
 WhiteBox::~WhiteBox()

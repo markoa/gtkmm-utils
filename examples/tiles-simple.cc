@@ -22,6 +22,7 @@
  */
 
 #include "gtkmm-utils/tile-template.hh"
+
 #include "gtkmm-utils/tile-view.hh"
 #include "tiles-simple.hh"
 
@@ -40,10 +41,17 @@ ExampleWindow::ExampleWindow()
     vbox.pack_start(*tile1);
 */
 
-    Gtk::Util::TileView* tv = Gtk::manage(new Gtk::Util::TileView());
-    vbox.pack_start(*tv);
-
     add(vbox);
+
+    Gtk::Util::TileView* tv = Gtk::manage(new Gtk::Util::TileView());
+
+    Gtk::Util::Tile* tile1 = Gtk::manage(
+        new Gtk::Util::Tile("Tile", "Read my subheader", false));
+    Gtk::Image& image = tile1->get_image();
+    image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
+
+    tv->add_tile(*tile1);
+    vbox.pack_start(*tv);
 
     show_all_children();
 }
