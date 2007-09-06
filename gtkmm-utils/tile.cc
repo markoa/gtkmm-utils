@@ -105,7 +105,73 @@ Tile::get_signal_tile_selected()
 bool
 Tile::on_expose_event(GdkEventExpose* event)
 {
-    if (event) {}
+    if (! is_visible())
+        return false;
+
+    GdkWindow* event_window = event->window;
+
+    if (paint_white_ &&
+        (gdk_window_get_window_type(event_window) == GDK_WINDOW_CHILD))
+    {
+        Glib::RefPtr<Gdk::Window> window = this->get_window();
+        Glib::RefPtr<Gdk::GC> gc =
+            this->get_style()->get_base_gc(this->get_state());
+
+        window->draw_rectangle(gc,
+                               true, // fill
+                               event->area.x, event->area.y,
+                               event->area.width, event->area.height);
+    }
+
+    if (this->get_flags() & Gtk::HAS_FOCUS)
+    {
+        int focus_pad, x, y, width, height;
+
+        Glib::RefPtr<Gdk::Window> window = this->get_window();
+        Gdk::Rectangle alloc = this->get_allocation();
+
+        Glib::RefPtr<Gtk::Style> style = get_style();
+        this->get_style_property<int>("focus_padding", focus_pad);
+
+        x = focus_pad + style->get_xthickness();
+        y = focus_pad + style->get_ythickness();
+
+        width =
+            alloc.get_width() - 2 * (focus_pad + style->get_xthickness());
+
+        height =
+            alloc.get_height() - 2 * (focus_pad + style->get_ythickness());
+
+        style->paint_box(content_vbox_.get_window(),
+                         Gtk::STATE_SELECTED,
+                         Gtk::SHADOW_NONE,
+                         Gdk::Rectangle(&(event->area)),
+                         content_vbox_,
+                         "TileSelectionBox",
+                         0, 0,
+                         width, height);
+
+        title_label_.set_state(Gtk::STATE_SELECTED);
+        summary_label_.set_state(Gtk::STATE_SELECTED);
+        
+        style->paint_focus(window,
+                           this->get_state(),
+                           Gdk::Rectangle(&(event->area)),
+                           *this,
+                           "TileFocus",
+                           0, 0,
+                           width, height);
+    }
+    else
+    {
+        title_label_.set_state(Gtk::STATE_NORMAL);
+        summary_label_.set_state(Gtk::STATE_NORMAL);
+    }
+
+    Gtk::Widget* child_widget = this->get_child(); // Gtk::Bin
+    if (child_widget)
+        propagate_expose(*child_widget, event);
+
     return false;
 }
 
