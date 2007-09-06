@@ -43,6 +43,7 @@ public:
 
     Gtk::HBox& get_root_hbox();
     Gtk::Image& get_image();
+    Gtk::VBox& get_content_vbox();
 
     typedef sigc::signal<void> SignalTileSelected;
 

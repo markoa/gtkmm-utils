@@ -21,8 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "gtkmm-utils/tile-template.hh"
-
+//#include "gtkmm-utils/tile-template.hh"
 #include "gtkmm-utils/tile-view.hh"
 #include "tiles-simple.hh"
 
@@ -50,7 +49,20 @@ ExampleWindow::ExampleWindow()
     Gtk::Image& image = tile1->get_image();
     image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
 
+    Gtk::Util::Tile* tile2 = Gtk::manage(
+        new Gtk::Util::Tile("Second tile", "Eggs and bacon"));
+    tile2->get_image().set(Gtk::Stock::CDROM, Gtk::ICON_SIZE_DIALOG);
+
+    Gtk::Util::Tile* tile3 = Gtk::manage(
+        new Gtk::Util::Tile("Interactive piece", "A clickable button below"));
+    tile3->get_image().set(Gtk::Stock::NETWORK, Gtk::ICON_SIZE_DIALOG);
+    Gtk::VBox& tile3_vbox = tile3->get_content_vbox();
+    tile3_vbox.pack_start(* (Gtk::manage(new Gtk::Button("Use me"))), false, false, 0);
+
     tv->add_tile(*tile1);
+    tv->add_tile(*tile2);
+    tv->add_tile(*tile3);
+
     vbox.pack_start(*tv);
 
     show_all_children();

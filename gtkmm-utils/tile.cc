@@ -96,6 +96,12 @@ Tile::get_image()
     return image_;
 }
 
+Gtk::VBox&
+Tile::get_content_vbox()
+{
+    return content_vbox_;
+}
+
 Tile::SignalTileSelected&
 Tile::get_signal_tile_selected()
 {
