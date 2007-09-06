@@ -21,7 +21,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-//#include "gtkmm-utils/tile-template.hh"
 #include "gtkmm-utils/tile-view.hh"
 #include "tiles-simple.hh"
 
@@ -29,16 +28,6 @@ ExampleWindow::ExampleWindow()
 {
     set_border_width(10);
     set_default_size(300, 200);
-
-/*
-    Gtk::Util::TileTemplate* tile1 =
-        Gtk::manage(new Gtk::Util::TileTemplate(
-                        "Tile One",
-                        "A very useful widget for everyone"));
-    Gtk::Image& image = tile1->get_image();
-    image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
-    vbox.pack_start(*tile1);
-*/
 
     add(vbox);
 
@@ -57,7 +46,8 @@ ExampleWindow::ExampleWindow()
         new Gtk::Util::Tile("Interactive piece", "A clickable button below"));
     tile3->get_image().set(Gtk::Stock::NETWORK, Gtk::ICON_SIZE_DIALOG);
     Gtk::VBox& tile3_vbox = tile3->get_content_vbox();
-    tile3_vbox.pack_start(* (Gtk::manage(new Gtk::Button("Use me"))), false, false, 0);
+    tile3_vbox.pack_start(*(Gtk::manage(new Gtk::Button("Use me"))),
+                          false, false, 0);
 
     tv->add_tile(*tile1);
     tv->add_tile(*tile2);
