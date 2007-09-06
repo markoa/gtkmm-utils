@@ -188,6 +188,13 @@ Tile::on_button_press_event(GdkEventButton* /* event */)
     return false;
 }
 
+bool
+Tile::on_focus_in_event(GdkEventFocus* event)
+{
+    signal_tile_selected_.emit();
+    return Gtk::EventBox::on_focus_in_event(event);
+}
+
 } // namespace Util
 
 } // namespace Gtk

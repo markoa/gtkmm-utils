@@ -53,6 +53,7 @@ protected:
     // Gtk::Widget overrides
     virtual bool on_expose_event(GdkEventExpose* event);
     virtual bool on_button_press_event(GdkEventButton* event);
+    virtual bool on_focus_in_event(GdkEventFocus* event);
 
     // Child widgets
     Gtk::HBox root_hbox_;
