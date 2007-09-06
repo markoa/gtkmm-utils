@@ -27,6 +27,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
+#include <gtkmm/label.h>
 
 namespace Gtk {
 
@@ -53,8 +54,11 @@ protected:
     virtual bool on_button_press_event(GdkEventButton* event);
 
     // Child widgets
-    Gtk::HBox hbox_;
+    Gtk::HBox root_hbox_;
     Gtk::Image image_;
+    Gtk::VBox content_vbox_;
+    Gtk::Label title_label_;
+    Gtk::Label summary_label_;
 
     // Data members
     Glib::ustring title_;

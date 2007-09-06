@@ -31,11 +31,53 @@ Tile::Tile(const Glib::ustring& title,
            const Glib::ustring& summary,
            bool paint_white)
     :
+    root_hbox_(),
+    image_(),
+    content_vbox_(),
+    title_label_(),
+    summary_label_(),
     title_(title),
     summary_(summary),
     paint_white_(paint_white)
 {
     set_flags(Gtk::CAN_FOCUS);
+
+    // set up root hbox
+    root_hbox_.set_border_width(5);
+    root_hbox_.set_spacing(2);
+    add(root_hbox_);
+
+    // pack illustration image
+    image_.show();
+    root_hbox_.pack_start(image_, false, false, 0);
+
+    // prepare vbox to appear on the right hand side of the image
+    content_vbox_.set_border_width(5);
+    content_vbox_.set_spacing(2);
+
+    // set up the title label
+    title_label_.set_markup("<span weight=\"bold\">" +
+                            Glib::strescape(title_) +
+                            "</span>");
+    title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
+    title_label_.set_max_width_chars(30);
+    title_label_.modify_fg(Gtk::STATE_NORMAL,
+                           this->get_style()->get_fg(Gtk::STATE_INSENSITIVE));
+    content_vbox_.pack_start(title_label_, false, false, 0);
+
+    // set up the summary label
+    summary_label_.set_markup("<small>" +
+                              Glib::strescape(summary_) +
+                              "</small>");
+    summary_label_.set_ellipsize(Pango::ELLIPSIZE_END);
+    summary_label_.set_max_width_chars(30);
+    summary_label_.modify_fg(Gtk::STATE_NORMAL,
+                             this->get_style()->get_fg(Gtk::STATE_INSENSITIVE));
+    content_vbox_.pack_start(summary_label_, false, false, 0);
+
+    // wrap up
+    content_vbox_.show_all();
+    root_hbox_.pack_start(content_vbox_);
 }
 
 Tile::~Tile()
@@ -45,7 +87,7 @@ Tile::~Tile()
 Gtk::HBox&
 Tile::get_root_hbox()
 {
-    return hbox_;
+    return root_hbox_;
 }
 
 Gtk::Image&
