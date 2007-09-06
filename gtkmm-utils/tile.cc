@@ -131,7 +131,7 @@ Tile::on_expose_event(GdkEventExpose* event)
 
     if (this->get_flags() & Gtk::HAS_FOCUS)
     {
-        int focus_pad, x, y, width, height;
+        int focus_pad, width, height;
 
         Glib::RefPtr<Gdk::Window> window = this->get_window();
         Gdk::Rectangle alloc = this->get_allocation();
@@ -139,8 +139,9 @@ Tile::on_expose_event(GdkEventExpose* event)
         Glib::RefPtr<Gtk::Style> style = get_style();
         this->get_style_property<int>("focus_padding", focus_pad);
 
-        x = focus_pad + style->get_xthickness();
-        y = focus_pad + style->get_ythickness();
+        // We do not need to calculate x and y origins of the box
+        // for pain_* functions - just starting from (0,0) will
+        // do the right thing.
 
         width =
             alloc.get_width() - 2 * (focus_pad + style->get_xthickness());
