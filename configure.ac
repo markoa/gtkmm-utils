@@ -65,9 +65,9 @@ ENABLE_GCC_SYMBOLS_VISIBILITY=yes
 AC_ARG_ENABLE(symvis,
               AC_HELP_STRING([--enable-symvis=yes|no],
                              [use the gcc symbols visibility feature (gcc4).
-                             default is yes)]),
+                             default is no)]),
               ENABLE_GCC_SYMBOLS_VISIBILITY=$enableval,
-              ENABLE_GCC_SYMBOLS_VISIBILITY=yes)
+              ENABLE_GCC_SYMBOLS_VISIBILITY=no)
 
 #########################################################################
 #  don't touch this
@@ -209,6 +209,7 @@ if test "$enable_documentation" = "yes"; then
 
 AC_CONFIG_FILES(
         docs/Makefile
+        docs/Doxyfile
 )
 fi
 AM_CONDITIONAL([GTKMM_UTILS_BUILD_DOCUMENTATION], [test "$enable_documentation" = "yes"])
