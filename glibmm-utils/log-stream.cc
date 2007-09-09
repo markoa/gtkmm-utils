@@ -221,6 +221,11 @@ struct LogStream::Priv
             stream_type (LogStream::COUT_STREAM),
             level (LogStream::LOG_LEVEL_NORMAL)
     {
+        // Initialize Glib threading.
+        // It is a cheap operation as g_thread_supported() is
+        // a macro / substitute for a gboolean (g_threads_got_initialized).
+        if (! Glib::thread_supported()) Glib::thread_init();
+
         default_domains.clear () ;
         default_domains.push_front (a_domain) ;
 

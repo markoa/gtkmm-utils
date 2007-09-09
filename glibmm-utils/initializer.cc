@@ -30,7 +30,7 @@ namespace Util {
 Initializer::Initializer()
 {
     setlocale(LC_ALL, "");
-    Glib::thread_init();
+    if (! Glib::thread_supported()) Glib::thread_init();
 }
 
 Initializer::~Initializer()

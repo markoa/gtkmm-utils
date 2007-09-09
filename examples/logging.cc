@@ -197,9 +197,6 @@ main(int argc, char** argv)
 {
     Gtk::Main kit(argc, argv);
 
-    // Initializations necessary for gtkmm-utils.
-    Glib::Util::Initializer::do_init();
-
     ExampleWindow window;
 
     Gtk::Main::run(window);
