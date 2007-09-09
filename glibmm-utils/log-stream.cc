@@ -44,17 +44,15 @@ static LogStream::StreamType s_stream_type = LogStream::COUT_STREAM ;
 static LogStream::LogLevel s_level_filter = LogStream::LOG_LEVEL_NORMAL ;
 static bool s_is_active = true ;
 
-/// the base class of the destination
-/// of the messages send to a stream.
-/// each log stream uses a particular
-/// Log Sink, e.g, a sink that sends messages
-/// to stdout, of a sink that sends messages to
-/// to a file etc...
+/// \brief The base class of the destination of the messages send to a stream.
+/// Each log stream uses a particular LogSink, eg, a sink that sends messages
+/// to stdout, or a sink that sends messages to a file etc.
 
 class LogSink {
 protected:
-    mutable Glib::Mutex m_ostream_mutex ;
+    mutable tr1::shared_ptr<Glib::Mutex> m_ostream_mutex ;
     ostream *m_out ;
+    bool m_thread_aware ;
 
     //non copyable
     LogSink (const LogSink &) ;
@@ -64,74 +62,110 @@ protected:
 
 public:
 
-    LogSink (ostream *a_out) : m_out (a_out) {}
+    LogSink (ostream *a_out)
+        : m_out (a_out)
+        {
+            m_thread_aware = Glib::thread_supported() ;
+
+            if (m_thread_aware)
+                m_ostream_mutex.reset(new Glib::Mutex()) ;
+        }
 
     virtual ~LogSink () {}
 
     bool bad () const
     {
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
         return m_out->bad () ;
     }
 
     bool good () const
     {
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
         return m_out->good () ;
     }
 
     void flush ()
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+
         m_out->flush () ;
     }
 
     LogSink& write (const char *a_buf, long a_buflen)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+
         m_out->write (a_buf, a_buflen) ;
+
         return *this ;
     }
 
     LogSink& operator<< (const Glib::ustring &a_string)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+
         *m_out << a_string ;
+
         return *this ;
     }
 
     LogSink& operator<< (int an_int)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+
         *m_out << an_int ;
+
         return *this ;
     }
 
     LogSink& operator<< (guint a_guint)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+
         *m_out << a_guint ;
+
         return *this ;
     }
 
     LogSink& operator<< (double a_double)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+        
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+
         *m_out << a_double ;
+
         return *this ;
     }
 
     LogSink& operator<< (char a_char)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        Glib::Mutex::Lock lock (m_ostream_mutex) ;
+
+        if (m_thread_aware)
+            Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+
         *m_out << a_char;
+
         return *this ;
     }
 };//end class LogSink
@@ -221,11 +255,6 @@ struct LogStream::Priv
             stream_type (LogStream::COUT_STREAM),
             level (LogStream::LOG_LEVEL_NORMAL)
     {
-        // Initialize Glib threading.
-        // It is a cheap operation as g_thread_supported() is
-        // a macro / substitute for a gboolean (g_threads_got_initialized).
-        if (! Glib::thread_supported()) Glib::thread_init();
-
         default_domains.clear () ;
         default_domains.push_front (a_domain) ;
 

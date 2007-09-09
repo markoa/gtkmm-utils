@@ -28,7 +28,8 @@ namespace Util {
 /// \brief Initialization worker.
 class Initializer {
 public:
-    /// \brief Compulsory initialization function for gtkmm-utils.
+    /// \brief Optional initialization function for gtkmm-utils.
+    /// Sets the entire default locale and initializes Glib threading.
     static void do_init() ;
 
 private:

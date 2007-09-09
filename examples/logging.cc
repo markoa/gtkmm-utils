@@ -197,6 +197,9 @@ main(int argc, char** argv)
 {
     Gtk::Main kit(argc, argv);
 
+    // Optionally, we can initialize Glib threading and make our
+    // logging thread-safe by calling Glib::Util::Initializer::do_init()
+
     ExampleWindow window;
 
     Gtk::Main::run(window);
