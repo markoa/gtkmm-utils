@@ -62,7 +62,7 @@ AC_SUBST(GTKMM_UTILS_LICENCE)
 # gcc visibility support
 # explained in http://gcc.gnu.org/wiki/Visibility
 ENABLE_GCC_SYMBOLS_VISIBILITY=yes
-AC_ARG_ENABLE(symsvis,
+AC_ARG_ENABLE(symvis,
               AC_HELP_STRING([--enable-symvis=yes|no],
                              [use the gcc symbols visibility feature (gcc4).
                              default is yes)]),
