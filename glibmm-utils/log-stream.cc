@@ -46,7 +46,10 @@ static bool s_is_active = true ;
 
 /// \brief The base class of the destination of the messages send to a stream.
 /// Each log stream uses a particular LogSink, eg, a sink that sends messages
-/// to stdout, or a sink that sends messages to a file etc.
+/// to stdout, or a sink that sends messages to a file etc. If the Glib
+/// threading system has been initialized, a mutex will be created and
+/// before each write, it will be waited for, otherwise there will be no
+/// thread-awareness.
 
 class LogSink {
 protected:
@@ -65,25 +68,32 @@ public:
     LogSink (ostream *a_out)
         : m_out (a_out)
         {
-            m_thread_aware = Glib::thread_supported() ;
+            m_thread_aware = Glib::thread_supported () ;
 
-            if (m_thread_aware)
-                m_ostream_mutex.reset(new Glib::Mutex()) ;
+            if (m_thread_aware) {
+                m_ostream_mutex.reset (new Glib::Mutex()) ;
+            }
         }
 
     virtual ~LogSink () {}
 
     bool bad () const
     {
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+            return m_out->bad () ;
+        }
+
         return m_out->bad () ;
     }
 
     bool good () const
     {
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
+            return m_out->good () ;
+        }
+
         return m_out->good () ;
     }
 
@@ -91,20 +101,25 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware)
+        if (m_thread_aware) {
+            // Wait for the mutex, lock it, flush the stream, unlock the mutex.
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
-
-        m_out->flush () ;
+            m_out->flush () ;
+        } else {
+            m_out->flush () ;
+        }
     }
 
     LogSink& write (const char *a_buf, long a_buflen)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
-
-        m_out->write (a_buf, a_buflen) ;
+            m_out->write (a_buf, a_buflen) ;
+        } else {
+            m_out->write (a_buf, a_buflen) ;
+        }
 
         return *this ;
     }
@@ -113,10 +128,12 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
-
-        *m_out << a_string ;
+            *m_out << a_string ;
+        } else {
+            *m_out << a_string ;
+        }
 
         return *this ;
     }
@@ -125,10 +142,12 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
-
-        *m_out << an_int ;
+            *m_out << an_int ;
+        } else {
+            *m_out << an_int ;
+        }
 
         return *this ;
     }
@@ -137,10 +156,12 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
-
-        *m_out << a_guint ;
+            *m_out << a_guint ;
+        } else {
+            *m_out << a_guint ;
+        }
 
         return *this ;
     }
@@ -149,10 +170,12 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
         
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
-
-        *m_out << a_double ;
+            *m_out << a_double ;
+        } else {
+            *m_out << a_double ;
+        }
 
         return *this ;
     }
@@ -161,10 +184,12 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware)
+        if (m_thread_aware) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
-
-        *m_out << a_char;
+            *m_out << a_char;
+        } else {
+            *m_out << a_char;
+        }
 
         return *this ;
     }
