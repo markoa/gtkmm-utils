@@ -55,7 +55,6 @@ class LogSink {
 protected:
     mutable tr1::shared_ptr<Glib::Mutex> m_ostream_mutex ;
     ostream *m_out ;
-    bool m_thread_aware ;
 
     //non copyable
     LogSink (const LogSink &) ;
@@ -68,9 +67,7 @@ public:
     LogSink (ostream *a_out)
         : m_out (a_out)
         {
-            m_thread_aware = Glib::thread_supported () ;
-
-            if (m_thread_aware) {
+            if (Glib::thread_supported ()) {
                 m_ostream_mutex.reset (new Glib::Mutex()) ;
             }
         }
@@ -79,7 +76,7 @@ public:
 
     bool bad () const
     {
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             return m_out->bad () ;
         }
@@ -89,7 +86,7 @@ public:
 
     bool good () const
     {
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             return m_out->good () ;
         }
@@ -101,7 +98,7 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             // Wait for the mutex, lock it, flush the stream, unlock the mutex.
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             m_out->flush () ;
@@ -114,7 +111,7 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             m_out->write (a_buf, a_buflen) ;
         } else {
@@ -128,7 +125,7 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             *m_out << a_string ;
         } else {
@@ -142,7 +139,7 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             *m_out << an_int ;
         } else {
@@ -156,7 +153,7 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             *m_out << a_guint ;
         } else {
@@ -169,8 +166,8 @@ public:
     LogSink& operator<< (double a_double)
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
-        
-        if (m_thread_aware) {
+
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             *m_out << a_double ;
         } else {
@@ -184,7 +181,7 @@ public:
     {
         if (!m_out) throw runtime_error ("underlying ostream not initialized") ;
 
-        if (m_thread_aware) {
+        if (m_ostream_mutex) {
             Glib::Mutex::Lock lock (*m_ostream_mutex) ;
             *m_out << a_char;
         } else {
