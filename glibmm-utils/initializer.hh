@@ -25,11 +25,19 @@
 namespace Glib {
 namespace Util {
 
-/// \brief Initialization worker.
+/// \brief Initialization worker, necessary if you need thread-safety.
 class Initializer {
 public:
     /// \brief Optional initialization function for gtkmm-utils.
     /// Sets the entire default locale and initializes Glib threading.
+    /// It is safe to call this function multiple times. You can of
+    /// course initialize Glib threading yourself; in any case, this
+    /// should most probably be the first thing in your main().
+    /// \note
+    /// If you're using the gtkmm-utils logging framework, and from
+    /// multiple threads, make sure you call this function before 
+    /// using any logging facilities, so that the internal mutex can
+    /// be initialized correctly.
     static void do_init() ;
 
 private:

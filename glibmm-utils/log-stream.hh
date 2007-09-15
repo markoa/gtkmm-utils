@@ -38,9 +38,9 @@ using std::string ;
 namespace Glib {
 namespace Util {
 
-/// \brief the log stream class
-/// it features logs on cout, cerr, and files.
-/// it also features log domains and log levels.
+/// \brief The log stream class.
+/// It features logging to cout, cerr and files.
+/// It also features log domains and log levels.
 class LogStream
 {
     friend LogStream& timestamp (LogStream &);
