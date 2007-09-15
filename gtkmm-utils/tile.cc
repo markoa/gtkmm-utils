@@ -57,7 +57,7 @@ Tile::Tile(const Glib::ustring& title,
 
     // set up the title label
     title_label_.set_markup("<span weight=\"bold\">" +
-                            Glib::strescape(title_) +
+                            Glib::Markup::escape_text(title_) +
                             "</span>");
     title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
     title_label_.set_max_width_chars(30);
@@ -67,7 +67,7 @@ Tile::Tile(const Glib::ustring& title,
 
     // set up the summary label
     summary_label_.set_markup("<small>" +
-                              Glib::strescape(summary_) +
+                              Glib::Markup::escape_text(summary_) +
                               "</small>");
     summary_label_.set_ellipsize(Pango::ELLIPSIZE_END);
     summary_label_.set_max_width_chars(30);
