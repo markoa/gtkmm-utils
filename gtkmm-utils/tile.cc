@@ -241,7 +241,8 @@ Tile::on_button_press_event(GdkEventButton* event)
 bool
 Tile::on_key_press_event(GdkEventKey* event)
 {
-    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_Return)
+    if ((event->type == GDK_KEY_PRESS) &&
+        ((event->keyval == GDK_Return) || (event->keyval == GDK_KP_Enter)))
         signal_activated_.emit(*this);
 
     return false;
