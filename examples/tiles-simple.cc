@@ -22,7 +22,7 @@
  */
 
 #include <iostream>
-#include "gtkmm-utils/tile-view.hh"
+
 #include "tiles-simple.hh"
 
 ExampleWindow::ExampleWindow()
@@ -30,11 +30,9 @@ ExampleWindow::ExampleWindow()
     set_border_width(10);
     set_default_size(300, 200);
 
-    add(vbox);
+    add(vbox_);
 
-    Gtk::Util::TileView* tv = Gtk::manage(new Gtk::Util::TileView());
-
-    tv->signal_double_click().connect(
+    tile_view_.signal_double_click().connect(
         sigc::mem_fun(*this, &ExampleWindow::on_tile_double_clicked));
 
     Gtk::Util::Tile* tile1 = Gtk::manage(
@@ -53,11 +51,11 @@ ExampleWindow::ExampleWindow()
     tile3_vbox.pack_start(*(Gtk::manage(new Gtk::Button("Use me"))),
                           false, false, 0);
 
-    tv->add_tile(*tile1);
-    tv->add_tile(*tile2);
-    tv->add_tile(*tile3);
+    tile_view_.add_tile(*tile1);
+    tile_view_.add_tile(*tile2);
+    tile_view_.add_tile(*tile3);
 
-    vbox.pack_start(*tv);
+    vbox_.pack_start(tile_view_);
 
     show_all_children();
 }
@@ -70,6 +68,7 @@ void
 ExampleWindow::on_tile_double_clicked(Gtk::Util::Tile& tile)
 {
     std::cout << "Activated tile with title " << tile.get_title() << std::endl;
+    g_assert(&tile == tile_view_.get_selection());
 }
 
 int
