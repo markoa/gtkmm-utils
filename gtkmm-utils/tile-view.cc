@@ -55,20 +55,24 @@ TileView::~TileView()
 void
 TileView::add_tile(Tile& tile)
 {
-    tile.show();
+    add_tile(&tile);
+}
+
+void
+TileView::add_tile(Tile* tile)
+{
+    tile->show();
 
     Gtk::Box& wb_box = whitebox_.get_root_vbox();
-    wb_box.pack_start(tile, false, false, 0);
+    wb_box.pack_start(*tile, false, false, 0);
 
-    Tile* ptile = &tile;
-
-    ptile->signal_selected().connect(
+    tile->signal_selected().connect(
         sigc::mem_fun(*this, &TileView::on_tile_selected));
 
-    ptile->signal_double_click().connect(
+    tile->signal_double_click().connect(
         sigc::mem_fun(*this, &TileView::on_tile_double_clicked));
 
-    tiles_.push_back(ptile);
+    tiles_.push_back(tile);
 }
 
 TileView::iterator
