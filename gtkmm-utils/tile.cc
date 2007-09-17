@@ -36,8 +36,6 @@ Tile::Tile(const Glib::ustring& title,
     content_vbox_(),
     title_label_(),
     summary_label_(),
-    title_(title),
-    summary_(summary),
     paint_white_(paint_white)
 {
     set_flags(Gtk::CAN_FOCUS);
@@ -56,9 +54,7 @@ Tile::Tile(const Glib::ustring& title,
     content_vbox_.set_spacing(2);
 
     // set up the title label
-    title_label_.set_markup("<span weight=\"bold\">" +
-                            Glib::Markup::escape_text(title_) +
-                            "</span>");
+    set_title(title);
     title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
     title_label_.set_max_width_chars(30);
     title_label_.modify_fg(Gtk::STATE_NORMAL,
@@ -66,9 +62,7 @@ Tile::Tile(const Glib::ustring& title,
     content_vbox_.pack_start(title_label_, false, false, 0);
 
     // set up the summary label
-    summary_label_.set_markup("<small>" +
-                              Glib::Markup::escape_text(summary_) +
-                              "</small>");
+    set_summary(summary);
     summary_label_.set_ellipsize(Pango::ELLIPSIZE_END);
     summary_label_.set_max_width_chars(30);
     summary_label_.modify_fg(Gtk::STATE_NORMAL,
@@ -102,10 +96,46 @@ Tile::get_content_vbox()
     return content_vbox_;
 }
 
-Tile::SignalTileSelected&
-Tile::get_signal_tile_selected()
+Glib::ustring
+Tile::get_title() const
 {
-    return signal_tile_selected_;
+    return title_;
+}
+
+void
+Tile::set_title(const Glib::ustring& title)
+{
+    title_ = title;
+    title_label_.set_markup("<span weight=\"bold\">" +
+                            Glib::Markup::escape_text(title_) +
+                            "</span>");
+}
+
+Glib::ustring
+Tile::get_summary() const
+{
+    return summary_;
+}
+
+void
+Tile::set_summary(const Glib::ustring& summary)
+{
+    summary_ = summary;
+    summary_label_.set_markup("<small>" +
+                              Glib::Markup::escape_text(summary_) +
+                              "</small>");
+}
+
+Tile::SignalSelected&
+Tile::signal_selected()
+{
+    return signal_selected_;
+}
+
+Tile::SignalDoubleClick&
+Tile::signal_double_click()
+{
+    return signal_double_click_;
 }
 
 bool
@@ -197,16 +227,21 @@ Tile::on_expose_event(GdkEventExpose* event)
 }
 
 bool
-Tile::on_button_press_event(GdkEventButton* /* event */)
+Tile::on_button_press_event(GdkEventButton* event)
 {
     grab_focus();
+
+    GdkEventType type = event->type;
+    if (type == GDK_BUTTON_RELEASE || type == GDK_2BUTTON_PRESS)
+        signal_double_click_.emit(*this);
+
     return false;
 }
 
 bool
 Tile::on_focus_in_event(GdkEventFocus* event)
 {
-    signal_tile_selected_.emit();
+    signal_selected_.emit(*this);
     return Gtk::EventBox::on_focus_in_event(event);
 }
 

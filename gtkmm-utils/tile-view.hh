@@ -24,6 +24,7 @@
 #ifndef __GTKMM_UTILS_TILE_VIEW_H__
 #define __GTKMM_UTILS_TILE_VIEW_H__
 
+#include <list>
 #include <gtkmm/adjustment.h>
 #include <gtkmm/box.h>
 #include <gtkmm/scrolledwindow.h>
@@ -38,17 +39,40 @@ namespace Util {
 class TileView : public Gtk::VBox
 {
 public:
+    typedef std::list<Tile*>::iterator iterator;
+    typedef std::list<Tile*>::const_iterator const_iterator;
+
+    typedef sigc::signal<void, Tile&> SignalDoubleClick;
+
     explicit TileView();
     virtual ~TileView();
 
     virtual void add_tile(Tile& tile);
 
+    virtual iterator begin();
+    virtual const_iterator begin() const;
+    virtual iterator end();
+    virtual const_iterator end() const;
+
+    virtual Tile* get_selection();
+
+    SignalDoubleClick& signal_double_click();
+
 protected:
+    void on_tile_selected(Tile& tile);
+    void on_tile_double_clicked(Tile& tile);
+
     Gtk::ScrolledWindow scrolled_window_;
     Gtk::Adjustment hadjustment_;
     Gtk::Adjustment vadjustment_;
     Gtk::Viewport viewport_;
     WhiteBox whitebox_;
+
+    std::list<Tile*> tiles_;
+
+    Tile* selected_tile_;
+
+    SignalDoubleClick signal_double_click_;
 
 private:
     // Non-copyable.

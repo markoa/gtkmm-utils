@@ -22,6 +22,7 @@
  */
 
 #include <gtkmm.h>
+#include "gtkmm-utils/tile.hh"
 
 class ExampleWindow : public Gtk::Window
 {
@@ -30,5 +31,7 @@ public:
     virtual ~ExampleWindow();
 
 protected:
+    void on_tile_double_clicked(Gtk::Util::Tile& tile);
+
     Gtk::VBox vbox;
 };

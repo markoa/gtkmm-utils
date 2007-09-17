@@ -36,18 +36,25 @@ namespace Util {
 class Tile : public Gtk::EventBox
 {
 public:
+    typedef sigc::signal<void, Tile&> SignalSelected;
+    typedef sigc::signal<void, Tile&> SignalDoubleClick;
+
     explicit Tile(const Glib::ustring& title = Glib::ustring(),
                   const Glib::ustring& summary = Glib::ustring(),
                   bool paint_white = true);
     virtual ~Tile();
 
-    Gtk::HBox& get_root_hbox();
-    Gtk::Image& get_image();
-    Gtk::VBox& get_content_vbox();
+    virtual Gtk::HBox&  get_root_hbox();
+    virtual Gtk::Image& get_image();
+    virtual Gtk::VBox&  get_content_vbox();
 
-    typedef sigc::signal<void> SignalTileSelected;
+    virtual Glib::ustring get_title() const;
+    virtual void          set_title(const Glib::ustring& title);
+    virtual Glib::ustring get_summary() const;
+    virtual void          set_summary(const Glib::ustring& summary);
 
-    SignalTileSelected& get_signal_tile_selected();
+    SignalSelected&    signal_selected();
+    SignalDoubleClick& signal_double_click();
 
 protected:
     // Gtk::Widget overrides
@@ -55,24 +62,26 @@ protected:
     virtual bool on_button_press_event(GdkEventButton* event);
     virtual bool on_focus_in_event(GdkEventFocus* event);
 
+    // Signals
+    SignalSelected     signal_selected_;
+    SignalDoubleClick  signal_double_click_;
+
     // Child widgets
-    Gtk::HBox root_hbox_;
+    Gtk::HBox  root_hbox_;
     Gtk::Image image_;
-    Gtk::VBox content_vbox_;
+    Gtk::VBox  content_vbox_;
     Gtk::Label title_label_;
     Gtk::Label summary_label_;
 
     // Data members
     Glib::ustring title_;
     Glib::ustring summary_;
-    bool paint_white_;
+    bool          paint_white_;
 
 private:
     // Non-copyable
     Tile(const Tile& other);
     Tile& operator=(const Tile&);
-
-    SignalTileSelected signal_tile_selected_;
 };
 
 } // namespace Util

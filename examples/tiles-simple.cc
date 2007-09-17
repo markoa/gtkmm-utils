@@ -21,6 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <iostream>
 #include "gtkmm-utils/tile-view.hh"
 #include "tiles-simple.hh"
 
@@ -32,6 +33,9 @@ ExampleWindow::ExampleWindow()
     add(vbox);
 
     Gtk::Util::TileView* tv = Gtk::manage(new Gtk::Util::TileView());
+
+    tv->signal_double_click().connect(
+        sigc::mem_fun(*this, &ExampleWindow::on_tile_double_clicked));
 
     Gtk::Util::Tile* tile1 = Gtk::manage(
         new Gtk::Util::Tile("Tile", "Read my subheader", false));
@@ -60,6 +64,12 @@ ExampleWindow::ExampleWindow()
 
 ExampleWindow::~ExampleWindow()
 {
+}
+
+void
+ExampleWindow::on_tile_double_clicked(Gtk::Util::Tile& tile)
+{
+    std::cout << "Activated tile with title " << tile.get_title() << std::endl;
 }
 
 int
