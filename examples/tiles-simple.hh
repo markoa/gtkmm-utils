@@ -32,7 +32,7 @@ public:
     virtual ~ExampleWindow();
 
 protected:
-    void on_tile_double_clicked(Gtk::Util::Tile& tile);
+    void on_tile_activated(Gtk::Util::Tile& tile);
 
     Gtk::VBox vbox_;
     Gtk::Util::TileView tile_view_;

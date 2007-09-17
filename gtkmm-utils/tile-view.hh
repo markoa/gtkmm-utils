@@ -42,7 +42,7 @@ public:
     typedef std::list<Tile*>::iterator       iterator;
     typedef std::list<Tile*>::const_iterator const_iterator;
 
-    typedef sigc::signal<void, Tile&> SignalDoubleClick;
+    typedef sigc::signal<void, Tile&> SignalTileActivated;
 
     explicit TileView();
     virtual ~TileView();
@@ -57,12 +57,12 @@ public:
 
     virtual Tile* get_selection();
 
-    SignalDoubleClick& signal_double_click();
+    SignalTileActivated& signal_tile_activated();
 
 protected:
     // Tile signal handlers
     void on_tile_selected(Tile& tile);
-    void on_tile_double_clicked(Tile& tile);
+    void on_tile_activated(Tile& tile);
 
     // Child widgets
     Gtk::ScrolledWindow scrolled_window_;
@@ -76,7 +76,7 @@ protected:
     Tile* selected_tile_;
 
     // Signals
-    SignalDoubleClick signal_double_click_;
+    SignalTileActivated signal_tile_activated_;
 
 private:
     // Non-copyable

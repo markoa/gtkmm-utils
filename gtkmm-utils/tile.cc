@@ -21,6 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <gdk/gdkkeysyms.h>
 #include "tile.hh"
 
 namespace Gtk {
@@ -132,10 +133,10 @@ Tile::signal_selected()
     return signal_selected_;
 }
 
-Tile::SignalDoubleClick&
-Tile::signal_double_click()
+Tile::SignalActivated&
+Tile::signal_activated()
 {
-    return signal_double_click_;
+    return signal_activated_;
 }
 
 bool
@@ -231,9 +232,17 @@ Tile::on_button_press_event(GdkEventButton* event)
 {
     grab_focus();
 
-    GdkEventType type = event->type;
-    if (type == GDK_BUTTON_RELEASE || type == GDK_2BUTTON_PRESS)
-        signal_double_click_.emit(*this);
+    if (event->type == GDK_2BUTTON_PRESS)
+        signal_activated_.emit(*this);
+
+    return false;
+}
+
+bool
+Tile::on_key_press_event(GdkEventKey* event)
+{
+    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_Return)
+        signal_activated_.emit(*this);
 
     return false;
 }

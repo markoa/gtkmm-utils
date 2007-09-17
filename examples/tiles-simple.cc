@@ -22,7 +22,6 @@
  */
 
 #include <iostream>
-
 #include "tiles-simple.hh"
 
 ExampleWindow::ExampleWindow()
@@ -32,8 +31,8 @@ ExampleWindow::ExampleWindow()
 
     add(vbox_);
 
-    tile_view_.signal_double_click().connect(
-        sigc::mem_fun(*this, &ExampleWindow::on_tile_double_clicked));
+    tile_view_.signal_tile_activated().connect(
+        sigc::mem_fun(*this, &ExampleWindow::on_tile_activated));
 
     Gtk::Util::Tile* tile1 = Gtk::manage(
         new Gtk::Util::Tile("Tile", "Read my subheader", false));
@@ -65,7 +64,7 @@ ExampleWindow::~ExampleWindow()
 }
 
 void
-ExampleWindow::on_tile_double_clicked(Gtk::Util::Tile& tile)
+ExampleWindow::on_tile_activated(Gtk::Util::Tile& tile)
 {
     std::cout << "Activated tile with title " << tile.get_title() << std::endl;
     g_assert(&tile == tile_view_.get_selection());

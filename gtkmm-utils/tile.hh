@@ -37,7 +37,7 @@ class Tile : public Gtk::EventBox
 {
 public:
     typedef sigc::signal<void, Tile&> SignalSelected;
-    typedef sigc::signal<void, Tile&> SignalDoubleClick;
+    typedef sigc::signal<void, Tile&> SignalActivated;
 
     explicit Tile(const Glib::ustring& title = Glib::ustring(),
                   const Glib::ustring& summary = Glib::ustring(),
@@ -54,17 +54,18 @@ public:
     virtual void          set_summary(const Glib::ustring& summary);
 
     SignalSelected&    signal_selected();
-    SignalDoubleClick& signal_double_click();
+    SignalActivated&   signal_activated();
 
 protected:
     // Gtk::Widget overrides
     virtual bool on_expose_event(GdkEventExpose* event);
     virtual bool on_button_press_event(GdkEventButton* event);
+    virtual bool on_key_press_event(GdkEventKey* event);
     virtual bool on_focus_in_event(GdkEventFocus* event);
 
     // Signals
     SignalSelected     signal_selected_;
-    SignalDoubleClick  signal_double_click_;
+    SignalActivated    signal_activated_;
 
     // Child widgets
     Gtk::HBox  root_hbox_;

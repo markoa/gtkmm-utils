@@ -69,8 +69,8 @@ TileView::add_tile(Tile* tile)
     tile->signal_selected().connect(
         sigc::mem_fun(*this, &TileView::on_tile_selected));
 
-    tile->signal_double_click().connect(
-        sigc::mem_fun(*this, &TileView::on_tile_double_clicked));
+    tile->signal_activated().connect(
+        sigc::mem_fun(*this, &TileView::on_tile_activated));
 
     tiles_.push_back(tile);
 }
@@ -105,10 +105,10 @@ TileView::get_selection()
     return selected_tile_;
 }
 
-TileView::SignalDoubleClick&
-TileView::signal_double_click()
+TileView::SignalTileActivated&
+TileView::signal_tile_activated()
 {
-    return signal_double_click_;
+    return signal_tile_activated_;
 }
 
 void
@@ -118,9 +118,9 @@ TileView::on_tile_selected(Tile& tile)
 }
 
 void
-TileView::on_tile_double_clicked(Tile& tile)
+TileView::on_tile_activated(Tile& tile)
 {
-    signal_double_click_.emit(tile);
+    signal_tile_activated_.emit(tile);
 }
 
 } // namespace Util
