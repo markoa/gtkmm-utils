@@ -88,7 +88,7 @@ ScopeLogger::ScopeLogger (const char*a_scope_name,
 
 ScopeLogger::~ScopeLogger ()
 {
-    LOG_DD ("delete") ;
+    //LOG_DD ("delete") ;
 }
 
 } // namespace Util
