@@ -15,4 +15,25 @@ Now work as usual, committing chunks of changes with
 
     git commit -a -m "Your commit message."
 
-When you're done and want to submit your changes...
+When you're done and want to submit your changes, you need to fetch
+any updates from the upstream tree:
+
+    git-fetch origin
+
+and then merge your commits and shift them so that they start at the
+beginning of the new HEAD:
+
+    git rebase origin
+
+You might want to run 'gitk' to verify that all is well. Now run:
+
+    git-format-patch
+
+to generate a patch for each one of your commits, and email them
+*as attachments*.
+
+Obviously there's more to git than this. However, these are the basics
+that should suffice in most cases. For more information, refer to the
+git documentation at http://git.or.cz/index.html#documentation .
+
+    Marko
