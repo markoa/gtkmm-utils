@@ -31,12 +31,27 @@ namespace Gtk {
 
 namespace Util {
 
+/**
+ * \brief A custom Gtk::EventBox containing a Gtk::VBox painted white.
+ *
+ * TileView uses this widget as a root container.
+ */
 class WhiteBox : public Gtk::EventBox
 {
 public:
+    /**
+     * \brief Constructs a new WhiteBox.
+     */
     explicit WhiteBox();
     virtual ~WhiteBox();
 
+    /**
+     * \brief Returns the root Gtk::VBox.
+     *
+     * Use the reference to pack widgets inside the WhiteBox.
+     *
+     * \return a reference to the vertical box inside the Gtk::EventBox.
+     */
     Gtk::VBox& get_root_vbox();
 
 protected:
