@@ -36,27 +36,87 @@ namespace Gtk {
 
 namespace Util {
 
+/**
+ * The Tile container.
+ */
 class TileView : public Gtk::VBox
 {
 public:
     typedef std::list<Tile*>::iterator       iterator;
     typedef std::list<Tile*>::const_iterator const_iterator;
 
+    /**
+     * \brief Signal emmitted when user double-clicks, or pressed the Return
+     * key on a Tile in the container.
+     *
+     * The signal passes a reference to the Tile that has been activated.
+     */
     typedef sigc::signal<void, Tile&> SignalTileActivated;
 
+    /**
+     * \brief Constructs a new TileView.
+     */
     explicit TileView();
     virtual ~TileView();
 
+    /**
+     * \brief Adds and shows a Tile in the container.
+     *
+     * \param tile a Tile reference
+     */
     virtual void add_tile(Tile& tile);
+
+    /**
+     * \brief Adds and shows a Tile in the container.
+     *
+     * \param tile a Tile pointer
+     */
     virtual void add_tile(Tile* tile);
 
+    /**
+     * \brief Returns an iterator to the first Tile in the container.
+     * Use it for traversing all packed Tiles.
+     *
+     * \return a Tile iterator.
+     */
     virtual iterator       begin();
+
+    /**
+     * \brief Returns an iterator to the first Tile in the container.
+     * Use it for traversing all packed Tiles.
+     *
+     * \return a Tile const iterator.
+     */
     virtual const_iterator begin() const;
+
+    /**
+     * \brief Returns an iterator to the last Tile in the container.
+     * Use it for traversing all packed Tiles.
+     *
+     * \return a Tile iterator.
+     */
     virtual iterator       end();
+
+    /**
+     * \brief Returns an iterator to the last Tile in the container.
+     * Use it for traversing all packed Tiles.
+     *
+     * \return a Tile const iterator.
+     */
     virtual const_iterator end() const;
 
+    /**
+     * \brief Returns the last selected Tile.
+     *
+     * \return a pointer to Tile.
+     */
     virtual Tile* get_selection();
 
+    /**
+     * \brief Returns the SignalActivated, which you can connect to.
+     *
+     * \return a reference to the TileView's SignalActivated.
+     */
     SignalTileActivated& signal_tile_activated();
 
 protected:
