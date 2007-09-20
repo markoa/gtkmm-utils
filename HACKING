@@ -1,0 +1,18 @@
+
+Working with git
+================
+
+When you checkout the code for the first time:
+
+     git clone git://git.savannah.nongnu.org/gtkmm-utils.git
+
+cd to the gtkmm-utils directory, create a branch for any work that
+you will be doing and switch your working tree to that branch with:
+
+    git checkout -b mystuff
+
+Now work as usual, committing chunks of changes with
+
+    git commit -a -m "Your commit message."
+
+When you're done and want to submit your changes...
