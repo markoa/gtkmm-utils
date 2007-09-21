@@ -25,8 +25,11 @@
 #define __GTKMM_UTILS_TILE_VIEW_H__
 
 #include <list>
+#include <memory>
 #include <gtkmm/adjustment.h>
+#include <gtkmm/alignment.h>
 #include <gtkmm/box.h>
+#include <gtkmm/button.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/viewport.h>
 #include "tile.hh"
@@ -125,6 +128,10 @@ protected:
     void on_tile_activated(Tile& tile);
 
     // Child widgets
+    int   tiles_per_page_;
+    class Navigator;
+    std::auto_ptr<Navigator> navigator_;
+
     Gtk::ScrolledWindow scrolled_window_;
     Gtk::Adjustment     hadjustment_;
     Gtk::Adjustment     vadjustment_;
