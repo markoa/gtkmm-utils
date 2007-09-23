@@ -80,6 +80,8 @@ TilePageNavigator::Private::Private()
     
     button_previous.set_relief(Gtk::RELIEF_NONE);
     button_previous.add(image_previous);
+
+    connect_signals();
 }
 
 void
