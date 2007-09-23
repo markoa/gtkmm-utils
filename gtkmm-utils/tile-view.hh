@@ -26,6 +26,7 @@
 
 #include <list>
 #include <memory>
+#include <tr1/memory>
 #include <gtkmm/adjustment.h>
 #include <gtkmm/box.h>
 #include <gtkmm/scrolledwindow.h>
@@ -44,8 +45,7 @@ namespace Util {
 class TileView : public Gtk::VBox
 {
 public:
-    typedef std::list<Tile*>::iterator       iterator;
-    typedef std::list<Tile*>::const_iterator const_iterator;
+    typedef sigc::slot<void, Tile&> SlotForEachTile;
 
     /**
      * \brief Signal emmitted when user double-clicks, or pressed the Return
@@ -76,47 +76,23 @@ public:
     virtual void add_tile(Tile* tile);
 
     /**
-     * \brief Returns an iterator to the first Tile in the container.
-     * Use it for traversing all packed Tiles.
-     *
-     * \return a Tile iterator.
-     */
-    virtual iterator       begin();
-
-    /**
-     * \brief Returns an iterator to the first Tile in the container.
-     * Use it for traversing all packed Tiles.
-     *
-     * \return a Tile const iterator.
-     */
-    virtual const_iterator begin() const;
-
-    /**
-     * \brief Returns an iterator to the last Tile in the container.
-     * Use it for traversing all packed Tiles.
-     *
-     * \return a Tile iterator.
-     */
-    virtual iterator       end();
-
-    /**
-     * \brief Returns an iterator to the last Tile in the container.
-     * Use it for traversing all packed Tiles.
-     *
-     * \return a Tile const iterator.
-     */
-    virtual const_iterator end() const;
-
-    /**
      * \brief Returns the last selected Tile.
      *
      * \return a pointer to Tile.
      */
     virtual Tile* get_selection();
 
+    virtual void for_each_tile(const SlotForEachTile& slot);
+
     virtual void show_page_navigator(bool show = true);
+
     virtual void set_navigator_title(const Glib::ustring& title);
     virtual void set_navigator_title_markup(const Glib::ustring& marked_up_title);
+
+    virtual void set_page_view(bool use_page_view = true);
+
+    virtual void set_tiles_per_page(int tiles_per_page);
+    virtual int  get_tiles_per_page() const;
 
     /**
      * \brief Returns the SignalActivated, which you can connect to.
@@ -126,12 +102,15 @@ public:
     SignalTileActivated& signal_tile_activated();
 
 protected:
+    struct TileData;
+
+    void add_tile_widget(Tile* tile);
+
     // Tile signal handlers
     void on_tile_selected(Tile& tile);
     void on_tile_activated(Tile& tile);
 
     // Child widgets
-    int   tiles_per_page_;
     std::auto_ptr<TilePageNavigator> navigator_;
 
     Gtk::ScrolledWindow scrolled_window_;
@@ -141,8 +120,11 @@ protected:
     WhiteBox            whitebox_;
 
     // Tile content internals
-    std::list<Tile*> tiles_;
+    std::list<std::tr1::shared_ptr<TileData> > tiles_;
     Tile* selected_tile_;
+
+    bool paginate_;
+    int  tiles_per_page_;
 
     // Signals
     SignalTileActivated signal_tile_activated_;

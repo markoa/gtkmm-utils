@@ -27,17 +27,35 @@ namespace Gtk {
 
 namespace Util {
 
+using std::list;
+using std::tr1::shared_ptr;
+
 static const int TILES_PER_PAGE_DEFAULT = 50;
+
+/* TileView::TileData */
+
+class TileView::TileData
+{
+public:
+    TileData() : tile(0), member_page(1) {}
+    ~TileData() {}
+
+    Tile* tile;
+    int   member_page;
+};
+
+/* TileView */
 
 TileView::TileView()
     :
-    tiles_per_page_(TILES_PER_PAGE_DEFAULT),
     scrolled_window_(),
     hadjustment_(0, 0, 0, 0),
     vadjustment_(0, 0, 0, 0),
     viewport_(hadjustment_, vadjustment_),
     whitebox_(),
-    selected_tile_(0)
+    selected_tile_(0),
+    paginate_(true),
+    tiles_per_page_(TILES_PER_PAGE_DEFAULT)
 {
     navigator_.reset(new TilePageNavigator());
     pack_start(*navigator_, false, true, 0);
@@ -61,11 +79,25 @@ TileView::~TileView()
 void
 TileView::add_tile(Tile& tile)
 {
-    add_tile(&tile);
+    shared_ptr<TileData> tdata(new TileData());
+    tdata->tile = &tile;
+    // TODO: calculate which page a tile belongs to, based on tiles_per_page_
+    // and ...
+    tdata->member_page = 1;
+
+    tiles_.push_back(tdata);
+
+    add_tile_widget(&tile);
 }
 
 void
 TileView::add_tile(Tile* tile)
+{
+    add_tile(*tile);
+}
+
+void
+TileView::add_tile_widget(Tile* tile)
 {
     tile->show();
 
@@ -77,38 +109,41 @@ TileView::add_tile(Tile* tile)
 
     tile->signal_activated().connect(
         sigc::mem_fun(*this, &TileView::on_tile_activated));
-
-    tiles_.push_back(tile);
-}
-
-TileView::iterator
-TileView::begin()
-{
-    return tiles_.begin();
-}
-
-TileView::const_iterator
-TileView::begin() const
-{
-    return tiles_.begin();
-}
-
-TileView::iterator
-TileView::end()
-{
-    return tiles_.end();
-}
-
-TileView::const_iterator
-TileView::end() const
-{
-    return tiles_.end();
 }
 
 Tile*
 TileView::get_selection()
 {
     return selected_tile_;
+}
+
+TileView::SignalTileActivated&
+TileView::signal_tile_activated()
+{
+    return signal_tile_activated_;
+}
+
+void
+TileView::on_tile_selected(Tile& tile)
+{
+    selected_tile_ = &tile;
+}
+
+void
+TileView::on_tile_activated(Tile& tile)
+{
+    signal_tile_activated_.emit(tile);
+}
+
+void
+TileView::for_each_tile(const SlotForEachTile& slot)
+{
+    list<shared_ptr<TileData> >::iterator it(tiles_.begin());
+    list<shared_ptr<TileData> >::iterator end(tiles_.begin());
+
+    for ( ; it != end; ++it) {
+        slot(*((*it)->tile));
+    }
 }
 
 void
@@ -132,22 +167,26 @@ TileView::set_navigator_title_markup(const Glib::ustring& marked_up_title)
     navigator_->set_title_markup(marked_up_title);
 }
 
-TileView::SignalTileActivated&
-TileView::signal_tile_activated()
+void
+TileView::set_page_view(bool use_page_view)
 {
-    return signal_tile_activated_;
+    paginate_ = use_page_view;
+    // TODO: perform (de)pagination
 }
 
 void
-TileView::on_tile_selected(Tile& tile)
+TileView::set_tiles_per_page(int tiles_per_page)
 {
-    selected_tile_ = &tile;
+    if (tiles_per_page == 0) return;
+
+    tiles_per_page = tiles_per_page;
+    // TODO: perform (de)pagination
 }
 
-void
-TileView::on_tile_activated(Tile& tile)
+int
+TileView::get_tiles_per_page() const
 {
-    signal_tile_activated_.emit(tile);
+    return tiles_per_page_;
 }
 
 } // namespace Util
