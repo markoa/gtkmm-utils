@@ -37,12 +37,14 @@ static const int TILES_PER_PAGE_DEFAULT = 50;
 class TileView::TileData
 {
 public:
-    TileData() : tile(0), member_page(1) {}
+    TileData() : tile(0), page(1) {}
     ~TileData() {}
 
     Tile* tile;
-    int   member_page;
+    int   page;
 };
+
+typedef list<shared_ptr<TileView::TileData> >::iterator tile_data_iter;
 
 /* TileView */
 
@@ -55,7 +57,8 @@ TileView::TileView()
     whitebox_(),
     selected_tile_(0),
     paginate_(true),
-    tiles_per_page_(TILES_PER_PAGE_DEFAULT)
+    tiles_per_page_(TILES_PER_PAGE_DEFAULT),
+    current_page_(1)
 {
     navigator_.reset(new TilePageNavigator());
     pack_start(*navigator_, false, true, 0);
@@ -70,6 +73,8 @@ TileView::TileView()
     viewport_.show();
 
     viewport_.add(whitebox_);
+
+    connect_signals();
 }
 
 TileView::~TileView()
@@ -77,17 +82,36 @@ TileView::~TileView()
 }
 
 void
+TileView::connect_signals()
+{
+    navigator_->signal_clicked_next().connect(
+        sigc::mem_fun(*this, &TileView::on_show_next_page));
+
+    navigator_->signal_clicked_previous().connect(
+        sigc::mem_fun(*this, &TileView::on_show_previous_page));
+}
+
+void
 TileView::add_tile(Tile& tile)
 {
     shared_ptr<TileData> tdata(new TileData());
     tdata->tile = &tile;
-    // TODO: calculate which page a tile belongs to, based on tiles_per_page_
-    // and ...
-    tdata->member_page = 1;
-
     tiles_.push_back(tdata);
 
-    add_tile_widget(&tile);
+    int tile_count = tiles_.size();
+
+    if (paginate_) {
+        tdata->page = tile_count / tiles_per_page_;
+
+        int modulo = tile_count % tiles_per_page_;
+        if (modulo > 0)
+            tdata->page++;
+    }
+    else
+        tdata->page = 1;
+
+    if (tdata->page == current_page_)
+        add_tile_widget(&tile);
 }
 
 void
@@ -99,8 +123,6 @@ TileView::add_tile(Tile* tile)
 void
 TileView::add_tile_widget(Tile* tile)
 {
-    tile->show();
-
     Gtk::Box& wb_box = whitebox_.get_root_vbox();
     wb_box.pack_start(*tile, false, false, 0);
 
@@ -109,6 +131,8 @@ TileView::add_tile_widget(Tile* tile)
 
     tile->signal_activated().connect(
         sigc::mem_fun(*this, &TileView::on_tile_activated));
+
+    show_all();
 }
 
 Tile*
@@ -138,8 +162,8 @@ TileView::on_tile_activated(Tile& tile)
 void
 TileView::for_each_tile(const SlotForEachTile& slot)
 {
-    list<shared_ptr<TileData> >::iterator it(tiles_.begin());
-    list<shared_ptr<TileData> >::iterator end(tiles_.begin());
+    tile_data_iter it(tiles_.begin());
+    tile_data_iter end(tiles_.end());
 
     for ( ; it != end; ++it) {
         slot(*((*it)->tile));
@@ -171,22 +195,98 @@ void
 TileView::set_page_view(bool use_page_view)
 {
     paginate_ = use_page_view;
-    // TODO: perform (de)pagination
+
+    update_tile_data();
+    reload_container();
 }
 
 void
 TileView::set_tiles_per_page(int tiles_per_page)
 {
-    if (tiles_per_page == 0) return;
+    if (tiles_per_page <= 0) return;
 
-    tiles_per_page = tiles_per_page;
-    // TODO: perform (de)pagination
+    tiles_per_page_ = tiles_per_page;
+
+    update_tile_data();
+    reload_container();
 }
 
 int
 TileView::get_tiles_per_page() const
 {
     return tiles_per_page_;
+}
+
+void
+TileView::update_tile_data()
+{
+    if (tiles_.empty()) return;
+
+    tile_data_iter it(tiles_.begin());
+    tile_data_iter end(tiles_.end());
+
+    if (! paginate_) {
+        for ( ; it != end; ++it)
+            (*it)->page = 1;
+        return;
+    }
+
+    int counter = 0;
+    int page = 1;
+
+    for ( ; it != end; ++it) {
+        (*it)->page = page;
+
+        if (++counter == tiles_per_page_) {
+            counter = 0;
+            ++page;
+        }
+    }
+}
+
+void
+TileView::reload_container()
+{
+    if (tiles_.empty()) return;
+
+    // Remove all currently shown tiles
+    list<Gtk::Widget*> children = whitebox_.get_root_vbox().get_children();
+
+    list<Gtk::Widget*>::iterator child_it(children.begin());
+    list<Gtk::Widget*>::iterator child_end(children.end());
+
+    for ( ; child_it != child_end; ++child_it)
+        whitebox_.get_root_vbox().remove(*(*child_it));
+
+    // Show the tiles which belong to the currently requested page
+    tile_data_iter td_iter(tiles_.begin());
+    tile_data_iter td_end(tiles_.end());
+
+    while (td_iter != td_end && (*td_iter)->page < current_page_)
+        ++td_iter;
+
+    while (td_iter != td_end && (*td_iter)->page == current_page_) {
+        add_tile_widget((*td_iter)->tile);
+        ++td_iter;
+    }
+}
+
+void
+TileView::on_show_next_page()
+{
+    if (! paginate_) return;
+
+    ++current_page_;
+    reload_container();
+}
+
+void
+TileView::on_show_previous_page()
+{
+    if ((! paginate_) || (current_page_ == 1)) return;
+
+    --current_page_;
+    reload_container();
 }
 
 } // namespace Util

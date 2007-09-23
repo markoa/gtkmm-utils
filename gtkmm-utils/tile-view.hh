@@ -104,11 +104,20 @@ public:
 protected:
     struct TileData;
 
-    void add_tile_widget(Tile* tile);
+    virtual void connect_signals();
+
+    virtual void add_tile_widget(Tile* tile);
+
+    virtual void update_tile_data();
+    virtual void reload_container();
 
     // Tile signal handlers
-    void on_tile_selected(Tile& tile);
-    void on_tile_activated(Tile& tile);
+    virtual void on_tile_selected(Tile& tile);
+    virtual void on_tile_activated(Tile& tile);
+
+    // TilePageNavigator signal handlers
+    virtual void on_show_next_page();
+    virtual void on_show_previous_page();
 
     // Child widgets
     std::auto_ptr<TilePageNavigator> navigator_;
@@ -125,6 +134,7 @@ protected:
 
     bool paginate_;
     int  tiles_per_page_;
+    int  current_page_;
 
     // Signals
     SignalTileActivated signal_tile_activated_;

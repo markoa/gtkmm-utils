@@ -21,6 +21,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <list>
+#include <tr1/memory>
 #include <gtkmm.h>
 #include "gtkmm-utils/tile.hh"
 #include "gtkmm-utils/tile-view.hh"
@@ -36,4 +38,5 @@ protected:
 
     Gtk::VBox vbox_;
     Gtk::Util::TileView tile_view_;
+    std::list<std::tr1::shared_ptr<Gtk::Util::Tile> > tiles_;
 };

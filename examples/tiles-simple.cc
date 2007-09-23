@@ -24,6 +24,8 @@
 #include <iostream>
 #include "tiles-simple.hh"
 
+using std::tr1::shared_ptr;
+
 ExampleWindow::ExampleWindow()
 {
     set_border_width(10);
@@ -36,22 +38,29 @@ ExampleWindow::ExampleWindow()
 
     tile_view_.set_navigator_title_markup(
         "<span weight=\"bold\">Showing tiles</span>");
+    tile_view_.set_tiles_per_page(2);
 
-    Gtk::Util::Tile* tile1 = Gtk::manage(
+    shared_ptr<Gtk::Util::Tile> tile1(
         new Gtk::Util::Tile("Tile", "Read my subheader", false));
     Gtk::Image& image = tile1->get_image();
     image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
 
-    Gtk::Util::Tile* tile2 = Gtk::manage(
+    shared_ptr<Gtk::Util::Tile> tile2(
         new Gtk::Util::Tile("Second tile", "Eggs and bacon"));
     tile2->get_image().set(Gtk::Stock::CDROM, Gtk::ICON_SIZE_DIALOG);
 
-    Gtk::Util::Tile* tile3 = Gtk::manage(
-        new Gtk::Util::Tile("Interactive piece", "A clickable button below"));
+    shared_ptr<Gtk::Util::Tile> tile3(
+        new Gtk::Util::Tile("Interactive piece",
+                            "With a clickable button below"));
     tile3->get_image().set(Gtk::Stock::NETWORK, Gtk::ICON_SIZE_DIALOG);
     Gtk::VBox& tile3_vbox = tile3->get_content_vbox();
     tile3_vbox.pack_start(*(Gtk::manage(new Gtk::Button("Use me"))),
                           false, false, 0);
+
+
+    tiles_.push_back(tile1);
+    tiles_.push_back(tile2);
+    tiles_.push_back(tile3);
 
     tile_view_.add_tile(*tile1);
     tile_view_.add_tile(*tile2);
