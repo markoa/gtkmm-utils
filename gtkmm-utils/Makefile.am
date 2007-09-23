@@ -3,11 +3,13 @@ hh_sources = \
 	gtkmm-utils.hh \
 	dialog.hh \
 	tile.hh \
+	tile-page-navigator.hh \
 	tile-view.hh \
 	white-box.hh
 
 cc_sources = dialog.cc \
 	tile.cc \
+	tile-page-navigator.cc \
 	tile-view.cc \
 	white-box.cc
 
