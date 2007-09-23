@@ -34,6 +34,9 @@ ExampleWindow::ExampleWindow()
     tile_view_.signal_tile_activated().connect(
         sigc::mem_fun(*this, &ExampleWindow::on_tile_activated));
 
+    tile_view_.set_navigator_title_markup(
+        "<span weight=\"bold\">Showing tiles</span>");
+
     Gtk::Util::Tile* tile1 = Gtk::manage(
         new Gtk::Util::Tile("Tile", "Read my subheader", false));
     Gtk::Image& image = tile1->get_image();

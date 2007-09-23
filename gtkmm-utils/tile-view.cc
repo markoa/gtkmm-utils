@@ -111,6 +111,27 @@ TileView::get_selection()
     return selected_tile_;
 }
 
+void
+TileView::show_page_navigator(bool show)
+{
+    if (show)
+        navigator_->show();
+    else
+        navigator_->hide();
+}
+
+void
+TileView::set_navigator_title(const Glib::ustring& title)
+{
+    navigator_->set_title(title);
+}
+
+void
+TileView::set_navigator_title_markup(const Glib::ustring& marked_up_title)
+{
+    navigator_->set_title_markup(marked_up_title);
+}
+
 TileView::SignalTileActivated&
 TileView::signal_tile_activated()
 {

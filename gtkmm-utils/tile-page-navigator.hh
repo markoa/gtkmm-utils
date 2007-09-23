@@ -34,8 +34,17 @@ namespace Util {
 class TilePageNavigator : public Gtk::HBox
 {
 public:
+    typedef sigc::signal<void> SignalClickedNext;
+    typedef sigc::signal<void> SignalClickedPrevious;
+
     explicit TilePageNavigator();
     ~TilePageNavigator();
+
+    void set_title(const Glib::ustring& title);
+    void set_title_markup(const Glib::ustring& marked_up_title);
+
+    SignalClickedNext& signal_clicked_next();
+    SignalClickedPrevious& signal_clicked_previous();
     
 protected:
     struct Private;

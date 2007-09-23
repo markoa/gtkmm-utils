@@ -114,6 +114,10 @@ public:
      */
     virtual Tile* get_selection();
 
+    virtual void show_page_navigator(bool show = true);
+    virtual void set_navigator_title(const Glib::ustring& title);
+    virtual void set_navigator_title_markup(const Glib::ustring& marked_up_title);
+
     /**
      * \brief Returns the SignalActivated, which you can connect to.
      *

@@ -32,11 +32,22 @@ namespace Gtk {
 
 namespace Util {
 
+/* TilePageNavigator::Private */
+
 class TilePageNavigator::Private
 {
 public:
     Private();
     ~Private() {}
+
+    void connect_signals();
+    void on_button_next_clicked();
+    void on_button_previous_clicked();
+
+    TilePageNavigator::SignalClickedNext     signal_clicked_next;
+    TilePageNavigator::SignalClickedPrevious signal_clicked_previous;
+
+    Glib::ustring  title;
 
     Gtk::Alignment align_box;
     Gtk::HBox      label_hbox;
@@ -49,9 +60,10 @@ public:
 
 TilePageNavigator::Private::Private()
     :
+    title(),
     align_box(0.0, 1.0, 1.0, 1.0),
     label_hbox(false, 0),
-    label("I am the title"),
+    label(title),
     button_previous(),
     image_previous(Gtk::Stock::GO_BACK, Gtk::ICON_SIZE_SMALL_TOOLBAR),
     button_next(),
@@ -70,6 +82,32 @@ TilePageNavigator::Private::Private()
     button_previous.add(image_previous);
 }
 
+void
+TilePageNavigator::Private::on_button_next_clicked()
+{
+    signal_clicked_next.emit();
+}
+
+void
+TilePageNavigator::Private::on_button_previous_clicked()
+{
+    signal_clicked_previous.emit();
+}
+
+void
+TilePageNavigator::Private::connect_signals()
+{
+    button_next.signal_clicked().connect(
+        sigc::mem_fun(*this,
+                      &TilePageNavigator::Private::on_button_next_clicked));
+
+    button_previous.signal_clicked().connect(
+        sigc::mem_fun(*this,
+                      &TilePageNavigator::Private::on_button_previous_clicked));
+}
+
+/* TilePageNavigator */
+
 TilePageNavigator::TilePageNavigator()
 {
     priv_.reset(new Private());
@@ -83,6 +121,30 @@ TilePageNavigator::TilePageNavigator()
 
 TilePageNavigator::~TilePageNavigator()
 {
+}
+
+void
+TilePageNavigator::set_title(const Glib::ustring& title)
+{
+    priv_->label.set_text(title);
+}
+
+void
+TilePageNavigator::set_title_markup(const Glib::ustring& marked_up_title)
+{
+    priv_->label.set_markup(marked_up_title);
+}
+
+TilePageNavigator::SignalClickedNext&
+TilePageNavigator::signal_clicked_next()
+{
+    return priv_->signal_clicked_next;
+}
+
+TilePageNavigator::SignalClickedPrevious&
+TilePageNavigator::signal_clicked_previous()
+{
+    return priv_->signal_clicked_previous;
 }
 
 } // namespace Util
