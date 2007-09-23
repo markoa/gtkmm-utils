@@ -111,6 +111,8 @@ protected:
     virtual void update_tile_data();
     virtual void reload_container();
 
+    virtual int get_page_count() const;
+
     // Tile signal handlers
     virtual void on_tile_selected(Tile& tile);
     virtual void on_tile_activated(Tile& tile);

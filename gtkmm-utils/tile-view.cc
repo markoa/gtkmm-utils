@@ -276,6 +276,8 @@ TileView::on_show_next_page()
 {
     if (! paginate_) return;
 
+    if ((current_page_ + 1) > get_page_count()) return;
+
     ++current_page_;
     reload_container();
 }
@@ -287,6 +289,23 @@ TileView::on_show_previous_page()
 
     --current_page_;
     reload_container();
+}
+
+int
+TileView::get_page_count() const
+{
+    int page_count = 1;
+
+    if (! paginate_) return page_count;
+
+    int tile_count = tiles_.size();
+    page_count = tile_count / tiles_per_page_;
+
+    int modulo = tile_count % tiles_per_page_;
+    if (modulo > 0)
+        ++page_count;
+
+    return page_count;
 }
 
 } // namespace Util
