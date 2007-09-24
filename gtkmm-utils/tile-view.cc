@@ -31,8 +31,6 @@ namespace Util {
 using std::list;
 using std::tr1::shared_ptr;
 
-static const int TILES_PER_PAGE_DEFAULT = 50;
-
 /* TileView::TileData */
 
 class TileView::TileData

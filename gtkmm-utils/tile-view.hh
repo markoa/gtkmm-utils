@@ -39,6 +39,8 @@ namespace Gtk {
 
 namespace Util {
 
+const int TILES_PER_PAGE_DEFAULT = 20;
+
 /**
  * The Tile container.
  */
