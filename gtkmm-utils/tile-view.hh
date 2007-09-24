@@ -60,7 +60,7 @@ public:
     /**
      * \brief Constructs a new TileView.
      */
-    explicit TileView();
+    explicit TileView(bool use_page_view = true);
     virtual ~TileView();
 
     /**

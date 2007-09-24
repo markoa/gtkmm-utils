@@ -47,7 +47,7 @@ typedef list<shared_ptr<TileView::TileData> >::iterator tile_data_iter;
 
 /* TileView */
 
-TileView::TileView()
+TileView::TileView(bool use_page_view)
     :
     scrolled_window_(),
     hadjustment_(0, 0, 0, 0),
@@ -55,7 +55,7 @@ TileView::TileView()
     viewport_(hadjustment_, vadjustment_),
     whitebox_(),
     selected_tile_(0),
-    paginate_(true),
+    paginate_(use_page_view),
     tiles_per_page_(TILES_PER_PAGE_DEFAULT),
     current_page_(1)
 {
