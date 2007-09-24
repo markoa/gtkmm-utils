@@ -197,9 +197,15 @@ TileView::set_page_view(bool use_page_view)
 {
     paginate_ = use_page_view;
 
+    if (! paginate_) current_page_ = 1;
+
     update_tile_data();
     reload_container();
-    update_navigator_page_info_label();
+
+    if (! paginate_)
+        show_page_navigator(false);
+    else
+        update_navigator_page_info_label();
 }
 
 void
