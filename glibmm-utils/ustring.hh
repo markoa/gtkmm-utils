@@ -92,6 +92,8 @@ inline T convert_to(const Glib::ustring& str,
     return x;
 }
 
+Glib::ustring uprintf(const Glib::ustring& format, ...);
+
 } // namespace Util
 
 } // namespace Glib

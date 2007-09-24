@@ -50,8 +50,9 @@ public:
     Glib::ustring  title;
 
     Gtk::Alignment align_box;
-    Gtk::HBox      label_hbox;
-    Gtk::Label     label;
+    Gtk::HBox      label_box;
+    Gtk::Label     label_title;
+    Gtk::Label     label_page_info;
     Gtk::Button    button_previous;
     Gtk::Image     image_previous;
     Gtk::Button    button_next;
@@ -62,8 +63,9 @@ TilePageNavigator::Private::Private()
     :
     title(),
     align_box(0.0, 1.0, 1.0, 1.0),
-    label_hbox(false, 0),
-    label(title),
+    label_box(false, 0),
+    label_title(title),
+    label_page_info(),
     button_previous(),
     image_previous(Gtk::Stock::GO_BACK, Gtk::ICON_SIZE_SMALL_TOOLBAR),
     button_next(),
@@ -71,9 +73,12 @@ TilePageNavigator::Private::Private()
 {
     align_box.set_padding(18, 3, 0, 0);
     
-    align_box.add(label_hbox);
-    label_hbox.pack_start(label, false, true, 0);
-    label.set_justify(Gtk::JUSTIFY_LEFT);
+    align_box.add(label_box);
+    label_box.set_spacing(5);
+    label_box.pack_start(label_title, false, true, 0);
+    label_title.set_justify(Gtk::JUSTIFY_LEFT);
+    label_box.pack_start(label_page_info, false, true, 0);
+    label_page_info.set_justify(Gtk::JUSTIFY_LEFT);
     
     button_next.set_relief(Gtk::RELIEF_NONE);
     button_next.add(image_next);
@@ -128,13 +133,19 @@ TilePageNavigator::~TilePageNavigator()
 void
 TilePageNavigator::set_title(const Glib::ustring& title)
 {
-    priv_->label.set_text(title);
+    priv_->label_title.set_text(title);
 }
 
 void
 TilePageNavigator::set_title_markup(const Glib::ustring& marked_up_title)
 {
-    priv_->label.set_markup(marked_up_title);
+    priv_->label_title.set_markup(marked_up_title);
+}
+
+void
+TilePageNavigator::set_page_info(const Glib::ustring& info)
+{
+    priv_->label_page_info.set_text(info);
 }
 
 TilePageNavigator::SignalClickedNext&

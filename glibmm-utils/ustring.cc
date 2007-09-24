@@ -20,6 +20,7 @@
  */
 
 #include <tr1/memory>
+#include <glib/gmem.h>
 #include "ustring.hh"
 
 namespace Glib {
@@ -52,6 +53,19 @@ split(const Glib::ustring& str, const Glib::ustring& delim)
     }
 
     return result;
+}
+
+Glib::ustring
+uprintf(const Glib::ustring& format, ...)
+{
+  va_list args;
+
+  va_start(args, format);
+  gchar* cstr = g_strdup_vprintf(format.c_str(), args);
+  Glib::ustring str(cstr);
+  g_free(cstr);
+  
+  return str;
 }
 
 } // namespace Util

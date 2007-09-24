@@ -43,6 +43,8 @@ public:
     void set_title(const Glib::ustring& title);
     void set_title_markup(const Glib::ustring& marked_up_title);
 
+    void set_page_info(const Glib::ustring& info);
+
     SignalClickedNext& signal_clicked_next();
     SignalClickedPrevious& signal_clicked_previous();
     

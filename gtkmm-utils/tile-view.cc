@@ -21,6 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include "glibmm-utils/ustring.hh"
 #include "tile-view.hh"
 
 namespace Gtk {
@@ -112,6 +113,8 @@ TileView::add_tile(Tile& tile)
 
     if (tdata->page == current_page_)
         add_tile_widget(&tile);
+
+    update_navigator_page_info_label();
 }
 
 void
@@ -272,6 +275,29 @@ TileView::reload_container()
 }
 
 void
+TileView::update_navigator_page_info_label()
+{
+    int show_start = (current_page_ - 1) * tiles_per_page_ + 1;
+    int show_end = 0;
+
+    // get the number of tiles in the current page
+    tile_data_iter td_iter(tiles_.begin());
+    tile_data_iter td_end(tiles_.end());
+
+    int tiles_in_page = 0;
+    for ( ; td_iter != td_end; ++td_iter)
+        if ((*td_iter)->page == current_page_) ++tiles_in_page; 
+    
+    show_end = show_start + tiles_in_page - 1;
+
+    navigator_->set_page_info(
+        Glib::Util::uprintf("%d - %d of %d",
+                            show_start,
+                            show_end,
+                            static_cast<int>(tiles_.size())));
+}
+
+void
 TileView::on_show_next_page()
 {
     if (! paginate_) return;
@@ -280,6 +306,7 @@ TileView::on_show_next_page()
 
     ++current_page_;
     reload_container();
+    update_navigator_page_info_label();
 }
 
 void
@@ -289,6 +316,7 @@ TileView::on_show_previous_page()
 
     --current_page_;
     reload_container();
+    update_navigator_page_info_label();
 }
 
 int
