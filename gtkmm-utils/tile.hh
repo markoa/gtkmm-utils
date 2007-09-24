@@ -80,7 +80,7 @@ public:
      *
      * \return a reference to the root horizontal box.
      */
-    virtual Gtk::HBox&  get_root_hbox();
+    virtual Gtk::HBox& get_root_hbox();
 
     /**
      * \brief Returns the image for the Tile, so that its content can be set.
@@ -95,7 +95,7 @@ public:
      *
      * \return a reference to the content vbox.
      */
-    virtual Gtk::VBox&  get_content_vbox();
+    virtual Gtk::VBox& get_content_vbox();
 
     /**
      * \brief Returns Tile title, ie the top-first, highlighted text.
@@ -109,7 +109,7 @@ public:
      *
      * \param title new title string.
      */
-    virtual void          set_title(const Glib::ustring& title);
+    virtual void set_title(const Glib::ustring& title);
 
     /**
      * \brief Returns the "summary" of the Tile, ie the smaller text
@@ -124,21 +124,21 @@ public:
      *
      * \param summary new summary string.
      */
-    virtual void          set_summary(const Glib::ustring& summary);
+    virtual void set_summary(const Glib::ustring& summary);
 
     /**
      * \brief Returns the SignalSelected, which you can connect to.
      *
      * \return a reference to the Tile's SignalSelected.
      */
-    SignalSelected&    signal_selected();
+    SignalSelected& signal_selected();
 
     /**
      * \brief Returns the SignalActivated, which you can connect to.
      *
      * \return a reference to the Tile's SignalActivated.
      */
-    SignalActivated&   signal_activated();
+    SignalActivated& signal_activated();
 
 protected:
     // Gtk::Widget overrides
