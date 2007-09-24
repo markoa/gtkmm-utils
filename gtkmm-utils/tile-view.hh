@@ -32,7 +32,7 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/viewport.h>
 #include "tile.hh"
-#include "tile-page-navigator.hh"
+#include "page-navigator.hh"
 #include "white-box.hh"
 
 namespace Gtk {
@@ -180,7 +180,7 @@ protected:
     virtual void on_show_previous_page();
 
     // Child widgets
-    std::auto_ptr<TilePageNavigator> navigator_;
+    std::auto_ptr<PageNavigator> navigator_;
 
     Gtk::ScrolledWindow scrolled_window_;
     Gtk::Adjustment     hadjustment_;

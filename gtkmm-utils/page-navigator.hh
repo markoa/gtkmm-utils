@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils - tile-page-navigator.hh
+ *  gtkmm-utils - page-navigator.hh
  *
  *  Copyright (C) 2007 Marko Anastasov
  *
@@ -21,8 +21,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#ifndef __GTKMM_UTILS_TILE_PAGE_NAVIGATOR_HH__
-#define __GTKMM_UTILS_TILE_PAGE_NAVIGATOR_HH__
+#ifndef __GTKMM_UTILS_PAGE_NAVIGATOR_HH__
+#define __GTKMM_UTILS_PAGE_NAVIGATOR_HH__
 
 #include <memory>
 #include <gtkmm/box.h>
@@ -31,14 +31,17 @@ namespace Gtk {
 
 namespace Util {
 
-class TilePageNavigator : public Gtk::HBox
+/**
+ * \brief Navigation bar.
+ */
+class PageNavigator : public Gtk::HBox
 {
 public:
     typedef sigc::signal<void> SignalClickedNext;
     typedef sigc::signal<void> SignalClickedPrevious;
 
-    explicit TilePageNavigator();
-    ~TilePageNavigator();
+    explicit PageNavigator();
+    ~PageNavigator();
 
     void set_title(const Glib::ustring& title);
     void set_title_markup(const Glib::ustring& marked_up_title);
@@ -54,12 +57,12 @@ protected:
 
 private:
     // Non-copyable:
-    TilePageNavigator(const TilePageNavigator& );
-    TilePageNavigator& operator=(const TilePageNavigator& );
+    PageNavigator(const PageNavigator& );
+    PageNavigator& operator=(const PageNavigator& );
 };
 
 } // namespace Util
 
 } // namespace Gtk
 
-#endif // __GTKMM_UTILS_TILE_PAGE_NAVIGATOR_HH__
+#endif // __GTKMM_UTILS_PAGE_NAVIGATOR_HH__

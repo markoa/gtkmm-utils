@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils - tile-page-navigator.cc
+ *  gtkmm-utils - page-navigator.cc
  *
  *  Copyright (C) 2007 Marko Anastasov
  *
@@ -26,15 +26,15 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 #include <gtkmm/stock.h>
-#include "tile-page-navigator.hh"
+#include "page-navigator.hh"
 
 namespace Gtk {
 
 namespace Util {
 
-/* TilePageNavigator::Private */
+/* PageNavigator::Private */
 
-class TilePageNavigator::Private
+class PageNavigator::Private
 {
 public:
     Private();
@@ -44,8 +44,8 @@ public:
     void on_button_next_clicked();
     void on_button_previous_clicked();
 
-    TilePageNavigator::SignalClickedNext     signal_clicked_next;
-    TilePageNavigator::SignalClickedPrevious signal_clicked_previous;
+    PageNavigator::SignalClickedNext     signal_clicked_next;
+    PageNavigator::SignalClickedPrevious signal_clicked_previous;
 
     Glib::ustring  title;
 
@@ -59,7 +59,7 @@ public:
     Gtk::Image     image_next;
 };
 
-TilePageNavigator::Private::Private()
+PageNavigator::Private::Private()
     :
     title(),
     align_box(0.0, 1.0, 1.0, 1.0),
@@ -90,32 +90,32 @@ TilePageNavigator::Private::Private()
 }
 
 void
-TilePageNavigator::Private::on_button_next_clicked()
+PageNavigator::Private::on_button_next_clicked()
 {
     signal_clicked_next.emit();
 }
 
 void
-TilePageNavigator::Private::on_button_previous_clicked()
+PageNavigator::Private::on_button_previous_clicked()
 {
     signal_clicked_previous.emit();
 }
 
 void
-TilePageNavigator::Private::connect_signals()
+PageNavigator::Private::connect_signals()
 {
     button_next.signal_clicked().connect(
         sigc::mem_fun(*this,
-                      &TilePageNavigator::Private::on_button_next_clicked));
+                      &PageNavigator::Private::on_button_next_clicked));
 
     button_previous.signal_clicked().connect(
         sigc::mem_fun(*this,
-                      &TilePageNavigator::Private::on_button_previous_clicked));
+                      &PageNavigator::Private::on_button_previous_clicked));
 }
 
-/* TilePageNavigator */
+/* PageNavigator */
 
-TilePageNavigator::TilePageNavigator()
+PageNavigator::PageNavigator()
 {
     priv_.reset(new Private());
 
@@ -126,36 +126,36 @@ TilePageNavigator::TilePageNavigator()
     show_all();
 }
 
-TilePageNavigator::~TilePageNavigator()
+PageNavigator::~PageNavigator()
 {
 }
 
 void
-TilePageNavigator::set_title(const Glib::ustring& title)
+PageNavigator::set_title(const Glib::ustring& title)
 {
     priv_->label_title.set_text(title);
 }
 
 void
-TilePageNavigator::set_title_markup(const Glib::ustring& marked_up_title)
+PageNavigator::set_title_markup(const Glib::ustring& marked_up_title)
 {
     priv_->label_title.set_markup(marked_up_title);
 }
 
 void
-TilePageNavigator::set_page_info(const Glib::ustring& info)
+PageNavigator::set_page_info(const Glib::ustring& info)
 {
     priv_->label_page_info.set_text(info);
 }
 
-TilePageNavigator::SignalClickedNext&
-TilePageNavigator::signal_clicked_next()
+PageNavigator::SignalClickedNext&
+PageNavigator::signal_clicked_next()
 {
     return priv_->signal_clicked_next;
 }
 
-TilePageNavigator::SignalClickedPrevious&
-TilePageNavigator::signal_clicked_previous()
+PageNavigator::SignalClickedPrevious&
+PageNavigator::signal_clicked_previous()
 {
     return priv_->signal_clicked_previous;
 }

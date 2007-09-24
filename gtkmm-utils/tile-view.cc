@@ -59,7 +59,7 @@ TileView::TileView(bool use_page_view)
     tiles_per_page_(TILES_PER_PAGE_DEFAULT),
     current_page_(1)
 {
-    navigator_.reset(new TilePageNavigator());
+    navigator_.reset(new PageNavigator());
     pack_start(*navigator_, false, true, 0);
 
     scrolled_window_.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
