@@ -209,6 +209,12 @@ TileView::set_tiles_per_page(int tiles_per_page)
 
     tiles_per_page_ = tiles_per_page;
 
+    if (tiles_per_page_ * current_page_ > static_cast<int>(tiles_.size())) {
+        // In case when the current page number wouldn't exist under new
+        // tiles_per_page_ (increased) value, just go back to the first page.
+        current_page_ = 1;
+    }
+
     update_tile_data();
     reload_container();
     update_navigator_page_info_label();
