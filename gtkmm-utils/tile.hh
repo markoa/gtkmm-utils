@@ -121,7 +121,7 @@ public:
     /**
      * \brief Escapes and sets a new summary on the Tile.
      *
-     * \param title new summary string.
+     * \param summary new summary string.
      */
     virtual void          set_summary(const Glib::ustring& summary);
 
