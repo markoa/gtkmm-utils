@@ -47,8 +47,6 @@ const int TILES_PER_PAGE_DEFAULT = 20;
 class TileView : public Gtk::VBox
 {
 public:
-    typedef sigc::slot<void, Tile&> SlotForEachTile;
-
     /**
      * \brief Signal emmitted when user double-clicks, or pressed the Return
      * key on a Tile in the container.
@@ -58,9 +56,24 @@ public:
     typedef sigc::signal<void, Tile&> SignalTileActivated;
 
     /**
+     * \brief Slot used to iterate over child Tile widgets.
+     *
+     * \see for_each_tile()
+     */
+    typedef sigc::slot<void, Tile&> SlotForEachTile;
+
+    /**
      * \brief Constructs a new TileView.
+     *
+     * \param use_page_view  when <tt>true</tt>, indicates that tiles should be
+     * separated into pages; when <tt>false</tt>, all tiles will be displayed
+     * at once.
      */
     explicit TileView(bool use_page_view = true);
+
+    /**
+     * TileView destructor.
+     */
     virtual ~TileView();
 
     /**
@@ -84,16 +97,57 @@ public:
      */
     virtual Tile* get_selection();
 
+    /**
+     * \brief Calls a supplied function for each child Tile.
+     *
+     * \param slot  user function to call
+     */
     virtual void for_each_tile(const SlotForEachTile& slot);
 
+    /**
+     * \brief Shows or hides a TilePageNavigator above the content.
+     *
+     * \param show  indicates whether to show or hide the navigation bar
+     */
     virtual void show_page_navigator(bool show = true);
 
+    /**
+     * \brief Sets a custom title in the TilePageNavigator above the content.
+     *
+     * \param title  a string
+     */
     virtual void set_navigator_title(const Glib::ustring& title);
+
+    /**
+     * \brief Sets a custom markup on the title in the TilePageNavigator
+     * above the content.
+     *
+     * \param marked_up_title  escaped markup string; escape strings with
+     * Glib::Markup::escape_text()
+     */
     virtual void set_navigator_title_markup(const Glib::ustring& marked_up_title);
 
+    /**
+     * \brief Sets the display style.
+     *
+     * \param use_page_view  when <tt>true</tt>, indicates that tiles should be
+     * separated into pages; when <tt>false</tt>, all tiles will be displayed
+     * at once
+     */
     virtual void set_page_view(bool use_page_view = true);
 
+    /**
+     * \brief Sets the number of tiles displayed in one page.
+     *
+     * \param tiles_per_page  a new number of tiles to be displayed in one page
+     */
     virtual void set_tiles_per_page(int tiles_per_page);
+
+    /**
+     * \brief Gets the current number of tiles displayed in one page.
+     *
+     * \return  the number of tiles displayed in one page
+     */
     virtual int  get_tiles_per_page() const;
 
     /**
