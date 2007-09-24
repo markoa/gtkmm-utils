@@ -28,6 +28,7 @@
 #include <gtkmm/eventbox.h>
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
+#include <memory>
 
 namespace Gtk {
 
@@ -146,21 +147,8 @@ protected:
     virtual bool on_key_press_event(GdkEventKey* event);
     virtual bool on_focus_in_event(GdkEventFocus* event);
 
-    // Signals
-    SignalSelected     signal_selected_;
-    SignalActivated    signal_activated_;
-
-    // Child widgets
-    Gtk::HBox  root_hbox_;
-    Gtk::Image image_;
-    Gtk::VBox  content_vbox_;
-    Gtk::Label title_label_;
-    Gtk::Label summary_label_;
-
-    // Data members
-    Glib::ustring title_;
-    Glib::ustring summary_;
-    bool          paint_white_;
+    struct Private;
+    std::auto_ptr<Private> priv_;
 
 private:
     // Non-copyable
