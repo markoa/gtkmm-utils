@@ -199,6 +199,7 @@ TileView::set_page_view(bool use_page_view)
 
     update_tile_data();
     reload_container();
+    update_navigator_page_info_label();
 }
 
 void
@@ -210,6 +211,7 @@ TileView::set_tiles_per_page(int tiles_per_page)
 
     update_tile_data();
     reload_container();
+    update_navigator_page_info_label();
 }
 
 int

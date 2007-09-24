@@ -34,9 +34,20 @@ public:
     virtual ~ExampleWindow();
 
 protected:
+    void connect_signals();
+
+    // Widget signal handlers
+    void on_show_navigation_clicked();
+    void on_tiles_per_page_changed();
     void on_tile_activated(Gtk::Util::Tile& tile);
 
     Gtk::VBox vbox_;
     Gtk::Util::TileView tile_view_;
     std::list<std::tr1::shared_ptr<Gtk::Util::Tile> > tiles_;
+
+    Gtk::CheckButton show_navigation_;
+    // tpp = tiles per page
+    Gtk::HBox       tpp_box_;
+    Gtk::Label      tpp_label_;
+    Gtk::SpinButton tpp_spin_;
 };

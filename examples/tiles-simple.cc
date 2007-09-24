@@ -27,17 +27,18 @@
 using std::tr1::shared_ptr;
 
 ExampleWindow::ExampleWindow()
+    :
+    show_navigation_("Show navigation bar"),
+    tpp_label_("Tiles per page"),
+    tpp_spin_(1.0, 0)
 {
     set_border_width(10);
-    set_default_size(300, 200);
+    set_default_size(300, 300);
 
     add(vbox_);
 
-    tile_view_.signal_tile_activated().connect(
-        sigc::mem_fun(*this, &ExampleWindow::on_tile_activated));
-
     tile_view_.set_navigator_title_markup(
-        "<span weight=\"bold\">Showing tiles</span>");
+        "<span weight=\"bold\">Showing items</span>");
     tile_view_.set_tiles_per_page(2);
 
     shared_ptr<Gtk::Util::Tile> tile1(
@@ -68,11 +69,57 @@ ExampleWindow::ExampleWindow()
 
     vbox_.pack_start(tile_view_);
 
+    show_navigation_.set_active(true);
+    vbox_.pack_start(show_navigation_, false, false, 0);
+
+    Gtk::Adjustment* adj = tpp_spin_.get_adjustment();
+    adj->set_value(2);
+    adj->set_lower(1);
+    adj->set_upper(50);
+    adj->set_step_increment(1);
+
+    tpp_spin_.set_value(2.0);
+
+    tpp_box_.pack_start(tpp_label_);
+    tpp_box_.pack_start(tpp_spin_);
+    vbox_.pack_start(tpp_box_, false, false, 0);
+
     show_all_children();
+
+    connect_signals();
 }
 
 ExampleWindow::~ExampleWindow()
 {
+}
+
+void
+ExampleWindow::connect_signals()
+{
+    show_navigation_.signal_clicked().connect(
+        sigc::mem_fun(*this, &ExampleWindow::on_show_navigation_clicked));
+
+    tpp_spin_.signal_value_changed().connect(
+        sigc::mem_fun(*this, &ExampleWindow::on_tiles_per_page_changed));
+
+    tile_view_.signal_tile_activated().connect(
+        sigc::mem_fun(*this, &ExampleWindow::on_tile_activated));
+}
+
+void
+ExampleWindow::on_show_navigation_clicked()
+{
+    if (show_navigation_.get_active())
+        tile_view_.show_page_navigator(true);
+    else
+        tile_view_.show_page_navigator(false);
+}
+
+void
+ExampleWindow::on_tiles_per_page_changed()
+{
+    int count = tpp_spin_.get_value_as_int();
+    tile_view_.set_tiles_per_page(count);
 }
 
 void
