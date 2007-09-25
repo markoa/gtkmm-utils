@@ -25,7 +25,7 @@
 #define __GTKMM_UTILS_PAGE_NAVIGATOR_HH__
 
 #include <memory>
-#include <gtkmm/box.h>
+#include <gtkmm/eventbox.h>
 
 namespace Gtk {
 
@@ -44,14 +44,22 @@ namespace Util {
  * label should inform the user of the current position, ie its value should
  * be dynamically updated to something like 'x - y of z'.
  */
-class PageNavigator : public Gtk::HBox
+class PageNavigator : public Gtk::EventBox
 {
 public:
-    /// \brief Signal emmitted when a next page is requested.
-    typedef sigc::signal<void> SignalClickedNext;
+    /** \brief Signal emmitted when a next page is requested.
+     *
+     * This could be when a corresponding button has been clicked on,
+     * or when a mouse wheel is scrolled down within the navigation bar.
+     */
+    typedef sigc::signal<void> SignalNext;
 
-    /// \brief Signal emmitted when a previous page is requested.
-    typedef sigc::signal<void> SignalClickedPrevious;
+    /** \brief Signal emmitted when a previous page is requested.
+     *
+     * This could be when a corresponding button has been clicked on,
+     * or when a mouse wheel is scrolled up within the navigation bar.
+     */
+    typedef sigc::signal<void> SignalPrevious;
 
     /// \brief Constructs a new PageNavigator.
     explicit PageNavigator();
@@ -84,20 +92,22 @@ public:
     void set_page_info(const Glib::ustring& info);
 
     /**
-     * \brief Returns a SignalClickedNext, which you can connect to.
+     * \brief Returns a SignalNext, which you can connect to.
      *
-     * \return a SignalClickedNext reference
+     * \return a SignalNext reference
      */
-    SignalClickedNext& signal_clicked_next();
+    SignalNext& signal_next();
 
     /**
-     * \brief Returns a SignalClickedPrevious, which you can connect to.
+     * \brief Returns a SignalPrevious, which you can connect to.
      *
-     * \return a SignalClickedPrevious reference
+     * \return a SignalPrevious reference
      */
-    SignalClickedPrevious& signal_clicked_previous();
+    SignalPrevious& signal_previous();
     
 protected:
+    virtual bool on_scroll_event(GdkEventScroll* event);
+
     struct Private;
     std::auto_ptr<Private> priv_;
 

@@ -132,10 +132,10 @@ TileView::Private::Private(bool use_page_view)
 void
 TileView::Private::connect_signals()
 {
-    navigator_->signal_clicked_next().connect(
+    navigator_->signal_next().connect(
         sigc::mem_fun(*this, &TileView::Private::on_show_next_page));
 
-    navigator_->signal_clicked_previous().connect(
+    navigator_->signal_previous().connect(
         sigc::mem_fun(*this, &TileView::Private::on_show_previous_page));
 }
 

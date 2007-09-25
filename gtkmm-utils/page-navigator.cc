@@ -22,6 +22,7 @@
  */
 
 #include <gtkmm/alignment.h>
+#include <gtkmm/box.h>
 #include <gtkmm/button.h>
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
@@ -44,11 +45,12 @@ public:
     void on_button_next_clicked();
     void on_button_previous_clicked();
 
-    PageNavigator::SignalClickedNext     signal_clicked_next;
-    PageNavigator::SignalClickedPrevious signal_clicked_previous;
+    PageNavigator::SignalNext     signal_next;
+    PageNavigator::SignalPrevious signal_previous;
 
     Glib::ustring  title;
 
+    Gtk::HBox      root_box;
     Gtk::Alignment align_box;
     Gtk::HBox      label_box;
     Gtk::Label     label_title;
@@ -62,6 +64,7 @@ public:
 PageNavigator::Private::Private()
     :
     title(),
+    root_box(),
     align_box(0.0, 1.0, 1.0, 1.0),
     label_box(false, 0),
     label_title(title),
@@ -72,6 +75,7 @@ PageNavigator::Private::Private()
     image_next(Gtk::Stock::GO_FORWARD, Gtk::ICON_SIZE_SMALL_TOOLBAR)
 {
     align_box.set_padding(18, 3, 0, 0);
+    root_box.pack_start(align_box, false, true, 0);
     
     align_box.add(label_box);
     label_box.set_spacing(5);
@@ -82,9 +86,11 @@ PageNavigator::Private::Private()
     
     button_next.set_relief(Gtk::RELIEF_NONE);
     button_next.add(image_next);
+    root_box.pack_end(button_next, false, true, 0);
     
     button_previous.set_relief(Gtk::RELIEF_NONE);
     button_previous.add(image_previous);
+    root_box.pack_end(button_previous, false, true, 0);
 
     connect_signals();
 }
@@ -92,13 +98,13 @@ PageNavigator::Private::Private()
 void
 PageNavigator::Private::on_button_next_clicked()
 {
-    signal_clicked_next.emit();
+    signal_next.emit();
 }
 
 void
 PageNavigator::Private::on_button_previous_clicked()
 {
-    signal_clicked_previous.emit();
+    signal_previous.emit();
 }
 
 void
@@ -119,9 +125,8 @@ PageNavigator::PageNavigator()
 {
     priv_.reset(new Private());
 
-    pack_start(priv_->align_box, false, true, 0);
-    pack_end(priv_->button_next, false, true, 0);
-    pack_end(priv_->button_previous, false, true, 0);
+    add(priv_->root_box);
+    show_all();
     
     show_all();
 }
@@ -148,16 +153,27 @@ PageNavigator::set_page_info(const Glib::ustring& info)
     priv_->label_page_info.set_text(info);
 }
 
-PageNavigator::SignalClickedNext&
-PageNavigator::signal_clicked_next()
+PageNavigator::SignalNext&
+PageNavigator::signal_next()
 {
-    return priv_->signal_clicked_next;
+    return priv_->signal_next;
 }
 
-PageNavigator::SignalClickedPrevious&
-PageNavigator::signal_clicked_previous()
+PageNavigator::SignalPrevious&
+PageNavigator::signal_previous()
 {
-    return priv_->signal_clicked_previous;
+    return priv_->signal_previous;
+}
+
+bool
+PageNavigator::on_scroll_event(GdkEventScroll* event)
+{
+    if (event->direction == GDK_SCROLL_UP)
+        priv_->signal_previous.emit();
+    else if (event->direction == GDK_SCROLL_DOWN)
+        priv_->signal_next.emit();
+
+    return false;
 }
 
 } // namespace Util
