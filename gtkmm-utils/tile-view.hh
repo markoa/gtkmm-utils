@@ -158,46 +158,10 @@ public:
     SignalTileActivated& signal_tile_activated();
 
 protected:
-    struct TileData;
+    struct Private;
+    std::auto_ptr<Private> priv_;
 
-    virtual void connect_signals();
-
-    virtual void add_tile_widget(Tile* tile);
-
-    virtual void update_tile_data();
-    virtual void reload_container();
-
-    virtual void update_navigator_page_info_label();
-
-    virtual int get_page_count() const;
-
-    // Tile signal handlers
-    virtual void on_tile_selected(Tile& tile);
-    virtual void on_tile_activated(Tile& tile);
-
-    // TilePageNavigator signal handlers
-    virtual void on_show_next_page();
-    virtual void on_show_previous_page();
-
-    // Child widgets
-    std::auto_ptr<PageNavigator> navigator_;
-
-    Gtk::ScrolledWindow scrolled_window_;
-    Gtk::Adjustment     hadjustment_;
-    Gtk::Adjustment     vadjustment_;
-    Gtk::Viewport       viewport_;
-    WhiteBox            whitebox_;
-
-    // Tile content internals
-    std::list<std::tr1::shared_ptr<TileData> > tiles_;
-    Tile* selected_tile_;
-
-    bool paginate_;
-    int  tiles_per_page_;
-    int  current_page_;
-
-    // Signals
-    SignalTileActivated signal_tile_activated_;
+    void on_show_request();
 
 private:
     // Non-copyable

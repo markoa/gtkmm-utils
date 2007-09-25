@@ -28,12 +28,13 @@ namespace Gtk {
 
 namespace Util {
 
+using std::auto_ptr;
 using std::list;
 using std::tr1::shared_ptr;
 
-/* TileView::TileData */
+/* TileData */
 
-class TileView::TileData
+class TileData
 {
 public:
     TileData() : tile(0), page(1) {}
@@ -43,11 +44,65 @@ public:
     int   page;
 };
 
-typedef list<shared_ptr<TileView::TileData> >::iterator tile_data_iter;
+typedef list<shared_ptr<TileData> >::iterator tile_data_iter;
 
-/* TileView */
+/* TileView::Private */
 
-TileView::TileView(bool use_page_view)
+class TileView::Private
+{
+public:
+    explicit Private(bool use_page_view);
+    ~Private() {}
+
+    void connect_signals();
+
+    void add_tile(shared_ptr<TileData> td);
+    void add_tile_widget(Tile* tile);
+
+    void for_each_tile(const SlotForEachTile& slot);
+
+    void set_page_view(bool use_page_view);
+    void set_tiles_per_page(int tiles_per_page);
+
+    void update_tile_data();
+    void reload_container();
+
+    void show_page_navigator(bool show);
+    void update_navigator_page_info_label();
+
+    int get_page_count() const;
+
+    // Tile signal handlers
+    void on_tile_selected(Tile& tile);
+    void on_tile_activated(Tile& tile);
+
+    // TilePageNavigator signal handlers
+    void on_show_next_page();
+    void on_show_previous_page();
+
+    // Child widgets
+    auto_ptr<PageNavigator> navigator_;
+
+    Gtk::ScrolledWindow scrolled_window_;
+    Gtk::Adjustment     hadjustment_;
+    Gtk::Adjustment     vadjustment_;
+    Gtk::Viewport       viewport_;
+    WhiteBox            whitebox_;
+
+    // Tile content internals
+    std::list<shared_ptr<TileData> > tiles_;
+    Tile* selected_tile_;
+
+    bool paginate_;
+    int  tiles_per_page_;
+    int  current_page_;
+
+    // Signals
+    SignalTileActivated signal_tile_activated_;
+    sigc::signal<void>  signal_show_request_;
+};
+
+TileView::Private::Private(bool use_page_view)
     :
     scrolled_window_(),
     hadjustment_(0, 0, 0, 0),
@@ -60,11 +115,9 @@ TileView::TileView(bool use_page_view)
     current_page_(1)
 {
     navigator_.reset(new PageNavigator());
-    pack_start(*navigator_, false, true, 0);
 
     scrolled_window_.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
     scrolled_window_.set_shadow_type(Gtk::SHADOW_IN);
-    pack_start(scrolled_window_, true, true, 0);
 
     viewport_.set_resize_mode(Gtk::RESIZE_PARENT);
     viewport_.set_shadow_type(Gtk::SHADOW_IN);
@@ -76,25 +129,19 @@ TileView::TileView(bool use_page_view)
     connect_signals();
 }
 
-TileView::~TileView()
-{
-}
-
 void
-TileView::connect_signals()
+TileView::Private::connect_signals()
 {
     navigator_->signal_clicked_next().connect(
-        sigc::mem_fun(*this, &TileView::on_show_next_page));
+        sigc::mem_fun(*this, &TileView::Private::on_show_next_page));
 
     navigator_->signal_clicked_previous().connect(
-        sigc::mem_fun(*this, &TileView::on_show_previous_page));
+        sigc::mem_fun(*this, &TileView::Private::on_show_previous_page));
 }
 
 void
-TileView::add_tile(Tile& tile)
+TileView::Private::add_tile(shared_ptr<TileData> tdata)
 {
-    shared_ptr<TileData> tdata(new TileData());
-    tdata->tile = &tile;
     tiles_.push_back(tdata);
 
     int tile_count = tiles_.size();
@@ -110,58 +157,40 @@ TileView::add_tile(Tile& tile)
         tdata->page = 1;
 
     if (tdata->page == current_page_)
-        add_tile_widget(&tile);
+        add_tile_widget(tdata->tile);
 
     update_navigator_page_info_label();
 }
 
 void
-TileView::add_tile(Tile* tile)
-{
-    add_tile(*tile);
-}
-
-void
-TileView::add_tile_widget(Tile* tile)
+TileView::Private::add_tile_widget(Tile* tile)
 {
     Gtk::Box& wb_box = whitebox_.get_root_vbox();
     wb_box.pack_start(*tile, false, false, 0);
 
     tile->signal_selected().connect(
-        sigc::mem_fun(*this, &TileView::on_tile_selected));
+        sigc::mem_fun(*this, &TileView::Private::on_tile_selected));
 
     tile->signal_activated().connect(
-        sigc::mem_fun(*this, &TileView::on_tile_activated));
+        sigc::mem_fun(*this, &TileView::Private::on_tile_activated));
 
-    show_all();
-}
-
-Tile*
-TileView::get_selection()
-{
-    return selected_tile_;
-}
-
-TileView::SignalTileActivated&
-TileView::signal_tile_activated()
-{
-    return signal_tile_activated_;
+    signal_show_request_.emit();
 }
 
 void
-TileView::on_tile_selected(Tile& tile)
+TileView::Private::on_tile_selected(Tile& tile)
 {
     selected_tile_ = &tile;
 }
 
 void
-TileView::on_tile_activated(Tile& tile)
+TileView::Private::on_tile_activated(Tile& tile)
 {
     signal_tile_activated_.emit(tile);
 }
 
 void
-TileView::for_each_tile(const SlotForEachTile& slot)
+TileView::Private::for_each_tile(const SlotForEachTile& slot)
 {
     tile_data_iter it(tiles_.begin());
     tile_data_iter end(tiles_.end());
@@ -172,28 +201,7 @@ TileView::for_each_tile(const SlotForEachTile& slot)
 }
 
 void
-TileView::show_page_navigator(bool show)
-{
-    if (show)
-        navigator_->show();
-    else
-        navigator_->hide();
-}
-
-void
-TileView::set_navigator_title(const Glib::ustring& title)
-{
-    navigator_->set_title(title);
-}
-
-void
-TileView::set_navigator_title_markup(const Glib::ustring& marked_up_title)
-{
-    navigator_->set_title_markup(marked_up_title);
-}
-
-void
-TileView::set_page_view(bool use_page_view)
+TileView::Private::set_page_view(bool use_page_view)
 {
     paginate_ = use_page_view;
 
@@ -209,7 +217,7 @@ TileView::set_page_view(bool use_page_view)
 }
 
 void
-TileView::set_tiles_per_page(int tiles_per_page)
+TileView::Private::set_tiles_per_page(int tiles_per_page)
 {
     if (tiles_per_page <= 0) return;
 
@@ -226,14 +234,8 @@ TileView::set_tiles_per_page(int tiles_per_page)
     update_navigator_page_info_label();
 }
 
-int
-TileView::get_tiles_per_page() const
-{
-    return tiles_per_page_;
-}
-
 void
-TileView::update_tile_data()
+TileView::Private::update_tile_data()
 {
     if (tiles_.empty()) return;
 
@@ -260,7 +262,7 @@ TileView::update_tile_data()
 }
 
 void
-TileView::reload_container()
+TileView::Private::reload_container()
 {
     if (tiles_.empty()) return;
 
@@ -287,7 +289,16 @@ TileView::reload_container()
 }
 
 void
-TileView::update_navigator_page_info_label()
+TileView::Private::show_page_navigator(bool show)
+{
+    if (show)
+        navigator_->show();
+    else
+        navigator_->hide();
+}
+
+void
+TileView::Private::update_navigator_page_info_label()
 {
     int show_start = (current_page_ - 1) * tiles_per_page_ + 1;
     int show_end = 0;
@@ -310,7 +321,7 @@ TileView::update_navigator_page_info_label()
 }
 
 void
-TileView::on_show_next_page()
+TileView::Private::on_show_next_page()
 {
     if (! paginate_) return;
 
@@ -322,7 +333,7 @@ TileView::on_show_next_page()
 }
 
 void
-TileView::on_show_previous_page()
+TileView::Private::on_show_previous_page()
 {
     if ((! paginate_) || (current_page_ == 1)) return;
 
@@ -332,7 +343,7 @@ TileView::on_show_previous_page()
 }
 
 int
-TileView::get_page_count() const
+TileView::Private::get_page_count() const
 {
     int page_count = 1;
 
@@ -346,6 +357,99 @@ TileView::get_page_count() const
         ++page_count;
 
     return page_count;
+}
+
+/* TileView */
+
+TileView::TileView(bool use_page_view)
+{
+    priv_.reset(new Private(use_page_view));
+
+    pack_start(*(priv_->navigator_), false, true, 0);
+    pack_start(priv_->scrolled_window_, true, true, 0);
+
+    priv_->signal_show_request_.connect(
+        sigc::mem_fun(*this, &TileView::on_show_request));
+
+    show_all();
+}
+
+TileView::~TileView()
+{
+}
+
+void
+TileView::add_tile(Tile& tile)
+{
+    shared_ptr<TileData> tdata(new TileData());
+    tdata->tile = &tile;
+    priv_->add_tile(tdata);
+}
+
+void
+TileView::add_tile(Tile* tile)
+{
+    add_tile(*tile);
+}
+
+Tile*
+TileView::get_selection()
+{
+    return priv_->selected_tile_;
+}
+
+TileView::SignalTileActivated&
+TileView::signal_tile_activated()
+{
+    return priv_->signal_tile_activated_;
+}
+
+void
+TileView::for_each_tile(const SlotForEachTile& slot)
+{
+    priv_->for_each_tile(slot);
+}
+
+void
+TileView::show_page_navigator(bool show)
+{
+    priv_->show_page_navigator(show);
+}
+
+void
+TileView::set_navigator_title(const Glib::ustring& title)
+{
+    priv_->navigator_->set_title(title);
+}
+
+void
+TileView::set_navigator_title_markup(const Glib::ustring& marked_up_title)
+{
+    priv_->navigator_->set_title_markup(marked_up_title);
+}
+
+void
+TileView::set_page_view(bool use_page_view)
+{
+    priv_->set_page_view(use_page_view);
+}
+
+void
+TileView::set_tiles_per_page(int tiles_per_page)
+{
+    priv_->set_tiles_per_page(tiles_per_page);
+}
+
+int
+TileView::get_tiles_per_page() const
+{
+    return priv_->tiles_per_page_;
+}
+
+void
+TileView::on_show_request()
+{
+    show_all();
 }
 
 } // namespace Util
