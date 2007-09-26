@@ -38,6 +38,11 @@ but rather an important clarification: the (target) API version is 1.0, while
 the releases are currently 0.x. This also means that from now on the headers
 will be installed in $prefix/include/gtkmm-utils-1.0/gtkmm-utils/.
 
+The option to build with GCC visibility support, which has been present in 0.1
+but not used effectively, is for now removed (commented) due to significant
+problems it may cause when compiling. There is a separate branch 'visibility'
+in the repository where work related to this is kept.
+
 Release 0.1.0 (2007-08-26)
 ==========================
 
