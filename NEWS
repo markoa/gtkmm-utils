@@ -10,7 +10,7 @@ extensibility not available when building a GtkTreeView-based interface.
 Very similar UI components are currently used by the Beagle search
 tool (http://beagle-project.org). This release introduces the Tile widget,
 TileView, a container, and optional PageNavigator, which can together provide
-an integrated page-separated view.
+an integrated page-separated view. An example is provided.
 
 Logging
 -------
@@ -18,6 +18,11 @@ Logging
 The logging framework is now optionally thread-aware, which means that calling
 Initializer::do_init() (ie initializing Glib threading) is not obligatory
 any more (bug #21008, Jonathon Jongsma).
+
+Minor API additions
+-------------------
+
+uprintf(), a printf for Glib::ustring.
 
 Documentation
 -------------
