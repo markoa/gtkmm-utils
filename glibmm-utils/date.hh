@@ -32,17 +32,17 @@ namespace Util {
 
 /// \brief Returns current time formatted in representation
 /// for the current locale.
-/// \param time_str a string to hold the return value.
+/// \param date  a string to hold the return value.
 void get_current_date(Glib::ustring& date);
 
 /// \brief Returns current date formatted in representation
 /// for the current locale.
-/// \param time_str a string to hold the return value.
+/// \param time  a string to hold the return value.
 void get_current_time(Glib::ustring& time);
 
 /// \brief Returns current date and time formatted in representation
 /// for the current locale.
-/// \param time_str a string to hold the return value.
+/// \param datetime  a string to hold the return value.
 void get_current_datetime(Glib::ustring& datetime);
 
 /// \brief Returns a modification date in GTK+ style.

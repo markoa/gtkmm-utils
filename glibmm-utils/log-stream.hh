@@ -77,7 +77,7 @@ public:
     /// \param a_type the type of the log stream
     static void set_stream_type (enum StreamType a_type) ;
 
-    /// \brief gets the type of the instances of #LogStream
+    /// \brief gets the type of the instances of LogStream
     /// \return the stream type as set by LogStream::set_stream_type().
     static enum StreamType get_stream_type () ;
 
@@ -108,8 +108,8 @@ public:
     /// only streams that have the same domain as the one set here will
     /// be logging data.
     /// \param a_domain the domain name.
-    /// \a_len the length of the domain name. If <0, it means that a_domain
-    /// is a zero terminated string.
+    /// \param a_len the length of the domain name.
+    /// If <0, it means that <tt>a_domain</tt> is a zero terminated string.
     static void set_log_domain_filter (const char* a_domain, long a_len=-1) ;
 
     /// \brief activate/de-activate the logging.
@@ -127,11 +127,11 @@ public:
     static LogStream& default_log_stream () ;
 
 
-    /// \brief default constructor of a log stream
+    /// \brief default constructor of a LogStream.
     /// \param a_level the log level of the stream. This stream
     /// will log data if its log level is inferior or equal to
     /// the log level filter defined by LogStream::set_log_level_filter().
-    /// \param a_domain the log domain. A stream will log data if its
+    /// \param a_default_domain the log domain. A stream will log data if its
     /// its log level is <= to the log level filter, *and* if its domain equals
     /// the domain filter.
     LogStream (enum LogLevel a_level=LOG_LEVEL_NORMAL,
@@ -143,11 +143,12 @@ public:
     /// \brief enable or disable logging for a domain
     /// \param a_domain the domain to enable logging for
     /// \param a_do_enable when set to true, enables the logging for domain
-    /// @a_domain, disable it otherwise.
+    /// <tt>a_domain</tt>, disable it otherwise.
     void enable_domain (const string &a_domain,
                         bool a_do_enable=true) ;
 
-    /// \return true is logging is enabled for domain @a_domain
+    /// \return <tt>true</tt> if is logging is enabled
+    /// for domain <tt>a_domain</tt>
     bool is_domain_enabled (const string &a_domain) ;
 
     /// \brief writes a text string to the stream
@@ -196,11 +197,11 @@ public:
     LogStream& operator<< (int an_int) ;
     
     /// \brief log a guint
-    /// \param a_guint the guint to log
+    /// \param an_int the guint to log
     LogStream& operator<< (guint an_int) ;
 
     /// \brief log a double
-    /// \param the double to log
+    /// \param a_double the double to log
     LogStream& operator<< (double a_double) ;
 
     /// \brief log a character
