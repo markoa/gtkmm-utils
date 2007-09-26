@@ -1,0 +1,41 @@
+Release 0.2.0 (2007-09-27)
+==========================
+
+New Tile API
+------------
+
+Tiles are intuitive widgets for a better user experience, by default composed
+of an image, highlighted title and a short description. They offer important
+extensibility not available when building a GtkTreeView-based interface.
+Very similar UI components are currently used by the Beagle search
+tool (http://beagle-project.org). This release introduces the Tile widget,
+TileView, a container, and optional PageNavigator, which can together provide
+an integrated page-separated view.
+
+Logging
+-------
+
+The logging framework is now optionally thread-aware, which means that calling
+Initializer::do_init() (ie initializing Glib threading) is not obligatory
+any more (bug #21008, Jonathon Jongsma).
+
+Documentation
+-------------
+
+The Doxygen documentation has been updated to cover the tile API, while the
+existing has been corrected where necessary.
+
+Build scripts
+-------------
+
+The API version is now hardcoded to 1.0. It is does not mean that it is stable,
+but rather an important clarification: the (target) API version is 1.0, while
+the releases are currently 0.x. This also means that from now on the headers
+will be installed in $prefix/include/gtkmm-utils-1.0/gtkmm-utils/.
+
+Release 0.1.0 (2007-08-26)
+==========================
+
+Imported the logging framework originally written by Dodji Seketeli, available
+in Nemiver (http://home.gna.org/nemiver). Together with some date, option
+parsing, string and dialog utility function, it made the first release.
