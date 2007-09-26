@@ -25,6 +25,10 @@
 #define __GTKMM_UTILS_H__
 
 #include <gtkmm-utils/dialog.hh>
+#include <gtkmm-utils/page-navigator.hh>
+#include <gtkmm-utils/tile.hh>
+#include <gtkmm-utils/tile-view.hh>
+#include <gtkmm-utils/whitebox.hh>
 
 #endif // __GTKMM_UTILS_H__
 
