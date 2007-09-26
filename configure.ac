@@ -181,12 +181,12 @@ AC_SUBST(GTKMM_UTILS_CFLAGS)
 #########################################################################
 
 # gcc visibility support
-if test x$ENABLE_GCC_SYMBOLS_VISIBILITY = xyes && test x$host_cpu != xx86_64 ; then
-    AC_DEFINE(HAS_GCC_VISIBILITY_SUPPORT,1,[gcc visibility support])
-    REQUIRED_FLAGS="-fvisibility=hidden -fvisibility-inlines-hidden"
-else
-    REQUIRED_FLAGS=""
-fi
+#if test x$ENABLE_GCC_SYMBOLS_VISIBILITY = xyes && test x$host_cpu != xx86_64 ; then
+#    AC_DEFINE(HAS_GCC_VISIBILITY_SUPPORT,1,[gcc visibility support])
+#    REQUIRED_FLAGS="-fvisibility=hidden -fvisibility-inlines-hidden"
+#else
+#    REQUIRED_FLAGS=""
+#fi
 
 # CFLAGS, CXXFLAGS
 # Set the $GTKMM_UTILS_DEVEL environment variable
@@ -246,7 +246,6 @@ cat <<EOT
     C++ Compiler                    : ${CXX}
     Build documentation             : ${enable_documentation}
     GTKMM_UTILS_DEVEL env variable  : ${GTKMM_UTILS_DEVEL}
-    Enable symbols visibility ctrl  : ${ENABLE_GCC_SYMBOLS_VISIBILITY}
     CFLAGS                          : ${CFLAGS}
     CXXFLAGS                        : ${CXXFLAGS}
     GTKMM_UTILS_LIBS                : ${GTKMM_UTILS_LIBS}
