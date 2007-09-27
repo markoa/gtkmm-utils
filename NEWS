@@ -1,3 +1,22 @@
+Release 0.2.1 (2007-09-27)
+==========================
+
+Build scripts
+-------------
+
+Removed the -release flag from LDFLAGS for both glibmm-utils
+and gtkmm-utils. With this flag, releases would never be binary
+compatible with each other because each release would have a
+different soname.
+
+Link gtkmm-utils properly against glibmm-utils .la file in the
+top build directory. When building from a clean install (e.g.
+creating a Debian package), the build failed for gtkmm-utils
+due to undefined references to Gtk::Util::uprintf().
+
+Jonathon Jongsma spotted both of these problems and provided
+fixes for them.
+
 Release 0.2.0 (2007-09-27)
 ==========================
 
