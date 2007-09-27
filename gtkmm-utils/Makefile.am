@@ -28,4 +28,4 @@ lib_LTLIBRARIES = libgtkmm-utils.la
 
 libgtkmm_utils_la_SOURCES = $(hh_sources) $(cc_sources)
 libgtkmm_utils_la_LIBADD = $(top_builddir)/glibmm-utils/libglibmm-utils.la $(GTKMM_UTILS_LIBS)
-libgtkmm_utils_la_LDFLAGS = -export-dynamic -fPIC -version-info @LIBGTKMM_UTILS_SO_VERSION@ -release $(GTKMM_UTILS_RELEASE)
+libgtkmm_utils_la_LDFLAGS = -export-dynamic -fPIC -version-info @LIBGTKMM_UTILS_SO_VERSION@

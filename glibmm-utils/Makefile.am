@@ -34,4 +34,4 @@ lib_LTLIBRARIES = libglibmm-utils.la
 
 libglibmm_utils_la_SOURCES = $(hh_sources) $(cc_sources)
 libglibmm_utils_la_LIBADD = $(GLIBMM_LIBS) $(LIBGTHREAD_LIBS)
-libglibmm_utils_la_LDFLAGS = -export-dynamic -fPIC -version-info @LIBGTKMM_UTILS_SO_VERSION@ -release $(GTKMM_UTILS_RELEASE)
+libglibmm_utils_la_LDFLAGS = -export-dynamic -fPIC -version-info @LIBGTKMM_UTILS_SO_VERSION@
