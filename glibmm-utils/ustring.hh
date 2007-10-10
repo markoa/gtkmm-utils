@@ -43,6 +43,12 @@ public:
 std::vector<Glib::ustring> split(const Glib::ustring& str,
                                  const Glib::ustring& delim);
 
+void                       trim_left(Glib::ustring& str);
+
+void                       trim_right(Glib::ustring& str);
+
+void                       trim(Glib::ustring& str);
+
 template<typename T>
 inline Glib::ustring stringify(const T& x)
 {

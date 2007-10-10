@@ -55,17 +55,62 @@ split(const Glib::ustring& str, const Glib::ustring& delim)
     return result;
 }
 
+void
+trim_left(Glib::ustring& str)
+{
+    Glib::ustring::iterator it(str.begin());
+    Glib::ustring::iterator end(str.end());
+
+    for ( ; it != end; ++it)
+        if (! isspace(*it))
+            break;
+
+    if (it == str.end())
+        str.clear();
+    else
+        str.erase(str.begin(), it);
+}
+
+void
+trim_right(Glib::ustring& str)
+{
+    typedef Glib::ustring::iterator ustring_iter;
+
+    ustring_iter end(str.end());
+    ustring_iter it(--(str.end()));
+
+    for ( ; ; --it) {
+        if (! isspace(*it)) {
+            ustring_iter it_adv(it);
+            str.erase(++it_adv, str.end());
+            break;
+        }
+
+        if (it == str.begin()) {
+            str.clear();
+            break;
+        }
+    }
+}
+
+void
+trim(Glib::ustring& str)
+{
+    trim_left(str);
+    trim_right(str);
+}
+
 Glib::ustring
 uprintf(const Glib::ustring& format, ...)
 {
-  va_list args;
+    va_list args;
 
-  va_start(args, format);
-  gchar* cstr = g_strdup_vprintf(format.c_str(), args);
-  Glib::ustring str(cstr);
-  g_free(cstr);
+    va_start(args, format);
+    gchar* cstr = g_strdup_vprintf(format.c_str(), args);
+    Glib::ustring str(cstr);
+    g_free(cstr);
   
-  return str;
+    return str;
 }
 
 } // namespace Util
