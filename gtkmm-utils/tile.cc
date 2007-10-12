@@ -42,7 +42,8 @@ public:
     void set_summary(const Glib::ustring& summary);
 
     // Signals
-    SignalSelected  signal_selected_;
+    SignalSelection signal_selected_;
+    SignalSelection signal_unselected_;
     SignalActivated signal_activated_;
 
     // Widgets
@@ -184,10 +185,16 @@ Tile::set_summary(const Glib::ustring& summary)
     priv_->set_summary(summary);
 }
 
-Tile::SignalSelected&
+Tile::SignalSelection&
 Tile::signal_selected()
 {
     return priv_->signal_selected_;
+}
+
+Tile::SignalSelection&
+Tile::signal_unselected()
+{
+    return priv_->signal_unselected_;
 }
 
 Tile::SignalActivated&
@@ -288,8 +295,10 @@ Tile::on_button_press_event(GdkEventButton* event)
 {
     grab_focus();
 
-    if (event->type == GDK_2BUTTON_PRESS)
+    if (event->type == GDK_2BUTTON_PRESS) {
         priv_->signal_activated_.emit(*this);
+        on_activated();
+    }
 
     return false;
 }
@@ -298,8 +307,10 @@ bool
 Tile::on_key_press_event(GdkEventKey* event)
 {
     if ((event->type == GDK_KEY_PRESS) &&
-        ((event->keyval == GDK_Return) || (event->keyval == GDK_KP_Enter)))
+        ((event->keyval == GDK_Return) || (event->keyval == GDK_KP_Enter))) {
         priv_->signal_activated_.emit(*this);
+        on_activated();
+    }
 
     return false;
 }
@@ -308,7 +319,33 @@ bool
 Tile::on_focus_in_event(GdkEventFocus* event)
 {
     priv_->signal_selected_.emit(*this);
+    on_selected();
+
     return Gtk::EventBox::on_focus_in_event(event);
+}
+
+bool
+Tile::on_focus_out_event(GdkEventFocus* event)
+{
+    priv_->signal_unselected_.emit(*this);
+    on_unselected();
+
+    return Gtk::EventBox::on_focus_out_event(event);
+}
+
+void
+Tile::on_activated()
+{
+}
+
+void
+Tile::on_selected()
+{
+}
+
+void
+Tile::on_unselected()
+{
 }
 
 } // namespace Util

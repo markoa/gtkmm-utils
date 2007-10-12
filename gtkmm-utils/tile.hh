@@ -47,15 +47,16 @@ class Tile : public Gtk::EventBox
 {
 public:
     /**
-     * \brief Signal to indicate that the Tile has been selected.
+     * \brief Signature of signal emitted to indicate that the Tile has been
+     * selected (gained focus) or unselected (lost focus).
      *
      * \see TileView::get_selection()
      */
-    typedef sigc::signal<void, Tile&> SignalSelected;
+    typedef sigc::signal<void, Tile&> SignalSelection;
 
     /**
-     * \brief Signal emmitted when user double-clicks or presses the
-     * Return key on the Tile.
+     * \brief Signature of signal emmitted when user double-clicks
+     * or presses the Return key on a Tile.
      *
      * \see TileView::signal_tile_activated()
      */ 
@@ -127,14 +128,21 @@ public:
     virtual void set_summary(const Glib::ustring& summary);
 
     /**
-     * \brief Returns the SignalSelected, which you can connect to.
+     * \brief Returns the SignalSelection when the tile is selected.
      *
-     * \return a reference to the Tile's SignalSelected.
+     * \return a reference to the Tile's SignalSelection.
      */
-    SignalSelected& signal_selected();
+    SignalSelection& signal_selected();
 
     /**
-     * \brief Returns the SignalActivated, which you can connect to.
+     * \brief Returns the SignalSelection when the tile is unselected.
+     *
+     * \return a reference to the Tile's SignalSelection.
+     */
+    SignalSelection& signal_unselected();
+
+    /**
+     * \brief Returns the SignalActivated.
      *
      * \return a reference to the Tile's SignalActivated.
      */
@@ -146,6 +154,12 @@ protected:
     virtual bool on_button_press_event(GdkEventButton* event);
     virtual bool on_key_press_event(GdkEventKey* event);
     virtual bool on_focus_in_event(GdkEventFocus* event);
+    virtual bool on_focus_out_event(GdkEventFocus* event);
+
+    // Default signal handlers
+    virtual void on_activated();
+    virtual void on_selected();
+    virtual void on_unselected();
 
     struct Private;
     std::auto_ptr<Private> priv_;
