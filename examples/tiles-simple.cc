@@ -47,7 +47,7 @@ ExampleWindow::ExampleWindow()
     image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
 
     shared_ptr<Gtk::Util::Tile> tile2(
-        new Gtk::Util::Tile("Second tile", "Eggs and bacon"));
+        new Gtk::Util::Tile("Second tile", "Eggs and bacon", true, false));
     tile2->get_image().set(Gtk::Stock::CDROM, Gtk::ICON_SIZE_DIALOG);
 
     shared_ptr<Gtk::Util::Tile> tile3(

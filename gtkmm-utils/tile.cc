@@ -35,6 +35,7 @@ class Tile::Private
 public:
     explicit Private(const Glib::ustring& title,
                      const Glib::ustring& summary,
+                     bool pack_center,
                      bool paint_white);
     ~Private() {}
 
@@ -50,12 +51,15 @@ public:
     Gtk::HBox  root_hbox_;
     Gtk::Image image_;
     Gtk::VBox  content_vbox_;
+    Gtk::HBox  title_hbox_;
     Gtk::Label title_label_;
+    Gtk::HBox  summary_hbox_;
     Gtk::Label summary_label_;
 
     // Data members
     Glib::ustring title_;
     Glib::ustring summary_;
+    bool          pack_center_;
     bool          paint_white_;
 
 private:
@@ -65,48 +69,67 @@ private:
 
 Tile::Private::Private(const Glib::ustring& title,
                        const Glib::ustring& summary,
+                       bool pack_center,
                        bool paint_white)
     :
-    root_hbox_(),
+    root_hbox_(false, 10),
     image_(),
     content_vbox_(),
+    title_hbox_(),
     title_label_(),
+    summary_hbox_(),
     summary_label_(),
+    pack_center_(pack_center),
     paint_white_(paint_white)
 {
     // set up root hbox
     root_hbox_.set_border_width(5);
-    root_hbox_.set_spacing(2);
 
     // pack illustration image
     image_.show();
-    root_hbox_.pack_start(image_, false, false, 0);
+    root_hbox_.pack_start(image_, false, false);
 
     // prepare vbox to appear on the right hand side of the image
     content_vbox_.set_border_width(5);
-    content_vbox_.set_spacing(2);
+    content_vbox_.set_spacing(4);
 
     // set up the title label
     set_title(title);
-    title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
-    title_label_.set_max_width_chars(30);
+
+    // The way we currently pack the widgets, the ellipsize-ing has no effect.
+    //title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
+    //title_label_.set_max_width_chars(100);
     title_label_.modify_fg(Gtk::STATE_NORMAL,
                            root_hbox_.get_style()->get_fg(
                                Gtk::STATE_INSENSITIVE));
-    content_vbox_.pack_start(title_label_, false, false, 0);
+
+    if (pack_center_) {
+        content_vbox_.pack_start(title_label_, false, false);
+     }
+     else {
+         // We achieve left-alignedness by packing a widget in a HBox.
+         content_vbox_.pack_start(title_hbox_, false, false);
+         title_hbox_.pack_start(title_label_, false, false);
+     }
 
     // set up the summary label
     set_summary(summary);
-    summary_label_.set_ellipsize(Pango::ELLIPSIZE_END);
-    summary_label_.set_max_width_chars(30);
+    //summary_label_.set_ellipsize(Pango::ELLIPSIZE_END);
+    //summary_label_.set_max_width_chars(100);
     summary_label_.modify_fg(Gtk::STATE_NORMAL,
                              root_hbox_.get_style()->get_fg(
                                  Gtk::STATE_INSENSITIVE));
-    content_vbox_.pack_start(summary_label_, false, false, 0);
+    if (pack_center_) {
+        content_vbox_.pack_start(summary_label_, false, false);
+    }
+    else {
+        content_vbox_.pack_start(summary_hbox_, false, false);
+        summary_hbox_.pack_start(summary_label_, false, false);
+     }
 
     // wrap up
     content_vbox_.show_all();
-    root_hbox_.pack_start(content_vbox_);
+    root_hbox_.pack_start(content_vbox_, pack_center_, pack_center_);
 }
 
 void
@@ -131,11 +154,12 @@ Tile::Private::set_summary(const Glib::ustring& summary)
 
 Tile::Tile(const Glib::ustring& title,
            const Glib::ustring& summary,
+           bool pack_center,
            bool paint_white)
 {
     set_flags(Gtk::CAN_FOCUS);
 
-    priv_.reset(new Private(title, summary, paint_white));
+    priv_.reset(new Private(title, summary, pack_center, paint_white));
     add(priv_->root_hbox_);
 }
 

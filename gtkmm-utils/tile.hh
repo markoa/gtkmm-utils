@@ -67,11 +67,15 @@ public:
      *
      * \param title  The title text on the widget.
      * \param summary  The text below the title.
+     * \param pack_center  <tt>true</tt> when labels should be packed
+     * in the center of the description area, or <tt>false</tt> when
+     * the labels should be aligned next to the image.
      * \param paint_white  Whether to paint the background of the widget white,
      * according to the current Gtk::Style settings.
      */
     explicit Tile(const Glib::ustring& title = Glib::ustring(),
                   const Glib::ustring& summary = Glib::ustring(),
+                  bool pack_center = true,
                   bool paint_white = true);
     virtual ~Tile();
 
