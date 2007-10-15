@@ -37,11 +37,12 @@ using std::tr1::shared_ptr;
 class TileData
 {
 public:
-    TileData() : tile(0), page(1) {}
+    TileData() : tile(0), page(1), plugged_in(false) {}
     ~TileData() {}
 
     Tile* tile;
     int   page;
+    bool  plugged_in; // whether we've already connected to its' signals
 };
 
 typedef list<shared_ptr<TileData> >::iterator tile_data_iter;
@@ -57,7 +58,7 @@ public:
     void connect_signals();
 
     void add_tile(shared_ptr<TileData> td);
-    void add_tile_widget(Tile* tile);
+    void add_tile_widget(shared_ptr<TileData> tile);
 
     void for_each_tile(const SlotForEachTile& slot);
 
@@ -139,6 +140,8 @@ TileView::Private::connect_signals()
         sigc::mem_fun(*this, &TileView::Private::on_show_previous_page));
 }
 
+// Registers the tile data in our internal data structure, determines
+// the page it belongs to. The "high-level private add_tile function".
 void
 TileView::Private::add_tile(shared_ptr<TileData> tdata)
 {
@@ -157,22 +160,28 @@ TileView::Private::add_tile(shared_ptr<TileData> tdata)
         tdata->page = 1;
 
     if (tdata->page == current_page_)
-        add_tile_widget(tdata->tile);
+        add_tile_widget(tdata);
 
     update_navigator_page_info_label();
 }
 
+// Packs a tile via TileData in the WhiteBox.
 void
-TileView::Private::add_tile_widget(Tile* tile)
+TileView::Private::add_tile_widget(shared_ptr<TileData> tdata)
 {
+    Tile* tile = tdata->tile;
     Gtk::Box& wb_box = whitebox_.get_root_vbox();
     wb_box.pack_start(*tile, false, false, 0);
 
-    tile->signal_focus_in().connect(
-        sigc::mem_fun(*this, &TileView::Private::on_tile_focus_in));
+    if (! tdata->plugged_in) { // don't connect multiple times
+        tile->signal_focus_in().connect(
+            sigc::mem_fun(*this, &TileView::Private::on_tile_focus_in));
 
-    tile->signal_activated().connect(
-        sigc::mem_fun(*this, &TileView::Private::on_tile_activated));
+        tile->signal_activated().connect(
+            sigc::mem_fun(*this, &TileView::Private::on_tile_activated));
+
+        tdata->plugged_in = true;
+    }
 
     signal_show_request_.emit();
 }
@@ -293,7 +302,7 @@ TileView::Private::reload_container()
         ++td_iter;
 
     while (td_iter != td_end && (*td_iter)->page == current_page_) {
-        add_tile_widget((*td_iter)->tile);
+        add_tile_widget(*td_iter);
         ++td_iter;
     }
 }
