@@ -73,7 +73,7 @@ public:
     int get_page_count() const;
 
     // Tile signal handlers
-    void on_tile_selected(Tile& tile);
+    void on_tile_focus_in(Tile& tile);
     void on_tile_activated(Tile& tile);
 
     // TilePageNavigator signal handlers
@@ -168,8 +168,8 @@ TileView::Private::add_tile_widget(Tile* tile)
     Gtk::Box& wb_box = whitebox_.get_root_vbox();
     wb_box.pack_start(*tile, false, false, 0);
 
-    tile->signal_selected().connect(
-        sigc::mem_fun(*this, &TileView::Private::on_tile_selected));
+    tile->signal_focus_in().connect(
+        sigc::mem_fun(*this, &TileView::Private::on_tile_focus_in));
 
     tile->signal_activated().connect(
         sigc::mem_fun(*this, &TileView::Private::on_tile_activated));
@@ -178,8 +178,18 @@ TileView::Private::add_tile_widget(Tile* tile)
 }
 
 void
-TileView::Private::on_tile_selected(Tile& tile)
+TileView::Private::on_tile_focus_in(Tile& tile)
 {
+    if (selected_tile_ == &tile) return;
+
+    if (selected_tile_) { // is 0 before anything is selected
+        selected_tile_->signal_unselected().emit(*selected_tile_);
+        selected_tile_->on_unselected();
+    }
+
+    tile.signal_selected().emit(tile);
+    tile.on_selected();
+
     selected_tile_ = &tile;
 }
 

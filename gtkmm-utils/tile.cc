@@ -43,6 +43,8 @@ public:
     void set_summary(const Glib::ustring& summary);
 
     // Signals
+    SignalSelection signal_focus_in_;
+    SignalSelection signal_focus_out_;
     SignalSelection signal_selected_;
     SignalSelection signal_unselected_;
     SignalActivated signal_activated_;
@@ -227,6 +229,18 @@ Tile::signal_activated()
     return priv_->signal_activated_;
 }
 
+Tile::SignalActivated&
+Tile::signal_focus_in()
+{
+    return priv_->signal_focus_in_;
+}
+
+Tile::SignalActivated&
+Tile::signal_focus_out()
+{
+    return priv_->signal_focus_out_;
+}
+
 bool
 Tile::on_expose_event(GdkEventExpose* event)
 {
@@ -342,8 +356,7 @@ Tile::on_key_press_event(GdkEventKey* event)
 bool
 Tile::on_focus_in_event(GdkEventFocus* event)
 {
-    priv_->signal_selected_.emit(*this);
-    on_selected();
+    priv_->signal_focus_in_.emit(*this);
 
     return Gtk::EventBox::on_focus_in_event(event);
 }
@@ -351,8 +364,7 @@ Tile::on_focus_in_event(GdkEventFocus* event)
 bool
 Tile::on_focus_out_event(GdkEventFocus* event)
 {
-    priv_->signal_unselected_.emit(*this);
-    on_unselected();
+    priv_->signal_focus_out_.emit(*this);
 
     return Gtk::EventBox::on_focus_out_event(event);
 }

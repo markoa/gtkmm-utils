@@ -62,6 +62,8 @@ public:
      */ 
     typedef sigc::signal<void, Tile&> SignalActivated;
 
+    friend class TileView;
+
     /**
      * \brief Tile constructor.
      *
@@ -132,25 +134,51 @@ public:
     virtual void set_summary(const Glib::ustring& summary);
 
     /**
-     * \brief Returns the SignalSelection when the tile is selected.
+     * \brief Returns the SignalSelection indicating that
+     * the tile has been selected.
      *
-     * \return a reference to the Tile's SignalSelection.
+     * This signal is controlled by TileView. It is emitted after the
+     * selection has been changed between the packed Tiles. If you are
+     * not using TileView, use signals provided by signal_focus_in()
+     * and signal_focus_out().
+     *
+     * The signal can be useful for subclasses that need to implement
+     * some special behaviour on this event, such as updating the content
+     * layout.
+     *
+     * \return a reference to SignalSelection.
      */
     SignalSelection& signal_selected();
 
     /**
-     * \brief Returns the SignalSelection when the tile is unselected.
+     * \brief Returns the SignalSelection indicating that
+     * the tile has been unselected in favour of another one.
      *
-     * \return a reference to the Tile's SignalSelection.
+     * This signal is controlled by TileView. It is emitted after the
+     * selection has been changed between the packed Tiles. If you are
+     * not using TileView, use signals provided by signal_focus_in()
+     * and signal_focus_out().
+     *
+     * The signal can be useful for subclasses that need to implement
+     * some special behaviour on this event, such as updating the content
+     * layout.
+     *
+     * \return a reference to SignalSelection.
      */
     SignalSelection& signal_unselected();
 
     /**
      * \brief Returns the SignalActivated.
      *
-     * \return a reference to the Tile's SignalActivated.
+     * \return a reference to Tile's SignalActivated.
      */
     SignalActivated& signal_activated();
+
+    /** \brief Returns the widget's focus-in proxy signal. */
+    SignalSelection& signal_focus_in();
+
+    /** \brief Returns the widget's focus-out proxy signal. */
+    SignalSelection& signal_focus_out();
 
 protected:
     // Gtk::Widget overrides
