@@ -174,10 +174,10 @@ public:
      */
     SignalActivated& signal_activated();
 
-    /** \brief Returns the widget's focus-in proxy signal. */
+    /** \brief Returns the widget's focus-in wrapper signal. */
     SignalSelection& signal_focus_in();
 
-    /** \brief Returns the widget's focus-out proxy signal. */
+    /** \brief Returns the widget's focus-out wrapper signal. */
     SignalSelection& signal_focus_out();
 
 protected:
