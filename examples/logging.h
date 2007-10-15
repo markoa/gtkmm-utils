@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils example - tile-simple.hh
+ *  gtkmm-utils example - logging.h
  *
  *  Copyright (C) 2007 Marko Anastasov
  *
@@ -21,11 +21,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <list>
+#ifndef __GTKMM_UTILS_LOGGING_EXAMPLE_H__
+#define __GTKMM_UTILS_LOGGING_EXAMPLE_H__
+
 #include <tr1/memory>
 #include <gtkmm.h>
-#include "gtkmm-utils/tile.hh"
-#include "gtkmm-utils/tile-view.hh"
+
+class Calculator;
 
 class ExampleWindow : public Gtk::Window
 {
@@ -34,20 +36,32 @@ public:
     virtual ~ExampleWindow();
 
 protected:
+    virtual bool on_delete_event(GdkEventAny* event);
+
+    virtual void on_button_add_clicked();
+    virtual void on_button_subtract_clicked();
+
     void connect_signals();
 
-    // Widget signal handlers
-    void on_show_navigation_clicked();
-    void on_tiles_per_page_changed();
-    void on_tile_activated(Gtk::Util::Tile& tile);
+    Gtk::VBox vbox;
 
-    Gtk::VBox vbox_;
-    Gtk::Util::TileView tile_view_;
-    std::list<std::tr1::shared_ptr<Gtk::Util::Tile> > tiles_;
+    Gtk::HBox hbox_operand_a;
+    Gtk::Label label_operand_a;
+    Gtk::Entry entry_operand_a;
 
-    Gtk::CheckButton show_navigation_;
-    // tpp = tiles per page
-    Gtk::HBox       tpp_box_;
-    Gtk::Label      tpp_label_;
-    Gtk::SpinButton tpp_spin_;
+    Gtk::HBox hbox_operand_b;
+    Gtk::Label label_operand_b;
+    Gtk::Entry entry_operand_b;
+
+    Gtk::HBox hbox_buttons;
+    Gtk::Button button_add;
+    Gtk::Button button_subtract;
+
+    Gtk::HBox hbox_result;
+    Gtk::Label label_result;
+    Gtk::Entry entry_result;
+
+    std::tr1::shared_ptr<Calculator> calculator;
 };
+
+#endif // __GTKMM_UTILS_LOGGING_EXAMPLE_H__

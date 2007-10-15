@@ -19,7 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "exception.hh"
+#include "exception.h"
 using namespace std ;
 
 namespace Glib {

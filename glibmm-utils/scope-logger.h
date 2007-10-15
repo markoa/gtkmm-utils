@@ -23,7 +23,7 @@
 #define __GLIBMM_UTILS_SCOPE_LOGGER_H__
 
 #include <tr1/memory>
-#include "log-stream-utils.hh"
+#include "log-stream-utils.h"
 
 namespace Glib {
 namespace Util {

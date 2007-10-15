@@ -24,8 +24,8 @@
 
 #include <cassert>
 #include <cstdlib>
-#include "log-stream.hh"
-#include "scope-logger.hh"
+#include "log-stream.h"
+#include "scope-logger.h"
 
 #ifndef HERE
 #define HERE __ASSERT_FUNCTION << ":" <<__FILE__<< ":" << __LINE__ << ":"

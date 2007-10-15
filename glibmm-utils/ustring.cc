@@ -21,7 +21,7 @@
 
 #include <tr1/memory>
 #include <glib/gmem.h>
-#include "ustring.hh"
+#include "ustring.h"
 
 namespace Glib {
 

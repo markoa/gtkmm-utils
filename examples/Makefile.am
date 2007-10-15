@@ -2,10 +2,10 @@ noinst_PROGRAMS= \
 	logging \
 	tiles-simple
 
-logging_SOURCES=logging.cc logging.hh
+logging_SOURCES=logging.cc logging.h
 logging_LDFLAGS=@GTKMM_UTILS_LIBS@
 
-tiles_simple_SOURCES=tiles-simple.cc tiles-simple.hh
+tiles_simple_SOURCES=tiles-simple.cc tiles-simple.h
 tiles_simple_LDFLAGS=@GTKMM_UTILS_LIBS@
 
 INCLUDES= \

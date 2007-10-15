@@ -21,9 +21,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "dialog.hh"
-
 #include <gtkmm.h>
+#include "dialog.h"
 
 namespace Gtk
 {

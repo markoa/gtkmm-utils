@@ -27,7 +27,7 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 #include <gtkmm/stock.h>
-#include "page-navigator.hh"
+#include "page-navigator.h"
 
 namespace Gtk {
 

@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  glibmm-utils - date.hh
+ *  glibmm-utils - date.h
  *
  *  Copyright (C) 2007 Marko Anastasov
  *

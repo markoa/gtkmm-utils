@@ -24,7 +24,7 @@
 
 #include <stdexcept>
 #include <glibmm/ustring.h>
-#include "log-stream-utils.hh"
+#include "log-stream-utils.h"
 
 namespace Glib {
 namespace Util {

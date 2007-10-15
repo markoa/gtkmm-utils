@@ -21,7 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "date.hh"
+#include "date.h"
 
 #include <sys/time.h>
 

@@ -22,7 +22,7 @@
  */
 
 #include <gdk/gdkkeysyms.h>
-#include "tile.hh"
+#include "tile.h"
 
 namespace Gtk {
 

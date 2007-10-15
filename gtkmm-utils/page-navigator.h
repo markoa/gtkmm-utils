@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils - page-navigator.hh
+ *  gtkmm-utils - page-navigator.h
  *
  *  Copyright (C) 2007 Marko Anastasov
  *

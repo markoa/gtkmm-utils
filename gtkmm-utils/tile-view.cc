@@ -21,8 +21,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include "glibmm-utils/ustring.hh"
-#include "tile-view.hh"
+#include "glibmm-utils/ustring.h"
+#include "tile-view.h"
 
 namespace Gtk {
 

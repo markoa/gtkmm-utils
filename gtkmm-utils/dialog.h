@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils - dialog.hh
+ *  gtkmm-utils - dialog.h
  *
  *  Copyright (C) 2007 Marko Anastasov
  *

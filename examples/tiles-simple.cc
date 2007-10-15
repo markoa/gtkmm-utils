@@ -22,7 +22,7 @@
  */
 
 #include <iostream>
-#include "tiles-simple.hh"
+#include "tiles-simple.h"
 
 using std::tr1::shared_ptr;
 

@@ -1,14 +1,14 @@
 
 hh_sources = \
-	glibmm-utils.hh \
-	date.hh \
-	exception.hh \
-	initializer.hh \
-	log-stream.hh \
-	log-stream-utils.hh \
-	option-utils.hh \
-	scope-logger.hh \
-	ustring.hh
+	glibmm-utils.h \
+	date.h \
+	exception.h \
+	initializer.h \
+	log-stream.h \
+	log-stream-utils.h \
+	option-utils.h \
+	scope-logger.h \
+	ustring.h
 
 cc_sources = \
 	date.cc \

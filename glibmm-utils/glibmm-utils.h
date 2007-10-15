@@ -24,13 +24,13 @@
 #ifndef __GLIBMM_UTILS_H__
 #define __GLIBMM_UTILS_H__
 
-#include <glibmm-utils/date.hh>
-#include <glibmm-utils/exception.hh>
-#include <glibmm-utils/initializer.hh>
-#include <glibmm-utils/log-stream.hh>
-#include <glibmm-utils/log-stream-utils.hh>
-#include <glibmm-utils/option-utils.hh>
-#include <glibmm-utils/scope-logger.hh>
-#include <glibmm-utils/ustring.hh>
+#include <glibmm-utils/date.h>
+#include <glibmm-utils/exception.h>
+#include <glibmm-utils/initializer.h>
+#include <glibmm-utils/log-stream.h>
+#include <glibmm-utils/log-stream-utils.h>
+#include <glibmm-utils/option-utils.h>
+#include <glibmm-utils/scope-logger.h>
+#include <glibmm-utils/ustring.h>
 
 #endif // __GLIBMM_UTILS_H__

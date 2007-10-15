@@ -34,8 +34,8 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
-#include "glibmm-utils/glibmm-utils.hh"
-#include "logging.hh"
+#include "glibmm-utils/glibmm-utils.h"
+#include "logging.h"
 
 enum Operation
 {

@@ -26,7 +26,7 @@
 #include <typeinfo>
 #include <vector>
 #include <glibmm/ustring.h>
-#include "exception.hh"
+#include "exception.h"
 
 namespace Glib {
 

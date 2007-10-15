@@ -8,7 +8,7 @@ pushdef([GTKMM_UTILS_MICRO_VERSION], [0])
 pushdef([GTKMM_UTILS_VERSION], GTKMM_UTILS_MAJOR_VERSION.GTKMM_UTILS_MINOR_VERSION.GTKMM_UTILS_MICRO_VERSION)
 
 AC_INIT([gtkmm-utils], GTKMM_UTILS_VERSION, [marko@marko.anastasov.name])
-AC_CONFIG_SRCDIR([gtkmm-utils/dialog.hh])
+AC_CONFIG_SRCDIR([gtkmm-utils/dialog.h])
 AC_PREREQ(2.59)
 
 #########################################################################

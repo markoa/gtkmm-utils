@@ -22,7 +22,7 @@
 #include <locale.h>
 #include <glibmm.h>
 
-#include "initializer.hh"
+#include "initializer.h"
 
 namespace Glib {
 namespace Util {

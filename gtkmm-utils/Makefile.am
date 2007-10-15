@@ -1,11 +1,11 @@
 
 hh_sources = \
-	gtkmm-utils.hh \
-	dialog.hh \
-	page-navigator.hh \
-	tile.hh \
-	tile-view.hh \
-	white-box.hh
+	gtkmm-utils.h \
+	dialog.h \
+	page-navigator.h \
+	tile.h \
+	tile-view.h \
+	white-box.h
 
 cc_sources = dialog.cc \
 	page-navigator.cc \

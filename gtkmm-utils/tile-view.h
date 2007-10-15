@@ -1,7 +1,7 @@
 /* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
 
 /*
- *  gtkmm-utils - tile-view.hh
+ *  gtkmm-utils - tile-view.h
  *
  *  Copyright (C) 2007 Marko Anastasov
  *
@@ -31,9 +31,9 @@
 #include <gtkmm/box.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/viewport.h>
-#include "tile.hh"
-#include "page-navigator.hh"
-#include "white-box.hh"
+#include "tile.h"
+#include "page-navigator.h"
+#include "white-box.h"
 
 namespace Gtk {
 

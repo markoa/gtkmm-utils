@@ -30,10 +30,10 @@
 #include <glibmm/thread.h>
 #include <glib/gstdio.h>
 
-#include "log-stream.hh"
-#include "exception.hh"
-#include "date.hh"
-#include "ustring.hh"
+#include "log-stream.h"
+#include "exception.h"
+#include "date.h"
+#include "ustring.h"
 
 namespace Glib {
 namespace Util {

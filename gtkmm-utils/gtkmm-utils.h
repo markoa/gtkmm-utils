@@ -24,11 +24,11 @@
 #ifndef __GTKMM_UTILS_H__
 #define __GTKMM_UTILS_H__
 
-#include <gtkmm-utils/dialog.hh>
-#include <gtkmm-utils/page-navigator.hh>
-#include <gtkmm-utils/tile.hh>
-#include <gtkmm-utils/tile-view.hh>
-#include <gtkmm-utils/whitebox.hh>
+#include <gtkmm-utils/dialog.h>
+#include <gtkmm-utils/page-navigator.h>
+#include <gtkmm-utils/tile.h>
+#include <gtkmm-utils/tile-view.h>
+#include <gtkmm-utils/whitebox.h>
 
 #endif // __GTKMM_UTILS_H__
 

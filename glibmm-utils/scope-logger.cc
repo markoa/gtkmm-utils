@@ -20,8 +20,8 @@
  */
 
 #include <glibmm.h>
-#include "exception.hh"
-#include "scope-logger.hh"
+#include "exception.h"
+#include "scope-logger.h"
 
 namespace Glib {
 namespace Util {
