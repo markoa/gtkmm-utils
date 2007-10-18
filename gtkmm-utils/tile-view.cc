@@ -408,7 +408,14 @@ TileView::add_tile(Tile& tile)
 void
 TileView::add_tile(Tile* tile)
 {
-    add_tile(*tile);
+    // We cannot write add_tile(*tile), because if this is a subclass,
+    // then the overriden method will be called and it will invoke the
+    // base class method again (most probably, if it calls it),
+    // and so on in an infinite loop.
+
+    shared_ptr<TileData> tdata(new TileData());
+    tdata->tile = tile;
+    priv_->add_tile(tdata);
 }
 
 Tile*
