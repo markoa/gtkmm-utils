@@ -328,11 +328,11 @@ struct LogStream::Priv
 
     void load_enabled_domains_from_env ()
     {
-        string str = getenv ("application_log_domains") ;
-        if (!str.size()) {
-            str = getenv ("APPLICATION_LOG_DOMAINS") ;
+        string str = getenv ("log_domains") ;
+        if (str.empty()) {
+            str = getenv ("LOG_DOMAINS") ;
         }
-        if (!str.size()) {return;}
+        if (str.empty()) {return;}
         Glib::ustring domains_str = Glib::locale_to_utf8 (str.c_str()) ;
         enabled_domains_from_env = Glib::Util::split (domains_str, " ");
     }

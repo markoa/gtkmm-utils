@@ -22,13 +22,10 @@
  */
 
 /**
- * You can compile from command line with:
- * g++ -Wall -g -O0 `pkg-config --cflags --libs gtkmm-utils` -o logging logging.cc
- *
  * Run the program with:
- *   $ application_log_domains="all" ./logging
+ *   $ log_domains="all" ./logging
  * or:
- *   $ application_log_domains="logging.cc (other files...)" ./logging
+ *   $ log_domains="logging.cc (other files...)" ./logging
  */
 
 #include <sstream>
