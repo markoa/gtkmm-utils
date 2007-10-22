@@ -167,6 +167,8 @@ protected:
      */
     virtual void on_show_request();
 
+    virtual bool on_key_press_event(GdkEventKey* event);
+
 private:
     // Non-copyable
     TileView(const TileView&);

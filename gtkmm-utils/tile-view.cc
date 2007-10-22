@@ -21,6 +21,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <gdk/gdkkeysyms.h>
 #include "glibmm-utils/ustring.h"
 #include "tile-view.h"
 
@@ -42,6 +43,7 @@ public:
 
     Tile* tile;
     int   page;
+    int   position;   // position (index) in page
     bool  plugged_in; // whether we've already connected to its' signals
 };
 
@@ -60,7 +62,8 @@ public:
     void add_tile(shared_ptr<TileData> td);
     void add_tile_widget(shared_ptr<TileData> tile);
 
-    void for_each_tile(const SlotForEachTile& slot);
+    TileData* find_tile_data(Tile* ptile);
+    void      for_each_tile(const SlotForEachTile& slot);
 
     void set_page_view(bool use_page_view);
     void set_tiles_per_page(int tiles_per_page);
@@ -72,6 +75,7 @@ public:
     void update_navigator_page_info_label();
 
     int get_page_count() const;
+    int get_last_tile_pos() const;
 
     // Tile signal handlers
     void on_tile_focus_in(Tile& tile);
@@ -92,11 +96,16 @@ public:
 
     // Tile content internals
     std::list<shared_ptr<TileData> > tiles_;
-    Tile* selected_tile_;
+    TileData* selected_tile_;
 
     bool paginate_;
     int  tiles_per_page_;
     int  current_page_;
+
+    // zero-based, the index of the next-inserted tile in the TV;
+    // helps as an indicator we check against for (dis)allowing moving up
+    // and down in the view.
+    int  next_tile_position_;
 
     // Signals
     SignalTileActivated signal_tile_activated_;
@@ -113,7 +122,8 @@ TileView::Private::Private(bool use_page_view)
     selected_tile_(0),
     paginate_(use_page_view),
     tiles_per_page_(TILES_PER_PAGE_DEFAULT),
-    current_page_(1)
+    current_page_(1),
+    next_tile_position_(0)
 {
     navigator_.reset(new PageNavigator());
 
@@ -162,6 +172,9 @@ TileView::Private::add_tile(shared_ptr<TileData> tdata)
     if (tdata->page == current_page_)
         add_tile_widget(tdata);
 
+    tdata->position = next_tile_position_++;
+    if (next_tile_position_ == tiles_per_page_) next_tile_position_ = 0;
+
     update_navigator_page_info_label();
 }
 
@@ -186,20 +199,33 @@ TileView::Private::add_tile_widget(shared_ptr<TileData> tdata)
     signal_show_request_.emit();
 }
 
+TileData*
+TileView::Private::find_tile_data(Tile* ptile)
+{
+    tile_data_iter it(tiles_.begin());
+    tile_data_iter end(tiles_.end());
+
+    for ( ; it != end; ++it)
+        if ((*it)->tile == ptile)
+            return it->get();
+
+    return 0;
+}
+
 void
 TileView::Private::on_tile_focus_in(Tile& tile)
 {
-    if (selected_tile_ == &tile) return;
+    if (selected_tile_ && (selected_tile_->tile == &tile)) return;
 
     if (selected_tile_) { // is 0 before anything is selected
-        selected_tile_->signal_unselected().emit(*selected_tile_);
-        selected_tile_->on_unselected();
+        selected_tile_->tile->signal_unselected().emit(*(selected_tile_->tile));
+        selected_tile_->tile->on_unselected();
     }
 
     tile.signal_selected().emit(tile);
     tile.on_selected();
 
-    selected_tile_ = &tile;
+    selected_tile_ = find_tile_data(&tile);
 }
 
 void
@@ -261,9 +287,13 @@ TileView::Private::update_tile_data()
     tile_data_iter it(tiles_.begin());
     tile_data_iter end(tiles_.end());
 
+    next_tile_position_ = 0;
+
     if (! paginate_) {
-        for ( ; it != end; ++it)
+        for ( ; it != end; ++it) {
             (*it)->page = 1;
+            (*it)->position = next_tile_position_++;
+        }
         return;
     }
 
@@ -272,10 +302,12 @@ TileView::Private::update_tile_data()
 
     for ( ; it != end; ++it) {
         (*it)->page = page;
+        (*it)->position = next_tile_position_++;
 
         if (++counter == tiles_per_page_) {
             counter = 0;
             ++page;
+            next_tile_position_ = 0;
         }
     }
 }
@@ -378,6 +410,19 @@ TileView::Private::get_page_count() const
     return page_count;
 }
 
+// Returns the index of last tile on current page.
+int
+TileView::Private::get_last_tile_pos() const
+{
+    if ((static_cast<int>(tiles_.size()) -
+         (current_page_ * tiles_per_page_)) < 0) {
+        // last page, less then maximum number of tiles present
+        return ((tiles_.size() - (current_page_ - 1) * tiles_per_page_) - 1);
+    }
+    else
+        return (tiles_per_page_ - 1);
+}
+
 /* TileView */
 
 TileView::TileView(bool use_page_view)
@@ -421,7 +466,7 @@ TileView::add_tile(Tile* tile)
 Tile*
 TileView::get_selection()
 {
-    return priv_->selected_tile_;
+    return priv_->selected_tile_->tile;
 }
 
 TileView::SignalTileActivated&
@@ -476,6 +521,18 @@ void
 TileView::on_show_request()
 {
     show_all();
+}
+
+bool
+TileView::on_key_press_event(GdkEventKey* event)
+{
+    if ((event->keyval == GDK_Up) && (priv_->selected_tile_->position == 0))
+        return true;
+    else if ((event->keyval == GDK_Down) &&
+             (priv_->selected_tile_->position == priv_->get_last_tile_pos()))
+        return true;
+
+    return false;
 }
 
 } // namespace Util
