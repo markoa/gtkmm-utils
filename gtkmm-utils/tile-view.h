@@ -161,7 +161,11 @@ protected:
     struct Private;
     std::auto_ptr<Private> priv_;
 
-    void on_show_request();
+    /**
+     * \brief called when child widget(s) request to be shown.
+     * This occurs after a new Tile has been added.
+     */
+    virtual void on_show_request();
 
 private:
     // Non-copyable
