@@ -529,6 +529,7 @@ TileView::on_key_press_event(GdkEventKey* event)
     if ((event->keyval == GDK_Up) && (priv_->selected_tile_->position == 0))
         return true;
     else if ((event->keyval == GDK_Down) &&
+             (priv_->selected_tile_) &&
              (priv_->selected_tile_->position == priv_->get_last_tile_pos()))
         return true;
 
