@@ -365,7 +365,7 @@ TileView::Private::update_navigator_page_info_label()
     show_end = show_start + tiles_in_page - 1;
 
     navigator_->set_page_info(
-        Glib::Util::uprintf("%d - %d of %d",
+        Glib::Util::uprintf("%d - %d / %d",
                             show_start,
                             show_end,
                             static_cast<int>(tiles_.size())));
