@@ -150,6 +150,9 @@ public:
      */
     virtual int  get_tiles_per_page() const;
 
+    /** \brief Removes all child tiles and clears internal data */
+    virtual void clear();
+
     /**
      * \brief Returns the SignalActivated, which you can connect to.
      *

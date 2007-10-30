@@ -85,7 +85,7 @@ public:
     /**
      * \brief Sets text on a lable which is meant to display page information.
      * This label appears next to the label containing the title.
-     * Compose a string such as '11 - 20 of 23' and pass it here.
+     * Compose a string such as '11 - 20 / 23' and pass it here.
      *
      * \param info a string to describe current location in a page view
      */

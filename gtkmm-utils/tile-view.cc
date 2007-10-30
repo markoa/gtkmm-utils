@@ -48,6 +48,7 @@ public:
 };
 
 typedef list<shared_ptr<TileData> >::iterator tile_data_iter;
+typedef sigc::slot<void, shared_ptr<TileData>& > SlotForEachTileData;
 
 /* TileView::Private */
 
@@ -64,6 +65,10 @@ public:
 
     TileData* find_tile_data(Tile* ptile);
     void      for_each_tile(const SlotForEachTile& slot);
+    void      for_each_tile_data(const SlotForEachTileData& slot);
+
+    void clear_tile_widgets();
+    void remove_tile_widget(shared_ptr<TileData>& tile, Gtk::Box* box);
 
     void set_page_view(bool use_page_view);
     void set_tiles_per_page(int tiles_per_page);
@@ -246,6 +251,17 @@ TileView::Private::for_each_tile(const SlotForEachTile& slot)
 }
 
 void
+TileView::Private::for_each_tile_data(const SlotForEachTileData& slot)
+{
+    tile_data_iter it(tiles_.begin());
+    tile_data_iter end(tiles_.end());
+
+    for ( ; it != end; ++it) {
+        slot(*it);
+    }
+}
+
+void
 TileView::Private::set_page_view(bool use_page_view)
 {
     paginate_ = use_page_view;
@@ -423,6 +439,27 @@ TileView::Private::get_last_tile_pos() const
         return (tiles_per_page_ - 1);
 }
 
+void
+TileView::Private::remove_tile_widget(shared_ptr<TileData>& td, Gtk::Box* box)
+{
+    if (td->page == current_page_)
+        box->remove(*(td->tile));
+}
+
+void
+TileView::Private::clear_tile_widgets()
+{
+    for_each_tile_data(
+        sigc::bind(sigc::mem_fun(*this,
+                                 &TileView::Private::remove_tile_widget),
+                   &(whitebox_.get_root_vbox())));
+
+    tiles_.clear();
+    current_page_ = 1;
+    selected_tile_ = 0;
+    next_tile_position_ = 0;
+}
+
 /* TileView */
 
 TileView::TileView(bool use_page_view)
@@ -534,6 +571,12 @@ TileView::on_key_press_event(GdkEventKey* event)
         return true;
 
     return false;
+}
+
+void
+TileView::clear()
+{
+    priv_->clear_tile_widgets();
 }
 
 } // namespace Util
