@@ -32,20 +32,17 @@ namespace Gtk
 namespace Util
 {
 
-namespace Dialog
-{
+    int display_dialog_info(const Glib::ustring& message,
+                            const Glib::ustring& title = Glib::ustring(),
+                            const Glib::ustring& secondary_text = Glib::ustring());
 
-    int display_info(const Glib::ustring& message,
-                     const Glib::ustring& title = Glib::ustring(),
-                     const Glib::ustring& secondary_text = Glib::ustring());
+    int display_dialog_warning(const Glib::ustring& message,
+                               const Glib::ustring& title = Glib::ustring(),
+                               const Glib::ustring& secondary_text = Glib::ustring());
 
-    int display_warning(const Glib::ustring& message,
-                        const Glib::ustring& title = Glib::ustring(),
-                        const Glib::ustring& secondary_text = Glib::ustring());
-
-    int display_error(const Glib::ustring& message,
-                      const Glib::ustring& title = Glib::ustring(),
-                      const Glib::ustring& secondary_text = Glib::ustring());
+    int display_dialog_error(const Glib::ustring& message,
+                             const Glib::ustring& title = Glib::ustring(),
+                             const Glib::ustring& secondary_text = Glib::ustring());
 
     int ask_yes_no_question(const Glib::ustring& message,
                             const Glib::ustring& title = Glib::ustring(),
@@ -54,8 +51,6 @@ namespace Dialog
     int ask_yes_no_cancel_question(const Glib::ustring& message,
                                    const Glib::ustring& title = Glib::ustring(),
                                    const Glib::ustring& secondary_text = Glib::ustring());
-
-} // namespace Dialog
 
 } // namespace Util
 

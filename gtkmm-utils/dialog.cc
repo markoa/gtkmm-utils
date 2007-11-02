@@ -30,9 +30,6 @@ namespace Gtk
 namespace Util
 {
 
-namespace Dialog
-{
-
 namespace
 {
 
@@ -62,27 +59,27 @@ display_dialog_simple(Gtk::MessageType message_type,
 } // anonymous namespace
 
 int
-display_info(const Glib::ustring& message,
-             const Glib::ustring& title,
-             const Glib::ustring& secondary_text)
+display_dialog_info(const Glib::ustring& message,
+                    const Glib::ustring& title,
+                    const Glib::ustring& secondary_text)
 {
     return display_dialog_simple(Gtk::MESSAGE_INFO,
                                  message, title, secondary_text);
 }
 
 int
-display_warning(const Glib::ustring& message,
-                const Glib::ustring& title,
-                const Glib::ustring& secondary_text)
+display_dialog_warning(const Glib::ustring& message,
+                       const Glib::ustring& title,
+                       const Glib::ustring& secondary_text)
 {
     return display_dialog_simple(Gtk::MESSAGE_WARNING,
                                  message, title, secondary_text);
 }
 
 int
-display_error(const Glib::ustring& message,
-              const Glib::ustring& title,
-              const Glib::ustring& secondary_text)
+display_dialog_error(const Glib::ustring& message,
+                     const Glib::ustring& title,
+                     const Glib::ustring& secondary_text)
 {
     return display_dialog_simple(Gtk::MESSAGE_ERROR,
                                  message, title, secondary_text);
@@ -135,8 +132,6 @@ ask_yes_no_cancel_question(const Glib::ustring& message,
 
     return dialog.run();
 }
-
-} // namespace Dialog
 
 } // namespace Util
 
