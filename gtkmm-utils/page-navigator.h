@@ -65,14 +65,14 @@ public:
     explicit PageNavigator();
 
     /// \brief PageNavigator destructor.
-    ~PageNavigator();
+    virtual ~PageNavigator();
 
     /**
      * \brief Sets a title for the navigation bar.
      *
      * \param title  a string
      */
-    void set_title(const Glib::ustring& title);
+    virtual void set_title(const Glib::ustring& title);
 
     /**
      * \brief Sets a custom markup on the title in the bar.
@@ -80,7 +80,7 @@ public:
      * \param marked_up_title  escaped markup string; escape strings with
      * Glib::Markup::escape_text()
      */
-    void set_title_markup(const Glib::ustring& marked_up_title);
+    virtual void set_title_markup(const Glib::ustring& marked_up_title);
 
     /**
      * \brief Sets text on a lable which is meant to display page information.
@@ -89,7 +89,7 @@ public:
      *
      * \param info a string to describe current location in a page view
      */
-    void set_page_info(const Glib::ustring& info);
+    virtual void set_page_info(const Glib::ustring& info);
 
     /**
      * \brief Returns a SignalNext, which you can connect to.

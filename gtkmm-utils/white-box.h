@@ -52,7 +52,7 @@ public:
      *
      * \return a reference to the vertical box inside the Gtk::EventBox.
      */
-    Gtk::VBox& get_root_vbox();
+    virtual Gtk::VBox& get_root_vbox();
 
 protected:
     virtual bool on_expose_event(GdkEventExpose* event);

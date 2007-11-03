@@ -43,12 +43,16 @@ public:
 std::vector<Glib::ustring> split(const Glib::ustring& str,
                                  const Glib::ustring& delim);
 
+/// \brief Trims left hand side whitespace
 void                       trim_left(Glib::ustring& str);
 
+/// \brief Trims right hand side whitespace
 void                       trim_right(Glib::ustring& str);
 
+/// \brief Trims any whitespace from the string
 void                       trim(Glib::ustring& str);
 
+/// \brief Converts an ostream-able type to a Glib::ustring
 template<typename T>
 inline Glib::ustring stringify(const T& x)
 {
@@ -98,6 +102,7 @@ inline T convert_to(const Glib::ustring& str,
     return x;
 }
 
+/// \brief a printf() that returns a Glib::ustring
 Glib::ustring uprintf(const Glib::ustring& format, ...);
 
 } // namespace Util
