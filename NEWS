@@ -1,3 +1,39 @@
+Release 0.3.0 (2007-11-03)
+==========================
+
+Common
+------
+
+All header files have been renamed to *.h, to match with most of
+the C++ libraries, and especially gtkmm.
+
+gtkmm-utils
+-----------
+
+Tile: Added added virtual signal handlers, signal_unselected(),
+signal_focus_in(), signal_focus_out(). The latter two are emitted by
+Tile, while the selected/unselected are now controlled by TileView,
+and emitted after the selection has been changed between the packed Tiles.
+
+There is an option in the constructor to make the contents of the Tile
+left-aligned to the image.
+
+TileView now avoids connecting to tiles' signals multiple times.
+There's a fix for add_tile() pointer overload, to avoid infinite
+loops (eek). It also overrides button press event and does not allow
+the focus to escape outside itself with the up and down keys.
+And a convenient clear() method has been added.
+
+The Dialog namespace has been removed and the corresponding functions
+renamed to dialog_*. There are no additional namespaces any more.
+
+glibmm-utils
+------------
+
+Added trim* string, uprintf() functions. The logging environment
+variable is now shortened to LOG_DOMAINS (bug #21360 - Jonathon Jongsma).
+
+
 Release 0.2.1 (2007-09-27)
 ==========================
 
