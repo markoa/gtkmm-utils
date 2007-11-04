@@ -67,6 +67,7 @@ public:
     void      for_each_tile(const SlotForEachTile& slot);
     void      for_each_tile_data(const SlotForEachTileData& slot);
 
+    void reset_selection();
     void clear_tile_widgets();
     void remove_tile_widget(shared_ptr<TileData>& tile, Gtk::Box* box);
 
@@ -447,6 +448,17 @@ TileView::Private::remove_tile_widget(shared_ptr<TileData>& td, Gtk::Box* box)
 }
 
 void
+TileView::Private::reset_selection()
+{
+    if (! selected_tile_) return;
+
+    selected_tile_->tile->signal_unselected().emit(*(selected_tile_->tile));
+    selected_tile_->tile->on_unselected();
+
+    selected_tile_ = 0;
+}
+
+void
 TileView::Private::clear_tile_widgets()
 {
     for_each_tile_data(
@@ -571,6 +583,12 @@ TileView::on_key_press_event(GdkEventKey* event)
         return true;
 
     return false;
+}
+
+void
+TileView::reset_selection()
+{
+    priv_->reset_selection();
 }
 
 void

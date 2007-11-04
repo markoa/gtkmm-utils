@@ -150,6 +150,11 @@ public:
      */
     virtual int  get_tiles_per_page() const;
 
+    /**
+     * \brief Resets current selection in the view.
+     */
+    virtual void reset_selection();
+
     /** \brief Removes all child tiles and clears internal data */
     virtual void clear();
 
