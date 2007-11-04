@@ -19,7 +19,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-#include <tr1/memory>
 #include <glib/gmem.h>
 #include "ustring.h"
 
@@ -36,11 +35,11 @@ split(const Glib::ustring& str, const Glib::ustring& delim)
 
     int len = str.size () + 1;
 
-    std::tr1::shared_ptr<gchar> buf (new gchar[len]);
-    memset (buf.get (), 0, len);
-    memcpy (buf.get (), str.c_str (), str.size ());
+    gchar* buf = (gchar*) g_malloc (len);
+    memset (buf, 0, len);
+    memcpy (buf, str.c_str (), str.size ());
 
-    gchar **splited = g_strsplit (buf.get (), delim.c_str (), -1);
+    gchar** splited = g_strsplit (buf, delim.c_str (), -1);
 
     try {
         for (gchar **cur = splited ; cur && *cur; ++cur) {
@@ -51,6 +50,8 @@ split(const Glib::ustring& str, const Glib::ustring& delim)
     if (splited) {
         g_strfreev (splited);
     }
+
+    g_free (buf);
 
     return result;
 }
