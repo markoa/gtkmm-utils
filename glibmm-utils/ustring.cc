@@ -20,16 +20,19 @@
  */
 
 #include <glib/gmem.h>
+#include <glib/gmessages.h>
 #include "ustring.h"
 
 namespace Glib {
 
 namespace Util {
 
-std::vector<Glib::ustring>
+using std::vector;
+
+vector<Glib::ustring>
 split(const Glib::ustring& str, const Glib::ustring& delim)
 {
-    std::vector<Glib::ustring> result;
+    vector<Glib::ustring> result;
 
     if (str.size () == Glib::ustring::size_type(0)) { return result; }
 
@@ -54,6 +57,65 @@ split(const Glib::ustring& str, const Glib::ustring& delim)
     g_free (buf);
 
     return result;
+}
+
+vector<Glib::ustring>
+split(const Glib::ustring& str)
+{
+    vector<Glib::ustring> res;
+
+    int bytes = str.bytes ();
+
+    g_return_val_if_fail (bytes != Glib::ustring::size_type (0), res);
+    g_return_val_if_fail (str.validate(), res);
+
+    // dive into C to strip leading or trailing whitespace
+    gchar* buf = g_new0 (gchar, bytes + 1);
+    memcpy (buf, str.c_str (), bytes);
+
+    gchar* stripped = g_strdup (buf);
+    stripped = g_strstrip (stripped);
+    g_free (buf);
+    if (g_utf8_strlen (stripped, -1) == 0) {
+        g_free (stripped);
+        return res;
+    }
+
+    // start splitting
+    Glib::ustring tmp (stripped);
+    g_free (stripped);
+
+    Glib::ustring::size_type chars = str.size ();
+    Glib::ustring::size_type i, tail;
+    i = 0;
+    tail = 1;
+
+    while (tail <= chars) {
+        gunichar ch = tmp[tail];
+
+        if ((g_unichar_isspace (ch) == TRUE) || (tail == chars)) {
+            int chars_to_skip = 1;
+            int pos;
+            bool in_ws = true;
+
+            while (in_ws) {
+                pos = tail + chars_to_skip;
+                ch = tmp[pos];
+                (g_unichar_isspace (ch)) ? ++chars_to_skip : in_ws = false;
+            }
+
+            if (tail == chars) ++tail;
+
+            res.push_back (tmp.substr (i, tail - i));
+
+            i = tail + chars_to_skip;
+            tail += chars_to_skip + 1;
+        }
+
+        ++tail;
+    }
+
+    return res;
 }
 
 void

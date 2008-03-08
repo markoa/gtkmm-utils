@@ -43,6 +43,10 @@ public:
 std::vector<Glib::ustring> split(const Glib::ustring& str,
                                  const Glib::ustring& delim);
 
+/// \brief Splits a string by whitespace (after skipping any leading
+/// whitespace) - like Perl's split function without the pattern.
+std::vector<Glib::ustring> split(const Glib::ustring& str);
+
 /// \brief Trims left hand side whitespace
 void                       trim_left(Glib::ustring& str);
 
