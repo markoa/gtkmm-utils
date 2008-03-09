@@ -121,6 +121,8 @@ split(const Glib::ustring& str)
 void
 trim_left(Glib::ustring& str)
 {
+    g_return_if_fail (str.size() != Glib::ustring::size_type(0));
+
     Glib::ustring::iterator it(str.begin());
     Glib::ustring::iterator end(str.end());
 
@@ -137,14 +139,14 @@ trim_left(Glib::ustring& str)
 void
 trim_right(Glib::ustring& str)
 {
-    typedef Glib::ustring::iterator ustring_iter;
+    g_return_if_fail (str.size() != Glib::ustring::size_type(0));
 
-    ustring_iter end(str.end());
-    ustring_iter it(--(str.end()));
+    Glib::ustring::iterator end(str.end());
+    Glib::ustring::iterator it(--(str.end()));
 
     for ( ; ; --it) {
         if (! isspace(*it)) {
-            ustring_iter it_adv(it);
+            Glib::ustring::iterator it_adv(it);
             str.erase(++it_adv, str.end());
             break;
         }
