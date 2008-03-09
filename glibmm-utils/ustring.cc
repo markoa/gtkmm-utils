@@ -67,25 +67,14 @@ split(const Glib::ustring& str)
     int bytes = str.bytes ();
 
     g_return_val_if_fail (bytes != Glib::ustring::size_type (0), res);
-    g_return_val_if_fail (str.validate(), res);
+    g_return_val_if_fail (str.validate (), res);
 
-    // dive into C to strip leading or trailing whitespace
-    gchar* buf = g_new0 (gchar, bytes + 1);
-    memcpy (buf, str.c_str (), bytes);
+    Glib::ustring tmp(str);
 
-    gchar* stripped = g_strdup (buf);
-    stripped = g_strstrip (stripped);
-    g_free (buf);
-    if (g_utf8_strlen (stripped, -1) == 0) {
-        g_free (stripped);
-        return res;
-    }
+    trim (tmp);
+    Glib::ustring::size_type chars = tmp.size ();
+    g_return_val_if_fail (chars != Glib::ustring::size_type (0), res);
 
-    // start splitting
-    Glib::ustring tmp (stripped);
-    g_free (stripped);
-
-    Glib::ustring::size_type chars = str.size ();
     Glib::ustring::size_type i, tail;
     i = 0;
     tail = 1;
