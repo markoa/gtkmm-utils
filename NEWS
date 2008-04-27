@@ -1,3 +1,19 @@
+Release 0.3.1 (2008-04-27)
+==========================
+
+gtkmm-utils
+-----------
+
+ - TileView: new function - reset_selection()
+
+glibmm-utils
+------------
+
+ - Cleaned up wording in logging messages (Jonathon Jongsma)
+ - Improved memory handling in split()
+ - Added a version of split() which splits by any whitespace
+ - trim(): don't fail on empty strings (J. Jongsma, bug #22518)
+
 Release 0.3.0 (2007-11-03)
 ==========================
 
