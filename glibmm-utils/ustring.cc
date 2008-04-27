@@ -110,7 +110,7 @@ split(const Glib::ustring& str)
 void
 trim_left(Glib::ustring& str)
 {
-    g_return_if_fail (str.size() != Glib::ustring::size_type(0));
+    if (str.empty ()) return;
 
     Glib::ustring::iterator it(str.begin());
     Glib::ustring::iterator end(str.end());
@@ -128,7 +128,7 @@ trim_left(Glib::ustring& str)
 void
 trim_right(Glib::ustring& str)
 {
-    g_return_if_fail (str.size() != Glib::ustring::size_type(0));
+    if (str.empty ()) return;
 
     Glib::ustring::iterator end(str.end());
     Glib::ustring::iterator it(--(str.end()));
