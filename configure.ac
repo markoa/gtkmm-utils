@@ -4,10 +4,10 @@
 
 pushdef([GTKMM_UTILS_MAJOR_VERSION], [0])
 pushdef([GTKMM_UTILS_MINOR_VERSION], [3])
-pushdef([GTKMM_UTILS_MICRO_VERSION], [0])
+pushdef([GTKMM_UTILS_MICRO_VERSION], [1])
 pushdef([GTKMM_UTILS_VERSION], GTKMM_UTILS_MAJOR_VERSION.GTKMM_UTILS_MINOR_VERSION.GTKMM_UTILS_MICRO_VERSION)
 
-AC_INIT([gtkmm-utils], GTKMM_UTILS_VERSION, [marko@marko.anastasov.name])
+AC_INIT([gtkmm-utils], GTKMM_UTILS_VERSION, [http://savannah.nongnu.org/bugs/?group=gtkmm-utils&func=additem])
 AC_CONFIG_SRCDIR([gtkmm-utils/dialog.h])
 AC_PREREQ(2.59)
 
