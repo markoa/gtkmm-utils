@@ -1,9 +1,13 @@
 noinst_PROGRAMS= \
 	logging \
+	multi-completion
 	tiles-simple
 
 logging_SOURCES=logging.cc logging.h
 logging_LDFLAGS=@GTKMM_UTILS_LIBS@
+
+multi_completion_SOURCES=multi-completion.cc multi-completion.h
+multi_completion_LDFLAGS=@GTKMM_UTILS_LIBS@
 
 tiles_simple_SOURCES=tiles-simple.cc tiles-simple.h
 tiles_simple_LDFLAGS=@GTKMM_UTILS_LIBS@

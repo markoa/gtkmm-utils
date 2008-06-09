@@ -2,12 +2,14 @@
 hh_sources = \
 	gtkmm-utils.h \
 	dialog.h \
+	entry-multi-completion.h \
 	page-navigator.h \
 	tile.h \
 	tile-view.h \
 	white-box.h
 
 cc_sources = dialog.cc \
+	entry-multi-completion.cc \
 	page-navigator.cc \
 	tile.cc \
 	tile-view.cc \
