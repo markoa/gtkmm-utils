@@ -1,3 +1,19 @@
+0.3.2 (2008-06-19)
+==================
+
+gtkmm-utils
+-----------
+
+ - EntryMultiCompletion: New class extending Gtk::EntryCompletion that
+   shows suggestions and allows autocompletion for multiple words in
+   a Gtk::Entry.
+
+glibmm-utils
+------------
+
+ - Fixed problems with g++ 4.3 shipped with Fedora 9, by including
+   the cstring header where necessary, as reported by Joe Harnish.
+
 Release 0.3.1 (2008-04-27)
 ==========================
 
