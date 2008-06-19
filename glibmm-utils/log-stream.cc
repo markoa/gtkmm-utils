@@ -20,6 +20,7 @@
  */
 
 #include <sys/time.h>
+#include <cstring> // for g++ 4.3
 #include <iostream>
 #include <map>
 #include <list>

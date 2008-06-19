@@ -19,6 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#include <cstring> // for g++ 4.3
 #include <glib/gmem.h>
 #include <glib/gmessages.h>
 #include "ustring.h"
