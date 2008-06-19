@@ -1,6 +1,6 @@
 noinst_PROGRAMS= \
 	logging \
-	multi-completion
+	multi-completion \
 	tiles-simple
 
 logging_SOURCES=logging.cc logging.h
