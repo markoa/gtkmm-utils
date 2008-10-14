@@ -100,7 +100,7 @@ Tile::Private::Private(const Glib::ustring& title,
 
     // The way we currently pack the widgets, the ellipsize-ing has no effect.
     //title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
-    //title_label_.set_max_width_chars(100);
+    //title_label_.set_max_width_chars(10);
     title_label_.modify_fg(Gtk::STATE_NORMAL,
                            root_hbox_.get_style()->get_fg(
                                Gtk::STATE_INSENSITIVE));
@@ -199,6 +199,12 @@ Tile::set_title(const Glib::ustring& title)
     priv_->set_title(title);
 }
 
+Gtk::Label&
+Tile::get_title_label()
+{
+    return priv_->title_label_;
+}
+
 Glib::ustring
 Tile::get_summary() const
 {
@@ -209,6 +215,12 @@ void
 Tile::set_summary(const Glib::ustring& summary)
 {
     priv_->set_summary(summary);
+}
+
+Gtk::Label&
+Tile::get_summary_label()
+{
+    return priv_->summary_label_;
 }
 
 Tile::SignalSelection&

@@ -28,7 +28,7 @@
 #include "scope-logger.h"
 
 #ifndef HERE
-#define HERE __ASSERT_FUNCTION << ":" <<__FILE__<< ":" << __LINE__ << ":"
+#define HERE __ASSERT_FUNCTION << ":" <<__FILE__<< ":" << __LINE__ << ": "
 #endif
 
 #ifndef PRETY_FUNCTION_NAME_
