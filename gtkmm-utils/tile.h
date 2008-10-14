@@ -119,6 +119,13 @@ public:
     virtual void set_title(const Glib::ustring& title);
 
     /**
+     * \brief Returns the top Gtk::Label displaying title.
+     *
+     * \return a reference to the title label.
+     */
+    virtual Gtk::Label& get_title_label();
+
+    /**
      * \brief Returns the "summary" of the Tile, ie the smaller text
      * below the title.
      *
@@ -132,6 +139,13 @@ public:
      * \param summary new summary string.
      */
     virtual void set_summary(const Glib::ustring& summary);
+
+    /**
+     * \brief Returns the Gtk::Label displaying summary in small font.
+     *
+     * \return a reference to the summary label.
+     */
+    virtual Gtk::Label& get_summary_label();
 
     /**
      * \brief Returns the SignalSelection indicating that
