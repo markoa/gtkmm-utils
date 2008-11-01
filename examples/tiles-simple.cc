@@ -41,31 +41,53 @@ ExampleWindow::ExampleWindow()
         "<span weight=\"bold\">Showing items</span>");
     tile_view_.set_tiles_per_page(2);
 
-    shared_ptr<Gtk::Util::Tile> tile1(
-        new Gtk::Util::Tile("Tile", "Read my subheader", false));
-    Gtk::Image& image = tile1->get_image();
+    shared_ptr<Gtk::Util::Tile> tile;
+
+    tile.reset(new Gtk::Util::Tile("Tile", "Read my subheader", false));
+    Gtk::Image& image = tile->get_image();
     image.set(Gtk::Stock::DIRECTORY, Gtk::ICON_SIZE_DIALOG);
+    tiles_.push_back(tile);
+    tile_view_.add_tile(*tile);
 
-    shared_ptr<Gtk::Util::Tile> tile2(
-        new Gtk::Util::Tile("Second tile", "Eggs and bacon", true, false));
-    tile2->get_image().set(Gtk::Stock::CDROM, Gtk::ICON_SIZE_DIALOG);
+    tile.reset(new Gtk::Util::Tile("Second tile", "Eggs and bacon", true, false));
+    tile->get_image().set(Gtk::Stock::CDROM, Gtk::ICON_SIZE_DIALOG);
+    tiles_.push_back(tile);
+    tile_view_.add_tile(*tile);
 
-    shared_ptr<Gtk::Util::Tile> tile3(
-        new Gtk::Util::Tile("Interactive piece",
-                            "With a clickable button below"));
-    tile3->get_image().set(Gtk::Stock::NETWORK, Gtk::ICON_SIZE_DIALOG);
-    Gtk::VBox& tile3_vbox = tile3->get_content_vbox();
-    tile3_vbox.pack_start(*(Gtk::manage(new Gtk::Button("Use me"))),
-                          false, false, 0);
+    tile.reset(new Gtk::Util::Tile("Interactive piece",
+                "With a clickable button below"));
+    tile->get_image().set(Gtk::Stock::NETWORK, Gtk::ICON_SIZE_DIALOG);
+    Gtk::VBox& tile_vbox = tile->get_content_vbox();
+    Gtk::Button& inside_button = *(Gtk::manage(new Gtk::Button("Use me")));
+    inside_button.signal_clicked().connect(
+            sigc::mem_fun(*this, &ExampleWindow::on_inside_button_clicked));
+    tile_vbox.pack_start(inside_button, false, false, 0);
+    tiles_.push_back(tile);
+    tile_view_.add_tile(*tile);
 
+    tile.reset(new Gtk::Util::Tile("Doublemoon",
+                "Music that I remember", true, false));
+    tile->get_image().set(Gtk::Stock::ABOUT, Gtk::ICON_SIZE_DIALOG);
+    tiles_.push_back(tile);
+    tile_view_.add_tile(*tile);
 
-    tiles_.push_back(tile1);
-    tiles_.push_back(tile2);
-    tiles_.push_back(tile3);
+    tile.reset(new Gtk::Util::Tile("Sunset",
+                "Oye like you're va", true, false));
+    tile->get_image().set(Gtk::Stock::APPLY, Gtk::ICON_SIZE_DIALOG);
+    tiles_.push_back(tile);
+    tile_view_.add_tile(*tile);
 
-    tile_view_.add_tile(*tile1);
-    tile_view_.add_tile(*tile2);
-    tile_view_.add_tile(*tile3);
+    tile.reset(new Gtk::Util::Tile("The Lab",
+                "Beyond the sound barrier", true, false));
+    tile->get_image().set(Gtk::Stock::CLEAR, Gtk::ICON_SIZE_DIALOG);
+    tiles_.push_back(tile);
+    tile_view_.add_tile(*tile);
+
+    tile.reset(new Gtk::Util::Tile("Video Zone",
+                "Production and editing", true, false));
+    tile->get_image().set(Gtk::Stock::MEDIA_PLAY, Gtk::ICON_SIZE_DIALOG);
+    tiles_.push_back(tile);
+    tile_view_.add_tile(*tile);
 
     vbox_.pack_start(tile_view_);
 
@@ -127,6 +149,12 @@ ExampleWindow::on_tile_activated(Gtk::Util::Tile& tile)
 {
     std::cout << "Activated tile with title " << tile.get_title() << std::endl;
     g_assert(&tile == tile_view_.get_selection());
+}
+
+void
+ExampleWindow::on_inside_button_clicked()
+{
+    std::cout << "Inside button clicked" << std::endl;
 }
 
 int

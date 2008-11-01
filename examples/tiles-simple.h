@@ -40,6 +40,7 @@ protected:
     void on_show_navigation_clicked();
     void on_tiles_per_page_changed();
     void on_tile_activated(Gtk::Util::Tile& tile);
+    void on_inside_button_clicked();
 
     Gtk::VBox vbox_;
     Gtk::Util::TileView tile_view_;
