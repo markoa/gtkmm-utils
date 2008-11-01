@@ -18,8 +18,8 @@ We have both agreed to relicence it in this library under LGPLv2 and thus
 make it available to a larger audience of developers.
 
 Wiki / homepage:  http://live.gnome.org/gtkmm_utils
-Project web site: http://savannah.nongnu.org/projects/gtkmm-utils
+Repository:       http://github.com/markoa/gtkmm-utils/tree/master
 
-Code is maintained in a git repository. See HACKING for details.
+See HACKING for details on how to contribute if you're new to git.
 
 --Marko Anastasov <marko.anastasov@gmail.com>
