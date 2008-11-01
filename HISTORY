@@ -1,0 +1,4 @@
+Large portions of the code in gtkmm-utils have been originally written
+by Dodji Seketeli, and published under GPLv2 as part of Nemiver.
+We have both agreed to relicence it in this library under LGPLv2 and thus
+make it available to a larger audience of developers.
