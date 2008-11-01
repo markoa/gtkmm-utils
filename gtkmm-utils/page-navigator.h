@@ -1,5 +1,3 @@
-/* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
-
 /*
  *  gtkmm-utils - page-navigator.h
  *
@@ -47,19 +45,12 @@ namespace Util {
 class PageNavigator : public Gtk::EventBox
 {
 public:
-    /** \brief Signal emmitted when a next page is requested.
+    /** \brief Signal emmitted when a page navigation request has been made.
      *
      * This could be when a corresponding button has been clicked on,
      * or when a mouse wheel is scrolled down within the navigation bar.
      */
-    typedef sigc::signal<void> SignalNext;
-
-    /** \brief Signal emmitted when a previous page is requested.
-     *
-     * This could be when a corresponding button has been clicked on,
-     * or when a mouse wheel is scrolled up within the navigation bar.
-     */
-    typedef sigc::signal<void> SignalPrevious;
+    typedef sigc::signal<void> SignalNavigation;
 
     /// \brief Constructs a new PageNavigator.
     explicit PageNavigator();
@@ -92,19 +83,37 @@ public:
     virtual void set_page_info(const Glib::ustring& info);
 
     /**
-     * \brief Returns a SignalNext, which you can connect to.
+     * \brief Returns a SignalNavigation for requests to the first page,
+     * which you can connect to.
      *
-     * \return a SignalNext reference
+     * \return a SignalNavigation reference
      */
-    SignalNext& signal_next();
+    SignalNavigation& signal_first();
 
     /**
-     * \brief Returns a SignalPrevious, which you can connect to.
+     * \brief Returns a SignalNavigation for requests to a previous page,
+     * which you can connect to.
      *
      * \return a SignalPrevious reference
      */
-    SignalPrevious& signal_previous();
+    SignalNavigation& signal_previous();
     
+    /**
+     * \brief Returns a SignalNavigation for requests to a next page,
+     * which you can connect to.
+     *
+     * \return a SignalNavigation reference
+     */
+    SignalNavigation& signal_next();
+
+    /**
+     * \brief Returns a SignalNavigation for requests to the last page,
+     * which you can connect to.
+     *
+     * \return a SignalNavigation reference
+     */
+    SignalNavigation& signal_last();
+
 protected:
     virtual bool on_scroll_event(GdkEventScroll* event);
 

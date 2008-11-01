@@ -1,5 +1,3 @@
-/* -*- Mode: C++; indent-tabs-mode:nil; c-basic-offset:4; -*- */
-
 /*
  *  gtkmm-utils - page-navigator.cc
  *
@@ -42,11 +40,15 @@ public:
     ~Private() {}
 
     void connect_signals();
-    void on_button_next_clicked();
+    void on_button_first_clicked();
     void on_button_previous_clicked();
+    void on_button_next_clicked();
+    void on_button_last_clicked();
 
-    PageNavigator::SignalNext     signal_next;
-    PageNavigator::SignalPrevious signal_previous;
+    PageNavigator::SignalNavigation signal_first;
+    PageNavigator::SignalNavigation signal_previous;
+    PageNavigator::SignalNavigation signal_next;
+    PageNavigator::SignalNavigation signal_last;
 
     Glib::ustring  title;
 
@@ -55,10 +57,14 @@ public:
     Gtk::HBox      label_box;
     Gtk::Label     label_title;
     Gtk::Label     label_page_info;
+    Gtk::Button    button_first;
+    Gtk::Image     image_first;
     Gtk::Button    button_previous;
     Gtk::Image     image_previous;
     Gtk::Button    button_next;
     Gtk::Image     image_next;
+    Gtk::Button    button_last;
+    Gtk::Image     image_last;
 };
 
 PageNavigator::Private::Private()
@@ -69,10 +75,14 @@ PageNavigator::Private::Private()
     label_box(false, 0),
     label_title(title),
     label_page_info(),
+    button_first(),
+    image_first(Gtk::Stock::GOTO_FIRST, Gtk::ICON_SIZE_SMALL_TOOLBAR),
     button_previous(),
     image_previous(Gtk::Stock::GO_BACK, Gtk::ICON_SIZE_SMALL_TOOLBAR),
     button_next(),
-    image_next(Gtk::Stock::GO_FORWARD, Gtk::ICON_SIZE_SMALL_TOOLBAR)
+    image_next(Gtk::Stock::GO_FORWARD, Gtk::ICON_SIZE_SMALL_TOOLBAR),
+    button_last(),
+    image_last(Gtk::Stock::GOTO_LAST, Gtk::ICON_SIZE_SMALL_TOOLBAR)
 {
     align_box.set_padding(18, 3, 0, 0);
     root_box.pack_start(align_box, false, true, 0);
@@ -84,21 +94,29 @@ PageNavigator::Private::Private()
     label_box.pack_start(label_page_info, false, true, 0);
     label_page_info.set_justify(Gtk::JUSTIFY_LEFT);
     
+    button_last.set_relief(Gtk::RELIEF_NONE);
+    button_last.add(image_last);
+    root_box.pack_end(button_last, false, true, 0);
+
     button_next.set_relief(Gtk::RELIEF_NONE);
     button_next.add(image_next);
     root_box.pack_end(button_next, false, true, 0);
-    
+
     button_previous.set_relief(Gtk::RELIEF_NONE);
     button_previous.add(image_previous);
     root_box.pack_end(button_previous, false, true, 0);
-
+    
+    button_first.set_relief(Gtk::RELIEF_NONE);
+    button_first.add(image_first);
+    root_box.pack_end(button_first, false, true, 0);
+    
     connect_signals();
 }
 
 void
-PageNavigator::Private::on_button_next_clicked()
+PageNavigator::Private::on_button_first_clicked()
 {
-    signal_next.emit();
+    signal_first.emit();
 }
 
 void
@@ -108,15 +126,35 @@ PageNavigator::Private::on_button_previous_clicked()
 }
 
 void
+PageNavigator::Private::on_button_next_clicked()
+{
+    signal_next.emit();
+}
+
+void
+PageNavigator::Private::on_button_last_clicked()
+{
+    signal_last.emit();
+}
+
+void
 PageNavigator::Private::connect_signals()
 {
-    button_next.signal_clicked().connect(
+    button_first.signal_clicked().connect(
         sigc::mem_fun(*this,
-                      &PageNavigator::Private::on_button_next_clicked));
+                      &PageNavigator::Private::on_button_first_clicked));
 
     button_previous.signal_clicked().connect(
         sigc::mem_fun(*this,
                       &PageNavigator::Private::on_button_previous_clicked));
+
+    button_next.signal_clicked().connect(
+        sigc::mem_fun(*this,
+                      &PageNavigator::Private::on_button_next_clicked));
+    
+    button_last.signal_clicked().connect(
+        sigc::mem_fun(*this,
+                      &PageNavigator::Private::on_button_last_clicked));
 }
 
 /* PageNavigator */
@@ -153,16 +191,28 @@ PageNavigator::set_page_info(const Glib::ustring& info)
     priv_->label_page_info.set_text(info);
 }
 
-PageNavigator::SignalNext&
+PageNavigator::SignalNavigation&
+PageNavigator::signal_first()
+{
+    return priv_->signal_first;
+}
+
+PageNavigator::SignalNavigation&
+PageNavigator::signal_previous()
+{
+    return priv_->signal_previous;
+}
+
+PageNavigator::SignalNavigation&
 PageNavigator::signal_next()
 {
     return priv_->signal_next;
 }
 
-PageNavigator::SignalPrevious&
-PageNavigator::signal_previous()
+PageNavigator::SignalNavigation&
+PageNavigator::signal_last()
 {
-    return priv_->signal_previous;
+    return priv_->signal_last;
 }
 
 bool
