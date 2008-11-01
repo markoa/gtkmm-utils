@@ -16,8 +16,9 @@ pkg-config path, glibmm-utils and gtkmm-utils.
 gtkmm is the official C++ API for GTK+, a graphical user interface toolkit
 used in the GNOME desktop. glibmm is a C++ API for GLib.
 
-Wiki / homepage:  http://live.gnome.org/gtkmm_utils
-Repository:       http://github.com/markoa/gtkmm-utils/tree/master
+Project home:  http://code.google.com/p/gtkmm-utils/
+        Wiki:  http://live.gnome.org/gtkmm_utils
+  Repository:  http://github.com/markoa/gtkmm-utils/tree/master
 
 See HACKING for details on how to contribute if you're new to git.
 
