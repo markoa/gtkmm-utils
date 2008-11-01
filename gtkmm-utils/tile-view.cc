@@ -87,9 +87,11 @@ public:
     void on_tile_focus_in(Tile& tile);
     void on_tile_activated(Tile& tile);
 
-    // TilePageNavigator signal handlers
-    void on_show_next_page();
+    // PageNavigator signal handlers
+    void on_show_first_page();
     void on_show_previous_page();
+    void on_show_next_page();
+    void on_show_last_page();
 
     // Child widgets
     auto_ptr<PageNavigator> navigator_;
@@ -149,11 +151,17 @@ TileView::Private::Private(bool use_page_view)
 void
 TileView::Private::connect_signals()
 {
-    navigator_->signal_next().connect(
-        sigc::mem_fun(*this, &TileView::Private::on_show_next_page));
-
+    navigator_->signal_first().connect(
+        sigc::mem_fun(*this, &TileView::Private::on_show_first_page));
+    
     navigator_->signal_previous().connect(
         sigc::mem_fun(*this, &TileView::Private::on_show_previous_page));
+    
+    navigator_->signal_next().connect(
+        sigc::mem_fun(*this, &TileView::Private::on_show_next_page));
+    
+    navigator_->signal_last().connect(
+        sigc::mem_fun(*this, &TileView::Private::on_show_last_page));
 }
 
 // Registers the tile data in our internal data structure, determines
@@ -389,6 +397,26 @@ TileView::Private::update_navigator_page_info_label()
 }
 
 void
+TileView::Private::on_show_first_page()
+{
+    if (! paginate_) return;
+
+    current_page_ = 1;
+    reload_container();
+    update_navigator_page_info_label();
+}
+
+void
+TileView::Private::on_show_previous_page()
+{
+    if ((! paginate_) || (current_page_ == 1)) return;
+
+    --current_page_;
+    reload_container();
+    update_navigator_page_info_label();
+}
+
+void
 TileView::Private::on_show_next_page()
 {
     if (! paginate_) return;
@@ -401,11 +429,11 @@ TileView::Private::on_show_next_page()
 }
 
 void
-TileView::Private::on_show_previous_page()
+TileView::Private::on_show_last_page()
 {
-    if ((! paginate_) || (current_page_ == 1)) return;
+    if (! paginate_) return;
 
-    --current_page_;
+    current_page_ = get_page_count();
     reload_container();
     update_navigator_page_info_label();
 }
