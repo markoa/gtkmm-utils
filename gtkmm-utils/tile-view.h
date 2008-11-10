@@ -91,7 +91,7 @@ public:
     virtual void add_tile(Tile* tile);
 
     /**
-     * \brief Returns the last selected Tile.
+     * \brief Returns the last selected Tile, or null of none is selected.
      *
      * \return a pointer to Tile.
      */
