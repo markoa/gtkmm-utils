@@ -1,3 +1,16 @@
+0.4.0 (2008-11-22)
+==================
+
+ - Project moved to Google Code - http://code.google.com/p/gtkmm-utils/ -
+   and code to github - http://github.com/markoa/gtkmm-utils/tree/master
+
+gtkmm-utils
+-----------
+
+ - More accessors to contained widgets in the Tile API, labels from Tiles,
+   PageNavigator from TileView.
+ - First and Last buttons in the PageNavigator.
+
 0.3.2 (2008-06-19)
 ==================
 
