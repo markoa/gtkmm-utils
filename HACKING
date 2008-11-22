@@ -1,10 +1,22 @@
 
+Recently I moved gtkmm-utils repository to github.
+If you'd like to contribute something which is larger than a small
+patch or two, then collaborating over github is a good idea.
+Read this guide to see how it goes:
+
+     http://github.com/guides/fork-a-project-and-submit-your-modifications
+
+///
+
+The text below is something which I wrote long time ago and it will
+work well if you want to submit patches.
+
 Working with git
 ================
 
 When you checkout the code for the first time:
 
-     git clone git://git.savannah.nongnu.org/gtkmm-utils.git
+     git clone git://github.com/markoa/gtkmm-utils.git
 
 cd to the gtkmm-utils directory, create a branch for any work that
 you will be doing and switch your working tree to that branch with:
