@@ -128,6 +128,13 @@ public:
     virtual void set_navigator_title_markup(const Glib::ustring& marked_up_title);
 
     /**
+     * \brief Returns the contained PageNavigator widget.
+     *
+     * \return a PageNavigator reference
+     */
+    virtual PageNavigator& get_page_navigator();
+
+    /**
      * \brief Sets the display style.
      *
      * \param use_page_view  when <tt>true</tt>, indicates that tiles should be

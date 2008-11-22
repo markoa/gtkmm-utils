@@ -576,6 +576,12 @@ TileView::set_navigator_title_markup(const Glib::ustring& marked_up_title)
     priv_->navigator_->set_title_markup(marked_up_title);
 }
 
+PageNavigator&
+TileView::get_page_navigator()
+{
+    return *(priv_->navigator_);
+}
+
 void
 TileView::set_page_view(bool use_page_view)
 {

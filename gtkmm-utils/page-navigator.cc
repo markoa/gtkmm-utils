@@ -215,6 +215,30 @@ PageNavigator::signal_last()
     return priv_->signal_last;
 }
 
+Gtk::Button&
+PageNavigator::get_button_first()
+{
+    return priv_->button_first;
+}
+
+Gtk::Button&
+PageNavigator::get_button_previous()
+{
+    return priv_->button_previous;
+}
+
+Gtk::Button&
+PageNavigator::get_button_next()
+{
+    return priv_->button_next;
+}
+
+Gtk::Button&
+PageNavigator::get_button_last()
+{
+    return priv_->button_last;
+}
+
 bool
 PageNavigator::on_scroll_event(GdkEventScroll* event)
 {

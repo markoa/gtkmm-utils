@@ -40,6 +40,11 @@ ExampleWindow::ExampleWindow()
     tile_view_.set_navigator_title_markup(
         "<span weight=\"bold\">Showing items</span>");
     tile_view_.set_tiles_per_page(2);
+    Gtk::Util::PageNavigator& navigator = tile_view_.get_page_navigator();
+    navigator.get_button_first().set_tooltip_text("First");
+    navigator.get_button_previous().set_tooltip_text("Previous");
+    navigator.get_button_next().set_tooltip_text("Next");
+    navigator.get_button_last().set_tooltip_text("Last");
 
     shared_ptr<Gtk::Util::Tile> tile;
 

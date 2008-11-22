@@ -23,6 +23,7 @@
 #define __GTKMM_UTILS_PAGE_NAVIGATOR_HH__
 
 #include <memory>
+#include <gtkmm/button.h>
 #include <gtkmm/eventbox.h>
 
 namespace Gtk {
@@ -113,6 +114,34 @@ public:
      * \return a SignalNavigation reference
      */
     SignalNavigation& signal_last();
+
+    /**
+     * \brief Returns a button for navigating to the first page.
+     *
+     * \return a Gtk::Button reference
+     */
+    virtual Gtk::Button& get_button_first();
+
+    /**
+     * \brief Returns a button for navigating to the previous page.
+     *
+     * \return a Gtk::Button reference
+     */
+    virtual Gtk::Button& get_button_previous();
+    
+    /**
+     * \brief Returns a button for navigating to the next page.
+     *
+     * \return a Gtk::Button reference
+     */
+    virtual Gtk::Button& get_button_next();
+    
+    /**
+     * \brief Returns a button for navigating to the last page.
+     *
+     * \return a Gtk::Button reference
+     */
+    virtual Gtk::Button& get_button_last();
 
 protected:
     virtual bool on_scroll_event(GdkEventScroll* event);
