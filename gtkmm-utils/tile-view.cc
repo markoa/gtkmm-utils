@@ -543,7 +543,7 @@ TileView::add_tile(Tile* tile)
 Tile*
 TileView::get_selection()
 {
-    return priv_->selected_tile_->tile;
+    return (priv_->selected_tile_) ? priv_->selected_tile_->tile : 0;
 }
 
 TileView::SignalTileActivated&
