@@ -82,7 +82,7 @@ AC_SUBST(GTKMM_UTILS_MAJOR_VERSION)
 AC_SUBST(GTKMM_UTILS_MINOR_VERSION)
 AC_SUBST(GTKMM_UTILS_MICRO_VERSION)
 
-AM_INIT_AUTOMAKE([1.9 tar-ustar dist-bzip2 dist-zip])
+AM_INIT_AUTOMAKE([1.9 tar-ustar])
 AM_MAINTAINER_MODE
 
 #########################################################################
