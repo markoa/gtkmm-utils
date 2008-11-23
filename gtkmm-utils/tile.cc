@@ -98,9 +98,7 @@ Tile::Private::Private(const Glib::ustring& title,
     // set up the title label
     set_title(title);
 
-    // The way we currently pack the widgets, the ellipsize-ing has no effect.
-    //title_label_.set_ellipsize(Pango::ELLIPSIZE_END);
-    //title_label_.set_max_width_chars(10);
+    title_label_.set_alignment(0.0);
     title_label_.modify_fg(Gtk::STATE_NORMAL,
                            root_hbox_.get_style()->get_fg(
                                Gtk::STATE_INSENSITIVE));
@@ -116,8 +114,7 @@ Tile::Private::Private(const Glib::ustring& title,
 
     // set up the summary label
     set_summary(summary);
-    //summary_label_.set_ellipsize(Pango::ELLIPSIZE_END);
-    //summary_label_.set_max_width_chars(100);
+    summary_label_.set_alignment(0.0);
     summary_label_.modify_fg(Gtk::STATE_NORMAL,
                              root_hbox_.get_style()->get_fg(
                                  Gtk::STATE_INSENSITIVE));
