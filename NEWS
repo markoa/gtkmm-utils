@@ -1,3 +1,12 @@
+0.4.1 (2008-12-02)
+==================
+
+gtkmm-utils
+-----------
+
+ - Handle possible null in get_selection()
+ - Labels in tiles are now properly left-aligned
+
 0.4.0 (2008-11-22)
 ==================
 
