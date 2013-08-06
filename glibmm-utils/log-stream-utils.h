@@ -107,7 +107,7 @@ LOG_STREAM << LOG_LEVEL_VERBOSE___ << LOG_MARKER_INFO << HERE << message << Glib
 #endif
 
 #ifndef LOG_VERBOSE_D
-#define LOG_VERBOSE_D(message) \
+#define LOG_VERBOSE_D(message, domain) \
 LOG_STREAM.push_domain (domain) ; LOG_VERBOSE(message) ;LOG_STREAM.pop_domain();
 #endif
 
